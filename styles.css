@@ -33,17 +33,35 @@ body {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-/*Esta es la caja "+" Para agregar nuevas boxes*/
+/* Estilos para los botones de agregar */
 #add-box-btn {
     font-size: 24px;
     background-color: white;
     color: #000000;
     border: none;
     border-radius: 10px;
-    /*4px*/
     cursor: pointer;
     width: 50px;
     height: 50px;
+}
+
+/* Nuevo botón agregado */
+#add-simple-box-btn {
+    font-size: 20px;
+    /* Más pequeño que el botón original */
+    background-color: black;
+    /* Fondo negro */
+    color: white;
+    /* Texto blanco */
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 40px;
+    /* Más pequeño */
+    height: 40px;
+    /* Más pequeño */
+    margin-right: 10px;
+    /* Espacio entre los botones */
 }
 
 #workspace {
@@ -55,7 +73,6 @@ body {
 /* Configuración del ancho fijo de los recuadros */
 .box {
     width: 300px;
-    /* Cambiar este valor para ajustar el ancho predeterminado */
     resize: none;
     overflow: hidden;
     border-radius: 20px;
@@ -65,16 +82,11 @@ body {
     box-shadow: 0 5px 5px rgb(0, 0, 0);
     position: absolute;
     cursor: grab;
-
     background-color: #a1a1a1;
     border: 1px solid #ccc;
-
-    /*background-color: #a7a5a5;
-    border: 1px solid #ccc;*/
 }
 
-
-/*Area para escribir*/
+/* Area para escribir */
 .box textarea {
     resize: none;
     overflow: hidden;
@@ -94,14 +106,13 @@ body {
     margin-top: 7px;
 }
 
-/*Botones general */
+/* Botones general */
 .box button {
     padding: 5px 15px;
     border-radius: 50px;
 }
 
-
-/*Botones Copiar y Eliminar */
+/* Botones Copiar y Eliminar */
 .box .copy-btn {
     flex-grow: 1;
     background-color: black;
@@ -114,4 +125,107 @@ body {
     background-color: red;
     margin-left: 100px;
     cursor: no-drop;
+}
+
+/* Estilos para los recuadros simples */
+.simple-box {
+    width: 200px;
+    resize: none;
+    overflow: hidden;
+    border-radius: 0px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    box-shadow: 0 5px 5px rgb(0, 0, 0);
+    position: absolute;
+    cursor: grab;
+    background-color: #ffffff;
+    /* Fondo blanco por defecto */
+    border: 1px solid #ccc;
+}
+
+.simple-box textarea {
+    resize: none;
+    overflow: hidden;
+    width: 100%;
+    border-radius: 5px;
+    height: 30px;
+    /* Altura fija para un solo renglón */
+    box-sizing: border-box;
+    background-color: #ffffff;
+    /* Fondo blanco por defecto */
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+
+}
+
+.simple-box-buttons {
+    display: flex;
+    justify-content: flex-end;
+    /* Alinear botones a la derecha */
+    margin-top: 7px;
+}
+
+/* Botón de color */
+.color-picker-btn {
+    background-color: #333;
+    /* Fondo negro */
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    /* Forma circular */
+    width: 30px;
+    /* Tamaño fijo */
+    height: 30px;
+    /* Tamaño fijo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    /* Espacio entre botones */
+}
+
+/* Botón de eliminar */
+.delete-simple-box-btn {
+    background-color: red;
+    /* Fondo rojo */
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    /* Forma circular */
+    width: 30px;
+    /* Tamaño fijo */
+    height: 30px;
+    /* Tamaño fijo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Botón de candado */
+.lock-btn {
+    background-color: #555;
+    /* Color gris oscuro */
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    /* Forma circular */
+    width: 30px;
+    /* Tamaño fijo */
+    height: 30px;
+    /* Tamaño fijo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    /* Espacio entre botones */
+}
+
+.lock-btn.locked {
+    background-color: #333;
+    /* Color más oscuro cuando está bloqueado */
 }

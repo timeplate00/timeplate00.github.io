@@ -33,7 +33,7 @@ body {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-/* Estilos para los botones de agregar */
+/* Botón original "+" Para agregar boxes normales */
 #add-box-btn {
     font-size: 24px;
     background-color: white;
@@ -45,23 +45,17 @@ body {
     height: 50px;
 }
 
-/* Nuevo botón agregado */
-#add-simple-box-btn {
+/* Nuevo botón "+" para boxes de una línea (añadido para la nueva funcionalidad) */
+#add-line-box-btn {
     font-size: 20px;
-    /* Más pequeño que el botón original */
     background-color: black;
-    /* Fondo negro */
     color: white;
-    /* Texto blanco */
     border: none;
     border-radius: 10px;
     cursor: pointer;
     width: 40px;
-    /* Más pequeño */
     height: 40px;
-    /* Más pequeño */
     margin-right: 10px;
-    /* Espacio entre los botones */
 }
 
 #workspace {
@@ -70,7 +64,7 @@ body {
     overflow: hidden;
 }
 
-/* Configuración del ancho fijo de los recuadros */
+/* Configuración del ancho fijo de los recuadros originales */
 .box {
     width: 300px;
     resize: none;
@@ -86,7 +80,21 @@ body {
     border: 1px solid #ccc;
 }
 
-/* Area para escribir */
+/* Estilos para los nuevos recuadros de una línea (añadido para la nueva funcionalidad) */
+.line-box {
+    width: 250px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    padding: 10px;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    cursor: grab;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+}
+
+/*Area para escribir en boxes normales*/
 .box textarea {
     resize: none;
     overflow: hidden;
@@ -100,21 +108,41 @@ body {
     font-weight: bold;
 }
 
+/* Area para escribir en boxes de una línea (añadido para la nueva funcionalidad) */
+.line-box textarea {
+    resize: none;
+    overflow: hidden;
+    width: 100%;
+    height: 20px !important;
+    border: none;
+    background-color: inherit;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    padding: 5px;
+}
+
 .box-buttons {
     display: flex;
     justify-content: space-between;
     margin-top: 7px;
 }
 
-/* Botones general */
-.box button {
-    padding: 5px 15px;
+/*Botones general */
+.box button,
+.line-box button {
+    padding: 5px 10px;
     border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 12px;
 }
 
-/* Botones Copiar y Eliminar */
+/*Botones Copiar y Eliminar */
 .box .copy-btn {
     flex-grow: 1;
+    /*Expande el tamaño del boton de copiar"*/
+    padding: 9px;
     background-color: black;
     color: white;
     cursor: copy;
@@ -127,105 +155,46 @@ body {
     cursor: no-drop;
 }
 
-/* Estilos para los recuadros simples */
-.simple-box {
-    width: 200px;
-    resize: none;
-    overflow: hidden;
-    border-radius: 0px;
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    box-shadow: 0 5px 5px rgb(0, 0, 0);
+/* Botones para los nuevos recuadros (añadido para la nueva funcionalidad) */
+.line-box .color-btn {
+    background-color: #bfcfbf;
+    color: white;
+}
+
+.line-box .delete-btn {
+    background-color: #f77067;
+    color: white;
+}
+
+.line-box .lock-btn {
+    background-color: #f5cb8d;
+    color: white;
+}
+
+/* Selector de color (añadido para la nueva funcionalidad) */
+.color-picker {
     position: absolute;
-    cursor: grab;
-    background-color: #ffffff;
-    /* Fondo blanco por defecto */
-    border: 1px solid #ccc;
-}
-
-.simple-box textarea {
-    resize: none;
-    overflow: hidden;
-    width: 100%;
+    z-index: 1000;
+    background: white;
+    padding: 10px;
     border-radius: 5px;
-    height: 30px;
-    /* Altura fija para un solo renglón */
-    box-sizing: border-box;
-    background-color: #ffffff;
-    /* Fondo blanco por defecto */
-    font-family: Arial, sans-serif;
-    font-size: 15px;
-    font-weight: bold;
-
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: none;
 }
 
-.simple-box-buttons {
-    display: flex;
-    justify-content: flex-end;
-    /* Alinear botones a la derecha */
-    margin-top: 7px;
-}
-
-/* Botón de color */
-.color-picker-btn {
-    background-color: #333;
-    /* Fondo negro */
-    color: white;
-    cursor: pointer;
-    border: none;
-    border-radius: 50%;
-    /* Forma circular */
+.color-option {
     width: 30px;
-    /* Tamaño fijo */
     height: 30px;
-    /* Tamaño fijo */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 10px;
-    /* Espacio entre botones */
-}
-
-/* Botón de eliminar */
-.delete-simple-box-btn {
-    background-color: red;
-    /* Fondo rojo */
-    color: white;
+    display: inline-block;
+    margin: 5px;
     cursor: pointer;
-    border: none;
-    border-radius: 50%;
-    /* Forma circular */
-    width: 30px;
-    /* Tamaño fijo */
-    height: 30px;
-    /* Tamaño fijo */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border: 1px solid #ddd;
 }
 
-/* Botón de candado */
-.lock-btn {
-    background-color: #555;
-    /* Color gris oscuro */
-    color: white;
-    cursor: pointer;
-    border: none;
-    border-radius: 50%;
-    /* Forma circular */
-    width: 30px;
-    /* Tamaño fijo */
-    height: 30px;
-    /* Tamaño fijo */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 10px;
-    /* Espacio entre botones */
+/* Clase para recuadros bloqueados (añadido para la nueva funcionalidad) */
+.locked {
+    cursor: default !important;
 }
 
-.lock-btn.locked {
-    background-color: #333;
-    /* Color más oscuro cuando está bloqueado */
-}
+
+/* Version 4 original!!!!*/

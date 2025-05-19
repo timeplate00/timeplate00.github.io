@@ -7,7 +7,7 @@ body {
 #main-container {
     width: 100%;
     height: 1000vh;
-    background-color: #01215c;
+    background-color: #02142b;
     display: flex;
     flex-direction: column;
 }

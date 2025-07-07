@@ -45,7 +45,7 @@ body {
     height: 50px;
 }
 
-/* Nuevo botón "+" para boxes de una línea (añadido para la nueva funcionalidad) */
+/* Nuevo botón "+" para boxes de una línea */
 #add-line-box-btn {
     font-size: 20px;
     background-color: black;
@@ -80,7 +80,7 @@ body {
     border: 1px solid #ccc;
 }
 
-/* Estilos para los nuevos recuadros de una línea (añadido para la nueva funcionalidad) */
+/* Estilos para los nuevos recuadros de una línea */
 .line-box {
     width: 250px;
     height: 40px;
@@ -108,7 +108,7 @@ body {
     font-weight: bold;
 }
 
-/* Area para escribir en boxes de una línea (añadido para la nueva funcionalidad) */
+/* Area para escribir en boxes de una línea */
 .line-box textarea {
     resize: none;
     overflow: hidden;
@@ -141,7 +141,6 @@ body {
 /*Botones Copiar y Eliminar */
 .box .copy-btn {
     flex-grow: 1;
-    /*Expande el tamaño del boton de copiar"*/
     padding: 9px;
     background-color: black;
     color: white;
@@ -151,11 +150,29 @@ body {
 .box .delete-btn {
     font-size: 12px;
     background-color: red;
-    margin-left: 100px;
+    margin-left: 5px;
     cursor: no-drop;
 }
 
-/* Botones para los nuevos recuadros (añadido para la nueva funcionalidad) */
+/* Botón de bloqueo para cajas normales */
+.box .lock-btn {
+    background-color: #f5cb8d;
+    color: white;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin-left: 5px;
+}
+
+.box .lock-btn.active {
+    background-color: #e0a847;
+}
+
+/* Botones para los nuevos recuadros */
 .line-box .color-btn {
     background-color: #bfcfbf;
     color: white;
@@ -171,7 +188,7 @@ body {
     color: white;
 }
 
-/* Selector de color (añadido para la nueva funcionalidad) */
+/* Selector de color */
 .color-picker {
     position: absolute;
     z-index: 1000;
@@ -191,10 +208,7 @@ body {
     border: 1px solid #ddd;
 }
 
-/* Clase para recuadros bloqueados (añadido para la nueva funcionalidad) */
+/* Clase para recuadros bloqueados */
 .locked {
     cursor: default !important;
 }
-
-
-/* Version 4 original!!!!*/

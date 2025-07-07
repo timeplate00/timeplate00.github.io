@@ -10,13 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
     loadLineBoxes();
 });
 
-// Evento para el botón original (sin cambios)
+// Evento para el botón original
 addBoxBtn.addEventListener('click', () => {
-    createBox({ text: '', left: '50px', top: '50px' });
+    createBox({ text: '', left: '50px', top: '50px', locked: 'false' });
     saveBoxes();
 });
 
-// Evento para el nuevo botón de recuadros de una línea (añadido para la nueva funcionalidad)
+// Evento para el nuevo botón de recuadros de una línea
 addLineBoxBtn.addEventListener('click', () => {
     createLineBox({
         text: '',
@@ -28,7 +28,7 @@ addLineBoxBtn.addEventListener('click', () => {
     saveLineBoxes();
 });
 
-// Función para crear recuadros originales (sin cambios)
+// Función para crear recuadros originales (modificada)
 function createBox(data) {
     const box = document.createElement('div');
     box.classList.add('box');
@@ -37,6 +37,7 @@ function createBox(data) {
     const textarea = document.createElement('textarea');
     textarea.placeholder = 'Texto...';
     textarea.value = data.text;
+    box.dataset.locked = data.locked || 'false';
 
     textarea.addEventListener('input', () => {
         textarea.style.height = 'auto';
@@ -54,6 +55,23 @@ function createBox(data) {
         navigator.clipboard.writeText(textarea.value);
     });
 
+    const lockBtn = document.createElement('button');
+    lockBtn.classList.add('lock-btn');
+    lockBtn.textContent = '🔒';
+    lockBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isLocked = box.dataset.locked === 'true';
+        box.dataset.locked = !isLocked;
+        if (!isLocked) {
+            box.classList.add('locked');
+            lockBtn.classList.add('active');
+        } else {
+            box.classList.remove('locked');
+            lockBtn.classList.remove('active');
+        }
+        saveBoxes();
+    });
+
     const deleteBtn = document.createElement('button');
     deleteBtn.classList.add('delete-btn');
     deleteBtn.textContent = '-';
@@ -66,18 +84,23 @@ function createBox(data) {
     });
 
     buttonsDiv.appendChild(copyBtn);
+    buttonsDiv.appendChild(lockBtn);
     buttonsDiv.appendChild(deleteBtn);
 
     box.appendChild(textarea);
     box.appendChild(buttonsDiv);
     workspace.appendChild(box);
 
+    if (box.dataset.locked === 'true') {
+        box.classList.add('locked');
+        lockBtn.classList.add('active');
+    }
 
     textarea.style.height = `${textarea.scrollHeight}px`;
     makeDraggable(box);
 }
 
-// Función para crear nuevos recuadros de una línea (añadido para la nueva funcionalidad)
+// Función para crear recuadros de una línea
 function createLineBox(data) {
     const box = document.createElement('div');
     box.classList.add('line-box');
@@ -93,7 +116,6 @@ function createLineBox(data) {
     textarea.placeholder = 'Texto...';
     textarea.value = data.text;
 
-    // Asegurar que solo tenga una línea
     textarea.addEventListener('input', () => {
         saveLineBoxes();
     });
@@ -102,7 +124,6 @@ function createLineBox(data) {
     buttonsDiv.style.display = 'flex';
     buttonsDiv.style.marginTop = '5px';
 
-    // Botón de color
     const colorBtn = document.createElement('button');
     colorBtn.classList.add('color-btn');
     colorBtn.textContent = '🎨';
@@ -114,7 +135,6 @@ function createLineBox(data) {
         colorPicker.style.top = `${e.clientY}px`;
     });
 
-    // Botón de bloqueo
     const lockBtn = document.createElement('button');
     lockBtn.classList.add('lock-btn');
     lockBtn.textContent = '🔒';
@@ -132,7 +152,6 @@ function createLineBox(data) {
         saveLineBoxes();
     });
 
-    // Botón de eliminar 🗑
     const deleteBtn = document.createElement('button');
     deleteBtn.classList.add('delete-btn');
     deleteBtn.textContent = 'X';
@@ -156,11 +175,10 @@ function createLineBox(data) {
     makeDraggable(box);
 }
 
-// Función para hacer arrastrable los recuadros (modificada para la nueva funcionalidad)
+// Función para hacer arrastrable los recuadros
 function makeDraggable(element) {
     let offsetX, offsetY;
     element.addEventListener('mousedown', (e) => {
-        // No mover si es un textarea o si está bloqueado
         if (e.target.tagName === 'TEXTAREA' || element.classList.contains('locked')) return;
 
         offsetX = e.clientX - element.offsetLeft;
@@ -184,7 +202,7 @@ function makeDraggable(element) {
     });
 }
 
-// Selector de color (añadido para la nueva funcionalidad)
+// Selector de color
 document.querySelectorAll('.color-option').forEach(option => {
     option.addEventListener('click', () => {
         if (currentBoxForColor) {
@@ -197,30 +215,31 @@ document.querySelectorAll('.color-option').forEach(option => {
     });
 });
 
-// Cerrar selector de color al hacer clic fuera (añadido para la nueva funcionalidad)
+// Cerrar selector de color al hacer clic fuera
 document.addEventListener('click', (e) => {
     if (!colorPicker.contains(e.target) && e.target.className !== 'color-btn') {
         colorPicker.style.display = 'none';
     }
 });
 
-// Guardar recuadros originales (sin cambios)
+// Guardar recuadros originales
 function saveBoxes() {
     const boxes = Array.from(workspace.querySelectorAll('.box')).map(box => ({
         text: box.querySelector('textarea').value,
         left: box.style.left,
         top: box.style.top,
+        locked: box.dataset.locked
     }));
     localStorage.setItem('boxes', JSON.stringify(boxes));
 }
 
-// Cargar recuadros originales (sin cambios)
+// Cargar recuadros originales
 function loadBoxes() {
     const savedBoxes = JSON.parse(localStorage.getItem('boxes') || '[]');
     savedBoxes.forEach(data => createBox(data));
 }
 
-// Guardar nuevos recuadros de una línea (añadido para la nueva funcionalidad)
+// Guardar recuadros de una línea
 function saveLineBoxes() {
     const lineBoxes = Array.from(workspace.querySelectorAll('.line-box')).map(box => ({
         text: box.querySelector('textarea').value,
@@ -229,15 +248,11 @@ function saveLineBoxes() {
         color: box.style.backgroundColor,
         locked: box.dataset.locked
     }));
-
     localStorage.setItem('lineBoxes', JSON.stringify(lineBoxes));
 }
 
-// Cargar nuevos recuadros de una línea (añadido para la nueva funcionalidad)
+// Cargar recuadros de una línea
 function loadLineBoxes() {
     const savedLineBoxes = JSON.parse(localStorage.getItem('lineBoxes') || '[]');
     savedLineBoxes.forEach(data => createLineBox(data));
 }
-
-
-// Version 4 original!!!!

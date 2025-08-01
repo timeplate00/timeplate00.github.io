@@ -33,7 +33,6 @@ body {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-/* Botón original "+" Para agregar boxes normales */
 #add-box-btn {
     font-size: 24px;
     background-color: white;
@@ -45,7 +44,6 @@ body {
     height: 50px;
 }
 
-/* Nuevo botón "+" para boxes de una línea */
 #add-line-box-btn {
     font-size: 20px;
     background-color: black;
@@ -64,7 +62,6 @@ body {
     overflow: hidden;
 }
 
-/* Configuración del ancho fijo de los recuadros originales */
 .box {
     width: 300px;
     resize: none;
@@ -80,7 +77,6 @@ body {
     border: 1px solid #ccc;
 }
 
-/* Estilos para los nuevos recuadros de una línea */
 .line-box {
     width: 250px;
     height: 40px;
@@ -94,7 +90,6 @@ body {
     border: 1px solid #000000;
 }
 
-/*Area para escribir en boxes normales*/
 .box textarea {
     resize: none;
     overflow: hidden;
@@ -108,7 +103,6 @@ body {
     font-weight: bold;
 }
 
-/* Area para escribir en boxes de una línea */
 .line-box textarea {
     resize: none;
     overflow: hidden;
@@ -127,7 +121,6 @@ body {
     margin-top: 7px;
 }
 
-/*Botones general */
 .box button,
 .line-box button {
     padding: 5px 10px;
@@ -138,7 +131,6 @@ body {
     font-size: 12px;
 }
 
-/*Botones Copiar y Eliminar */
 .box .copy-btn {
     flex-grow: 1;
     padding: 9px;
@@ -154,7 +146,6 @@ body {
     cursor: no-drop;
 }
 
-/* Botón de bloqueo para cajas normales */
 .box .lock-btn {
     background-color: #f5cb8d;
     color: white;
@@ -172,7 +163,6 @@ body {
     background-color: #e0a847;
 }
 
-/* Botones para los nuevos recuadros */
 .line-box .color-btn {
     background-color: #bfcfbf;
     color: white;
@@ -188,27 +178,85 @@ body {
     color: white;
 }
 
-/* Selector de color */
+/* Selector de color profesional */
 .color-picker {
-    position: absolute;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 1000;
     background: white;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    width: 300px;
     display: none;
 }
 
-.color-option {
-    width: 30px;
-    height: 30px;
-    display: inline-block;
-    margin: 5px;
+.color-picker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.color-picker-header h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+#close-color-picker {
+    background: none;
+    border: none;
+    font-size: 20px;
     cursor: pointer;
+    color: #666;
+}
+
+.color-spectrum {
+    width: 100%;
+    height: 150px;
+    background: linear-gradient(to top, #000, transparent),
+        linear-gradient(to right, #fff, transparent);
+    border-radius: 5px;
+    margin-bottom: 15px;
+    cursor: crosshair;
+    position: relative;
+}
+
+.color-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#custom-color {
+    width: 40px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+}
+
+.color-preview {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
     border: 1px solid #ddd;
 }
 
-/* Clase para recuadros bloqueados */
+/* Fondo oscuro cuando el selector está abierto */
+.color-picker-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
 .locked {
     cursor: default !important;
 }

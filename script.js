@@ -2,6 +2,10 @@ const workspace = document.getElementById('workspace');
 const addBoxBtn = document.getElementById('add-box-btn');
 const addLineBoxBtn = document.getElementById('add-line-box-btn');
 const colorPicker = document.getElementById('color-picker');
+const colorSpectrum = document.getElementById('color-spectrum');
+const customColorInput = document.getElementById('custom-color');
+const colorPreview = document.getElementById('color-preview');
+const closeColorPickerBtn = document.getElementById('close-color-picker');
 let currentBoxForColor = null;
 
 // Cargar todos los recuadros guardados al inicio
@@ -28,7 +32,7 @@ addLineBoxBtn.addEventListener('click', () => {
     saveLineBoxes();
 });
 
-// Función para crear recuadros originales (modificada)
+// Función para crear recuadros originales
 function createBox(data) {
     const box = document.createElement('div');
     box.classList.add('box');
@@ -130,9 +134,7 @@ function createLineBox(data) {
     colorBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         currentBoxForColor = box;
-        colorPicker.style.display = 'block';
-        colorPicker.style.left = `${e.clientX}px`;
-        colorPicker.style.top = `${e.clientY}px`;
+        showColorPicker();
     });
 
     const lockBtn = document.createElement('button');
@@ -202,25 +204,63 @@ function makeDraggable(element) {
     });
 }
 
-// Selector de color
-document.querySelectorAll('.color-option').forEach(option => {
-    option.addEventListener('click', () => {
-        if (currentBoxForColor) {
-            const color = option.getAttribute('data-color');
-            currentBoxForColor.style.backgroundColor = color;
-            currentBoxForColor.querySelector('textarea').style.backgroundColor = color;
-            colorPicker.style.display = 'none';
-            saveLineBoxes();
-        }
-    });
+// Mostrar el selector de color
+function showColorPicker() {
+    colorPicker.style.display = 'block';
+
+    // Crear backdrop
+    const backdrop = document.createElement('div');
+    backdrop.classList.add('color-picker-backdrop');
+    document.body.appendChild(backdrop);
+    backdrop.style.display = 'block';
+
+    // Cerrar al hacer clic fuera
+    backdrop.addEventListener('click', closeColorPicker);
+}
+
+// Cerrar el selector de color
+function closeColorPicker() {
+    colorPicker.style.display = 'none';
+    const backdrop = document.querySelector('.color-picker-backdrop');
+    if (backdrop) {
+        backdrop.remove();
+    }
+}
+
+// Evento para cerrar el selector
+closeColorPickerBtn.addEventListener('click', closeColorPicker);
+
+// Selección de color del espectro
+colorSpectrum.addEventListener('click', (e) => {
+    if (!currentBoxForColor) return;
+
+    const rect = colorSpectrum.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Simulación básica de selección de color (mejorable con librerías como tinycolor)
+    const hue = (x / rect.width) * 360;
+    const saturation = 100;
+    const lightness = 100 - (y / rect.height) * 100;
+
+    const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    applyColor(color);
 });
 
-// Cerrar selector de color al hacer clic fuera
-document.addEventListener('click', (e) => {
-    if (!colorPicker.contains(e.target) && e.target.className !== 'color-btn') {
-        colorPicker.style.display = 'none';
-    }
+// Selección de color personalizado
+customColorInput.addEventListener('input', () => {
+    applyColor(customColorInput.value);
 });
+
+// Aplicar color al recuadro
+function applyColor(color) {
+    if (!currentBoxForColor) return;
+
+    currentBoxForColor.style.backgroundColor = color;
+    currentBoxForColor.querySelector('textarea').style.backgroundColor = color;
+    colorPreview.style.backgroundColor = color;
+    saveLineBoxes();
+}
 
 // Guardar recuadros originales
 function saveBoxes() {

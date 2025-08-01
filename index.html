@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Template</title>
+    <title>Timeplate</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -12,33 +12,30 @@
     <div id="main-container">
         <div id="header">
             <h1>Timeplate</h1>
-
-            <button> <a href="loadtracker_app.html">Load-Tracker</a></button>
-
-            <div> <!-- Nuevo botón para recuadros de una línea --> <button id="add-line-box-btn">+</button>
-                <!-- Botón original --> <button id="add-box-btn">+</button> </div>
-
+            <button><a href="loadtracker_app.html">Load-Tracker</a></button>
+            <div>
+                <button id="add-line-box-btn">+</button>
+                <button id="add-box-btn">+</button>
+            </div>
         </div>
-        <div id="workspace"> <!-- Recuadros se agregarán aquí dinámicamente --> </div>
-        <!-- Selector de color (añadido para la nueva funcionalidad) -->
+        <div id="workspace"></div>
+
+        <!-- Selector de color profesional (oculto inicialmente) -->
         <div id="color-picker" class="color-picker">
-            <h3>Selecciona un color</h3>
-            <div class="color-option" style="background-color: #ffffff;" data-color="#ffffff"></div>
-            <div class="color-option" style="background-color: #ff0000;" data-color="#ff0000"></div>
-            <div class="color-option" style="background-color: #00ff00;" data-color="#00ff00"></div>
-            <div class="color-option" style="background-color: #0000ff;" data-color="#0000ff"></div>
-            <div class="color-option" style="background-color: #ffff00;" data-color="#ffff00"></div>
-            <div class="color-option" style="background-color: #ff00ff;" data-color="#ff00ff"></div>
-            <div class="color-option" style="background-color: #00ffff;" data-color="#00ffff"></div>
-            <div class="color-option" style="background-color: #000000;" data-color="#000000"></div>
-            <div class="color-option" style="background-color: #888888;" data-color="#888888"></div>
+            <div class="color-picker-header">
+                <h3>Seleccionar color</h3>
+                <button id="close-color-picker">×</button>
+            </div>
+            <div class="color-picker-body">
+                <div class="color-spectrum" id="color-spectrum"></div>
+                <div class="color-controls">
+                    <input type="color" id="custom-color" value="#ffffff">
+                    <div class="color-preview" id="color-preview"></div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>
 </body>
 
 </html>
-
-
-
-<!--// Version 4 original!!!!-->

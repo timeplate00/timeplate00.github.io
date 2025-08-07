@@ -1,3 +1,4 @@
+// script.js
 const workspace = document.getElementById('workspace');
 const addBoxBtn = document.getElementById('add-box-btn');
 const addLineBoxBtn = document.getElementById('add-line-box-btn');
@@ -7,20 +8,33 @@ const customColorInput = document.getElementById('custom-color');
 const colorPreview = document.getElementById('color-preview');
 const closeColorPickerBtn = document.getElementById('close-color-picker');
 let currentBoxForColor = null;
+let isMuted = false;
 
-// Cargar todos los recuadros guardados al inicio
+// Agregar botón mute
+const muteBtn = document.createElement('button');
+muteBtn.textContent = 'Mute';
+muteBtn.id = 'mute-btn';
+muteBtn.style.marginRight = '10px';
+addLineBoxBtn.parentNode.insertBefore(muteBtn, addLineBoxBtn);
+
+muteBtn.addEventListener('click', () => {
+    isMuted = !isMuted;
+    muteBtn.textContent = isMuted ? 'Unmute' : 'Mute';
+});
+
+const copySound = new Audio('copy-sound.mp3'); // Debe colocarse un archivo llamado copy-sound.mp3 en el mismo directorio
+
+// ... DOMContentLoaded y otros eventos previos ...
 document.addEventListener('DOMContentLoaded', () => {
     loadBoxes();
     loadLineBoxes();
 });
 
-// Evento para el botón original
 addBoxBtn.addEventListener('click', () => {
     createBox({ text: '', left: '50px', top: '50px', locked: 'false' });
     saveBoxes();
 });
 
-// Evento para el nuevo botón de recuadros de una línea
 addLineBoxBtn.addEventListener('click', () => {
     createLineBox({
         text: '',
@@ -32,7 +46,6 @@ addLineBoxBtn.addEventListener('click', () => {
     saveLineBoxes();
 });
 
-// Función para crear recuadros originales
 function createBox(data) {
     const box = document.createElement('div');
     box.classList.add('box');
@@ -57,6 +70,16 @@ function createBox(data) {
     copyBtn.textContent = '+';
     copyBtn.addEventListener('click', () => {
         navigator.clipboard.writeText(textarea.value);
+
+        if (!isMuted) {
+            copySound.currentTime = 0;
+            copySound.play();
+        }
+
+        box.classList.add('glow');
+        setTimeout(() => {
+            box.classList.remove('glow');
+        }, 1000);
     });
 
     const lockBtn = document.createElement('button');
@@ -104,7 +127,11 @@ function createBox(data) {
     makeDraggable(box);
 }
 
-// Función para crear recuadros de una línea
+
+
+
+// Resto del código permanece igual ... 06/08/2025
+
 function createLineBox(data) {
     const box = document.createElement('div');
     box.classList.add('line-box');
@@ -140,16 +167,19 @@ function createLineBox(data) {
     const lockBtn = document.createElement('button');
     lockBtn.classList.add('lock-btn');
     lockBtn.textContent = '🔒';
+    if (data.locked === 'true') {
+        lockBtn.classList.add('active');
+    }
     lockBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         const isLocked = box.dataset.locked === 'true';
         box.dataset.locked = !isLocked;
         if (!isLocked) {
             box.classList.add('locked');
-            lockBtn.textContent = '🔓';
+            lockBtn.classList.add('active');
         } else {
             box.classList.remove('locked');
-            lockBtn.textContent = '🔒';
+            lockBtn.classList.remove('active');
         }
         saveLineBoxes();
     });
@@ -177,7 +207,6 @@ function createLineBox(data) {
     makeDraggable(box);
 }
 
-// Función para hacer arrastrable los recuadros
 function makeDraggable(element) {
     let offsetX, offsetY;
     element.addEventListener('mousedown', (e) => {
@@ -204,21 +233,17 @@ function makeDraggable(element) {
     });
 }
 
-// Mostrar el selector de color
 function showColorPicker() {
     colorPicker.style.display = 'block';
 
-    // Crear backdrop
     const backdrop = document.createElement('div');
     backdrop.classList.add('color-picker-backdrop');
     document.body.appendChild(backdrop);
     backdrop.style.display = 'block';
 
-    // Cerrar al hacer clic fuera
     backdrop.addEventListener('click', closeColorPicker);
 }
 
-// Cerrar el selector de color
 function closeColorPicker() {
     colorPicker.style.display = 'none';
     const backdrop = document.querySelector('.color-picker-backdrop');
@@ -227,10 +252,8 @@ function closeColorPicker() {
     }
 }
 
-// Evento para cerrar el selector
 closeColorPickerBtn.addEventListener('click', closeColorPicker);
 
-// Selección de color del espectro
 colorSpectrum.addEventListener('click', (e) => {
     if (!currentBoxForColor) return;
 
@@ -238,7 +261,6 @@ colorSpectrum.addEventListener('click', (e) => {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    // Simulación básica de selección de color (mejorable con librerías como tinycolor)
     const hue = (x / rect.width) * 360;
     const saturation = 100;
     const lightness = 100 - (y / rect.height) * 100;
@@ -247,12 +269,10 @@ colorSpectrum.addEventListener('click', (e) => {
     applyColor(color);
 });
 
-// Selección de color personalizado
 customColorInput.addEventListener('input', () => {
     applyColor(customColorInput.value);
 });
 
-// Aplicar color al recuadro
 function applyColor(color) {
     if (!currentBoxForColor) return;
 
@@ -262,7 +282,6 @@ function applyColor(color) {
     saveLineBoxes();
 }
 
-// Guardar recuadros originales
 function saveBoxes() {
     const boxes = Array.from(workspace.querySelectorAll('.box')).map(box => ({
         text: box.querySelector('textarea').value,
@@ -273,13 +292,11 @@ function saveBoxes() {
     localStorage.setItem('boxes', JSON.stringify(boxes));
 }
 
-// Cargar recuadros originales
 function loadBoxes() {
     const savedBoxes = JSON.parse(localStorage.getItem('boxes') || '[]');
     savedBoxes.forEach(data => createBox(data));
 }
 
-// Guardar recuadros de una línea
 function saveLineBoxes() {
     const lineBoxes = Array.from(workspace.querySelectorAll('.line-box')).map(box => ({
         text: box.querySelector('textarea').value,
@@ -291,7 +308,6 @@ function saveLineBoxes() {
     localStorage.setItem('lineBoxes', JSON.stringify(lineBoxes));
 }
 
-// Cargar recuadros de una línea
 function loadLineBoxes() {
     const savedLineBoxes = JSON.parse(localStorage.getItem('lineBoxes') || '[]');
     savedLineBoxes.forEach(data => createLineBox(data));

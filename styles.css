@@ -257,6 +257,39 @@ body {
     display: none;
 }
 
+/* Color oscuro en boton de bloque de cuadros en linea*/
+.line-box .lock-btn.active {
+    background-color: #e0a847;
+}
+
+
+/* Animación glow al copiar */
+@keyframes neonGlow {
+    0% {
+        box-shadow: 0 0 0px white;
+    }
+
+    50% {
+        box-shadow: 0 0 20px white;
+    }
+
+    100% {
+        box-shadow: 0 0 0px white;
+    }
+}
+
+.box.glow {
+    animation: neonGlow 1s ease-out;
+}
+
+
+
+
+
+
+
+
+
 .locked {
     cursor: default !important;
 }

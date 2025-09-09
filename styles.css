@@ -4,13 +4,17 @@ body {
     font-family: Arial, sans-serif;
 }
 
+
+/* Cambios del fondo */
 #main-container {
     width: 100%;
     height: 1000vh;
-    background-color: #02142b;
+    background-color: #0a2239;
     display: flex;
     flex-direction: column;
 }
+
+/* FIN de Cambios del fondo */
 
 #header {
     display: flex;
@@ -286,10 +290,65 @@ body {
 
 
 
-
-
-
-
 .locked {
     cursor: default !important;
+}
+
+
+
+
+
+/* Botón de ajustes */
+#settings-btn {
+    font-size: 25px;
+    background-color: #008cba;
+    color: #000;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+
+    margin-right: 10px;
+}
+
+/* Menú desplegable */
+#settings-menu {
+    position: absolute;
+    background: #1a1f36;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    z-index: 1000;
+}
+
+#settings-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#settings-menu li {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#settings-menu li:hover {
+    background: #2d4263;
+}
+
+
+
+/* Opciones de fondo */
+#background-options li {
+    font-size: 14px;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#background-options li:hover {
+    background: #3a4b6b;
 }

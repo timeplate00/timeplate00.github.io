@@ -10,22 +10,81 @@ const closeColorPickerBtn = document.getElementById('close-color-picker');
 let currentBoxForColor = null;
 let isMuted = false;
 
-// Agregar botón mute
-const muteBtn = document.createElement('button');
-muteBtn.textContent = 'Mute';
-muteBtn.id = 'mute-btn';
-muteBtn.style.marginRight = '10px';
-addLineBoxBtn.parentNode.insertBefore(muteBtn, addLineBoxBtn);
+// Crear botón de ajustes
+const settingsBtn = document.createElement('button');
+settingsBtn.id = 'settings-btn';
+settingsBtn.innerHTML = '⚙️';
+addLineBoxBtn.parentNode.insertBefore(settingsBtn, addLineBoxBtn);
 
-muteBtn.addEventListener('click', () => {
+// Crear menú desplegable (oculto inicialmente)
+const settingsMenu = document.createElement('div');
+settingsMenu.id = 'settings-menu';
+settingsMenu.innerHTML = `
+    <ul>
+        <li id="toggle-mute">🔊 [Mute]</li>
+        <li id="background-settings">[Background]</li>
+        <ul id="background-options" style="display:none; margin-left:15px;">
+            <li data-bg="#0a2239">- Blue</li>
+            <li data-bg="#121212">- Gray</li>
+            <li data-bg="#0f3d3e">- Green</li>
+            <li data-bg="linear-gradient(135deg, #1a1f36, #2d4263)">- Ellegant</li>
+        </ul>
+    </ul>
+`;
+settingsMenu.style.display = 'none';
+document.body.appendChild(settingsMenu);
+
+// Mostrar/ocultar menú al hacer click en el botón de ajustes
+settingsBtn.addEventListener('click', () => {
+    settingsMenu.style.display = settingsMenu.style.display === 'block' ? 'none' : 'block';
+    const rect = settingsBtn.getBoundingClientRect();
+    settingsMenu.style.top = rect.bottom + 'px';
+    settingsMenu.style.left = rect.left + 'px';
+});
+
+// --- Configuración de Mute ---
+const toggleMuteOption = document.getElementById('toggle-mute');
+toggleMuteOption.addEventListener('click', () => {
     isMuted = !isMuted;
-    muteBtn.textContent = isMuted ? 'Unmute' : 'Mute';
+    toggleMuteOption.textContent = isMuted ? '🔇 <Unmute>' : '🔊 [Mute]';
+    settingsMenu.style.display = 'none';
+});
+
+// --- Configuración de Background ---
+const backgroundSettings = document.getElementById('background-settings');
+const backgroundOptions = document.getElementById('background-options');
+
+// Mostrar / ocultar opciones de fondo
+backgroundSettings.addEventListener('click', () => {
+    backgroundOptions.style.display = backgroundOptions.style.display === 'block' ? 'none' : 'block';
+});
+
+// Manejar selección de fondo
+backgroundOptions.querySelectorAll('li').forEach(option => {
+    option.addEventListener('click', () => {
+        const bgValue = option.dataset.bg;
+        const mainContainer = document.getElementById('main-container');
+        mainContainer.style.background = bgValue;
+
+        // Guardar en localStorage
+        localStorage.setItem('selectedBackground', bgValue);
+
+        // Ocultar menú después de seleccionar
+        settingsMenu.style.display = 'none';
+        backgroundOptions.style.display = 'none';
+    });
 });
 
 const copySound = new Audio('copy-sound.mp3'); // Debe colocarse un archivo llamado copy-sound.mp3 en el mismo directorio
 
 // ... DOMContentLoaded y otros eventos previos ...
 document.addEventListener('DOMContentLoaded', () => {
+    // Aplicar fondo guardado
+    const savedBg = localStorage.getItem('selectedBackground');
+    if (savedBg) {
+        document.getElementById('main-container').style.background = savedBg;
+    }
+
     loadBoxes();
     loadLineBoxes();
 });
@@ -127,10 +186,7 @@ function createBox(data) {
     makeDraggable(box);
 }
 
-
-
-
-// Resto del código permanece igual ... 06/08/2025
+// Resto del código permanece igual ...
 
 function createLineBox(data) {
     const box = document.createElement('div');

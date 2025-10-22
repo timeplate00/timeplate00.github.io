@@ -20,25 +20,26 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #008cba;
+    background: #58595c;
     color: white;
-    padding: 10px 20px;
+    padding: 15px 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
+
 
 #header h1 {
     margin: 0;
-    width: 160px;
-    height: 30px;
-    padding: 2px;
-    padding-left: 9px;
-    border-radius: 10px;
-    box-shadow: 0 10px 5px rgb(0, 0, 0);
-    background-color: #000000;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    font-family: 'Montserrat', sans-serif;
+    border-bottom: 3px solid #4a90e2;
+    padding-bottom: 5px;
 }
 
+
 #add-box-btn {
-    font-size: 24px;
+    font-size: px;
     background-color: white;
     color: #000000;
     border: none;
@@ -297,11 +298,12 @@ body {
 
 
 
+/*AJUSTES */
 
 /* Botón de ajustes */
 #settings-btn {
     font-size: 25px;
-    background-color: #008cba;
+    background-color: #58595c;
     color: #000;
     border: none;
     border-radius: 50%;
@@ -315,7 +317,7 @@ body {
 /* Menú desplegable */
 #settings-menu {
     position: absolute;
-    background: #1a1f36;
+    background: #080e1f;
     color: white;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);

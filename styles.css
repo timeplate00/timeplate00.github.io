@@ -342,7 +342,6 @@ body {
 }
 
 
-
 /* Opciones de fondo */
 #background-options li {
     font-size: 14px;
@@ -353,4 +352,11 @@ body {
 
 #background-options li:hover {
     background: #3a4b6b;
+}
+
+#logo {
+    width: 100px;
+    height: auto;
+    margin-right: 10px;
+    vertical-align: middle;
 }

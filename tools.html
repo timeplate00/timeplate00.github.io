@@ -7,6 +7,22 @@
     <link rel="icon" type="image/png" href="logo_v5.png">
     <title>Timeplate - Tools</title>
     <style>
+        /* Estilo del link del logo */
+        #logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        /* Logo */
+        #logo {
+            width: 70px;
+            height: auto;
+            user-select: none;
+            pointer-events: none;
+            align-items: center;
+        }
+
         :root {
             /* Modo claro */
             --main-bg: #f2f2f2;
@@ -43,7 +59,7 @@
 
         .app-container {
             display: grid;
-            grid-template-columns: 250px 1fr;
+            grid-template-columns: 190px 1fr;
             min-height: 100vh;
             background-color: var(--main-bg);
         }
@@ -61,7 +77,7 @@
 
         .logo {
             text-align: center;
-            padding: 10px 20px 25px;
+            padding: 20px 60px 20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -91,8 +107,8 @@
 
         .nav-item {
             padding: 12px 25px;
-            margin: 6px 0;
-            border-radius: 0 20px 20px 0;
+            margin: 6px 10px;
+            border-radius: 10px 50px 50px 10px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 500;
@@ -100,7 +116,7 @@
         }
 
         .nav-item:hover {
-            background-color: rgba(197, 232, 108, 0.15);
+            background-color: rgba(145, 199, 9, 0.15);
         }
 
         .nav-item.active {
@@ -168,14 +184,14 @@
             transform: translateY(-2px);
         }
 
-        /* Botón de modo oscuro */
+        /* Botón de modo day / night  */
         .mode-toggle {
             background-color: transparent;
             border: 2px solid var(--forest);
             color: var(--forest);
             border-radius: 50%;
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             cursor: pointer;
             font-size: 18px;
             position: relative;
@@ -275,7 +291,8 @@
             border-radius: 4px;
             font-size: 0.85rem;
             margin-bottom: 10px;
-            background-color: rgba(197, 232, 108, 0.2);
+            background-color: rgba(0, 174, 255, 0.288);
+            /* background-color: rgba(189, 232, 108, 0.582);*/
             color: var(--forest);
             font-weight: 500;
         }
@@ -287,7 +304,7 @@
         }
 
         .action-btn {
-            padding: 6px 12px;
+            padding: 6px 40px;
             font-size: 0.85rem;
             border-radius: 6px;
             cursor: pointer;
@@ -297,13 +314,19 @@
         }
 
         .view-btn {
-            background-color: var(--forest);
-            color: var(--lime);
+            background-color: rgb(0, 0, 0);
+            color: rgb(255, 255, 255);
+
+            /*  background-color: var(--forest); */
+            /* color: var(--lime); */
         }
 
         .view-btn:hover {
-            background-color: var(--lime);
-            color: var(--forest);
+            background-color: rgb(0, 38, 255);
+            color: rgb(255, 255, 255);
+
+            /*background-color: var(--forest); */
+            /* color: var(--lime); */
         }
 
         /* Responsive */
@@ -335,18 +358,17 @@
     <div class="app-container">
         <!-- Sidebar -->
         <div class="sidebar">
+
             <div class="logo">
-                <img src="logo_v5.png" alt="Timeplate Logo">
-                <h1>Timeplate</h1>
-                <span>Welcome!</span>
+                <a href="../index.html" id="logo-link">
+                    <img src="logo_v5.png" alt="Timeplate Logo" id="logo">
+                </a>
+
             </div>
 
             <div class="nav-menu">
                 <div class="nav-item active">Tools</div>
-                <div class="nav-item">Pasplate</div>
-                <div class="nav-item">Camplate</div>
-                <div class="nav-item">Reminder</div>
-                <div class="nav-item">Remote</div>
+                <div class="nav-item">Tutorial</div>
                 <div class="nav-item">Settings</div>
             </div>
         </div>
@@ -355,7 +377,7 @@
         <div class="main-content">
             <div class="header">
                 <div class="page-title">
-                    <h2>LET'S GET STARTED</h2>
+                    <h2>TOOLS</h2>
                 </div>
                 <div class="user-actions">
                     <button class="mode-toggle" id="modeToggle">🌙</button>
@@ -364,6 +386,7 @@
                 </div>
             </div>
 
+            <!-- Boton 1 -->
             <div class="camera-grid">
                 <div class="camera-card">
                     <div class="camera-preview"><span class="camera-number">1</span></div>
@@ -377,6 +400,7 @@
                     </div>
                 </div>
 
+                <!-- Boton 2 -->
                 <div class="camera-card">
                     <div class="camera-preview"><span class="camera-number">2</span></div>
                     <div class="camera-info">
@@ -389,6 +413,7 @@
                     </div>
                 </div>
 
+                <!-- Boton 3 -->
                 <div class="camera-card">
                     <div class="camera-preview"><span class="camera-number">3</span></div>
                     <div class="camera-info">
@@ -401,19 +426,9 @@
                     </div>
                 </div>
 
-                <div class="camera-card">
-                    <div class="camera-preview"><span class="camera-number">4</span></div>
-                    <div class="camera-info">
-                        <h3 class="camera-name">Remote</h3>
-                        <span class="camera-status">Activated</span>
-                        <p>Use your smartphone as control.</p>
-                        <div class="camera-actions">
-                            <a href="remoteplate_app.html"><button class="action-btn view-btn">Go</button></a>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
+    </div>
     </div>
 
     <script>

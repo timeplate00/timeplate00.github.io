@@ -21,8 +21,8 @@ const settingsMenu = document.createElement('div');
 settingsMenu.id = 'settings-menu';
 settingsMenu.innerHTML = `
     <ul>
-        <li id="toggle-mute">🔊 [Mute]</li>
-        <li id="background-settings">[Background]</li>
+        <li id="toggle-mute">🔊 Mute</li>
+        <li id="background-settings">+ Background</li>
         <ul id="background-options" style="display:none; margin-left:15px;">
             <li data-bg="#0a2239">- Blue</li>
             <li data-bg="#121212">- Gray</li>

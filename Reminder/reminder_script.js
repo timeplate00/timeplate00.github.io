@@ -284,3 +284,4 @@ function initializeSections() {
         localStorage.setItem('section-0', JSON.stringify(sampleData));
     }
 }
+

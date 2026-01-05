@@ -204,10 +204,10 @@ function onResults(results) {
     });
 
     if (gestoCero) {
-        fingerCountElement.textContent = "Gesto CERO detectado ✅";
+        fingerCountElement.textContent = "Fingers: 0 ✅";
         copiarDescripcionKey(0);
     } else {
-        fingerCountElement.textContent = `Dedos: ${totalDedos}`;
+        fingerCountElement.textContent = `Fingers: ${totalDedos}`;
         if (totalDedos > 0 && totalDedos <= 10) {
             copiarDescripcionKey(totalDedos);
         }

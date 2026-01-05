@@ -10,17 +10,26 @@
 </head>
 
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>Timeplate - <span>CAM</span></h1>
-        </header>
+    <div id="main-container">
+
+        <div id="header">
+
+            <!-- LOGO + TEXTO como bloque, ahora con LINK -->
+            <div id="branding">
+                <a href="../tools.html" id="logo-link">
+                    <img src="/logo_v4.png" alt="Logo de Timeplate" id="logo">
+                </a>
+                <h1>Camplate</h1>
+            </div>
+
+        </div>
 
         <main class="main-content">
             <div class="camera-box">
                 <p id="camera-text">CAMERA</p>
                 <video id="camera-video" autoplay playsinline style="display:none;"></video>
                 <canvas id="output-canvas"></canvas>
-                <div id="finger-count">NO DETECTION</div>
+                <div id="finger-count">Status: Off</div>
             </div>
             <button class="play-btn" id="start-camera">&#9658;</button>
 
@@ -56,13 +65,13 @@
     <div id="modal" class="modal">
         <div class="modal-content">
             <span id="close-modal" class="close-btn">&times;</span>
-            <h2>Editar título</h2>
+            <h2>Title</h2>
             <input type="text" id="modal-input" placeholder="Nuevo título...">
 
-            <h3>Descripción</h3>
+            <h3>Content</h3>
             <textarea id="modal-description" placeholder="Escribe el texto aquí..."></textarea>
 
-            <button id="save-title">Guardar</button>
+            <button id="save-title">Save</button>
         </div>
     </div>
 

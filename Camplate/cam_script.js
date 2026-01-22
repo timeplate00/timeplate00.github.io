@@ -185,8 +185,8 @@ function onResults(results) {
     let gestoCero = false;
 
     results.multiHandLandmarks.forEach((landmarks, idx) => {
-        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, { color: 'rgba(255, 255, 255, 1)', lineWidth: 2 });
-        drawLandmarks(canvasCtx, landmarks, { color: '#000000ff', lineWidth: 1 });
+        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, { color: 'rgba(0, 0, 0, 1)', lineWidth: 10 });
+        drawLandmarks(canvasCtx, landmarks, { color: '#c7c7c74f', lineWidth: 1 });
 
         let handLabel = null;
         if (results.multiHandedness && results.multiHandedness[idx]) {

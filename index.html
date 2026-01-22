@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="logo_v5.png">
     <title>Timeplate - Home page</title>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
@@ -27,16 +28,10 @@
         body {
             background-color: var(--main-green);
             color: var(--text-dark);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            overflow: hidden;
-            position: relative;
+            overflow-x: hidden;
         }
 
-        /* Header / Navbar */
+        /* Navbar */
         nav {
             width: 100%;
             display: flex;
@@ -48,8 +43,8 @@
             position: fixed;
             top: 0;
             left: 0;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             z-index: 100;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         nav .logo {
@@ -73,17 +68,39 @@
             list-style: none;
             display: flex;
             gap: 2rem;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         nav ul li a {
             text-decoration: none;
             color: var(--text-light);
             font-weight: 500;
+            cursor: pointer;
             transition: 0.3s;
+            position: relative;
         }
 
         nav ul li a:hover {
             color: var(--main-green);
+        }
+
+        /* Indicador activo */
+        nav ul li a.active {
+            color: var(--main-green);
+            font-weight: 600;
+        }
+
+        nav ul li a.active::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 100%;
+            height: 3px;
+            background: var(--main-green);
+            border-radius: 10px;
         }
 
         nav button {
@@ -102,14 +119,18 @@
             color: var(--dark-green);
         }
 
-        /* Hero Section */
-        .hero {
-            margin-top: 90px;
+        /* Secciones */
+        section {
+            min-height: 100vh;
+            padding: 140px 20px 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            max-width: 600px;
-            padding: 20px;
         }
 
+        /* Home */
         .hero img {
             width: 120px;
             margin-bottom: 20px;
@@ -127,28 +148,24 @@
             color: #2f3b1f;
             margin-bottom: 30px;
             line-height: 1.6;
+            max-width: 600px;
         }
 
         .buttons {
             display: flex;
-            justify-content: center;
             gap: 1rem;
         }
 
-        .buttons button {
+        .btn-primary {
             padding: 12px 28px;
             font-size: 1rem;
             font-weight: 600;
-            border: none;
             border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary {
+            border: none;
             background-color: var(--dark-green);
             color: var(--main-green);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: 0.3s;
         }
 
         .btn-primary:hover {
@@ -157,20 +174,29 @@
             transform: translateY(-2px);
         }
 
-        .btn-secondary {
-            background-color: transparent;
+        /* About & Contact */
+        .about,
+        .contact {
+            background-color: #f4f7ef;
             color: var(--dark-green);
-            border: 2px solid var(--dark-green);
         }
 
-        .btn-secondary:hover {
-            background-color: var(--dark-green);
-            color: var(--main-green);
+        .about h2,
+        .contact h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
         }
 
-        /* Floating glow */
+        .about p,
+        .contact p {
+            max-width: 650px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        /* Glow */
         .glow {
-            position: absolute;
+            position: fixed;
             width: 400px;
             height: 400px;
             background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
@@ -194,22 +220,13 @@
             }
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .buttons {
-                flex-direction: column;
-            }
-
             nav ul {
                 display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
             }
         }
     </style>
@@ -223,33 +240,84 @@
             <h1>Timeplate</h1>
         </div>
         <ul>
-            <li><a href="#" class="active">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a data-section="home" class="active">Home</a></li>
+            <li><a data-section="about">About</a></li>
+            <li><a data-section="contact">Contact</a></li>
         </ul>
         <button>Login</button>
     </nav>
 
-    <section class="hero">
+    <!-- HOME -->
+    <section id="home" class="hero">
         <img src="logo_v5.png" alt="Logo Principal">
         <h1>Make your operation easier</h1>
-        <p>Timeplate is your digital space to work comfortably, stay productive, and enjoy a modern, fresh, and
-            efficient experience.</p>
+        <p>
+            Timeplate is your digital space to work comfortably,
+            stay productive, and enjoy a modern, fresh experience.
+        </p>
         <div class="buttons">
             <a href="tools.html">
                 <button class="btn-primary">Start</button>
             </a>
-            <!-- <button class="btn-secondary">Explorar</button>-->
         </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="about">
+        <h2>About Timeplate</h2>
+        <p>
+            Timeplate was designed to simplify workflows and centralize tools
+            in a clean, efficient, and visually friendly environment.
+        </p>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact">
+        <h2>Contact</h2>
+        <p>
+            Want to collaborate or have questions?
+            Reach out and let’s build better digital experiences together.
+        </p>
     </section>
 
     <div class="glow"></div>
 
     <script>
-        // Pequeña animación de bienvenida
-        window.addEventListener('load', () => {
-            document.body.style.opacity = 0;
-            setTimeout(() => { document.body.style.transition = 'opacity 1s'; document.body.style.opacity = 1; }, 100);
+        const navLinks = document.querySelectorAll('nav ul li a');
+        const sections = document.querySelectorAll('section');
+        const navHeight = document.querySelector('nav').offsetHeight;
+
+        // Scroll suave al hacer click
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const sectionId = link.getAttribute('data-section');
+                const section = document.getElementById(sectionId);
+                const y = section.getBoundingClientRect().top + window.pageYOffset - navHeight;
+
+                window.scrollTo({
+                    top: y,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Indicador activo automático
+        window.addEventListener('scroll', () => {
+            let currentSection = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - navHeight - 50;
+                if (window.scrollY >= sectionTop) {
+                    currentSection = section.id;
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === currentSection) {
+                    link.classList.add('active');
+                }
+            });
         });
     </script>
 

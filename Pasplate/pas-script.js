@@ -75,7 +75,7 @@ backgroundOptions.querySelectorAll('li').forEach(option => {
     });
 });
 
-const copySound = new Audio('copy-sound.mp3'); // Debe colocarse un archivo llamado copy-sound.mp3 en el mismo directorio
+const copySound = new Audio('1.mp3'); // Debe colocarse un archivo llamado copy-sound.mp3 en el mismo directorio
 
 // ... DOMContentLoaded y otros eventos previos ...
 document.addEventListener('DOMContentLoaded', () => {

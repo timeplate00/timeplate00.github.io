@@ -6,8 +6,311 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Timeplate - Tool 3</title>
     <link rel="icon" type="image/png" href="/logo_v5.png">
-    <link rel="stylesheet" href="reminder_style.css">
+    <!--link rel="stylesheet" href="reminder_style.css"-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* ==========================
+   APPLE MODERN CLEAN STYLE
+   NUEVO ESTILO #1
+========================== */
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            /* Apple gray background */
+            color: #1c1c1e;
+        }
+
+        /* MAIN CONTAINER */
+        #main-container {
+            width: 100%;
+            min-height: 100vh;
+            background-color: #e9e8e8;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        #header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #bebebecc;
+            /* semitransparent white like macOS toolbar */
+            backdrop-filter: blur(20px);
+            padding: 12px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.288);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            margin-bottom: 25px;
+        }
+
+        /* LOGO + TITLE */
+        #branding {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        #branding h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+            color: #1c1c1e;
+            font-family: "SF Pro Display", sans-serif;
+        }
+
+        #logo {
+            width: 70px;
+            height: auto;
+            user-select: none;
+        }
+
+        /* CONTAINER OF SECTIONS */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            padding: 25px;
+        }
+
+        /* EACH SECTION */
+        .section {
+            background-color: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 2px 18px rgba(0, 0, 0, 0.06);
+            width: 31%;
+            min-width: 320px;
+            overflow: hidden;
+            transition: transform 0.15s ease, box-shadow 0.2s ease;
+        }
+
+        /* Apple-like hover */
+        .section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 28px rgba(0, 0, 0, 0.1);
+        }
+
+        /* SECTION HEADER */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            background-color: #f7f7f7;
+            border-bottom: 1px solid #e6e6e6;
+        }
+
+        .section-title {
+            flex-grow: 1;
+            padding: 8px 12px;
+            border: 1px solid #d2d2d7;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: border 0.2s ease;
+            background: #fff;
+        }
+
+        .section-title:focus {
+            border-color: #0071e3;
+            /* Apple blue */
+            outline: none;
+        }
+
+        /* BUTTONS (color picker + add row) */
+        .header-buttons {
+            display: flex;
+            gap: 0px;
+        }
+
+        .color-picker-btn,
+        .add-row-btn {
+            background: #f8f8f800;
+            border: 1px solid #d2d2d700;
+            cursor: pointer;
+            font-size: 16px;
+            color: #313131;
+            padding: 8px 10px;
+            border-radius: 10px;
+            transition: background 0.2s ease, border 0.2s ease;
+        }
+
+        .color-picker-btn:hover,
+        .add-row-btn:hover {
+            background-color: #f2f2f7;
+            border-color: #b3b3b3;
+        }
+
+        /* TABLE */
+        .load-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 6px;
+            padding: 12px;
+        }
+
+        .load-table th {
+            background-color: transparent;
+            padding: 8px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+            color: #a0a0a1;
+        }
+
+        .load-table td {
+            padding: 12px 8px;
+            background-color: #e9e9e9;
+            border-radius: 0px;
+        }
+
+        /* LOAD NUMBER */
+        .load-number {
+            cursor: pointer;
+            color: #0071e3;
+            font-weight: 500;
+        }
+
+        .load-number:hover {
+            text-decoration: underline;
+        }
+
+        /* TIMER */
+        .timer-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timer-btn {
+            background: #ffffff;
+            border: 1px solid #d2d2d7;
+            cursor: pointer;
+            color: #555;
+            padding: 6px 9px;
+            border-radius: 10px;
+            transition: background 0.2s ease;
+        }
+
+        .timer-btn:hover {
+            background-color: #f2f2f7;
+        }
+
+        /* DELETE BUTTON */
+        .delete-btn {
+            background: #fff0f0;
+            border: 1px solid #ffd0d0;
+            cursor: pointer;
+            color: #ff3b30;
+            /* Apple red */
+            padding: 6px 9px;
+            border-radius: 10px;
+            transition: background 0.2s ease;
+        }
+
+        .delete-btn:hover {
+            background-color: #ffe5e5;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(6px);
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            margin: 15% auto;
+            padding: 25px;
+            border-radius: 18px;
+            width: 320px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-modal {
+            float: right;
+            font-size: 35px;
+            cursor: pointer;
+            color: #6e6e73;
+        }
+
+        /* INPUTS */
+        .form-group input {
+            width: 100%;
+            padding: 10px 1px;
+            border: 1px solid #d2d2d7;
+            border-radius: 12px;
+            transition: border 0.2s ease;
+            margin-bottom: 15px;
+        }
+
+        .form-group input:focus {
+            border-color: #0071e3;
+            outline: none;
+        }
+
+        /* OK BUTTON */
+        .ok-btn {
+            background-color: #0071e3;
+            color: white;
+            border: none;
+            padding: 12px 0;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background 0.2s ease;
+            margin-top: 8px;
+        }
+
+        .ok-btn:hover {
+            background-color: #003366;
+        }
+
+        /* COUNTDOWN */
+        .countdown {
+            font-family: "SF Mono", monospace;
+            font-size: 15px;
+            color: #1c1c1e;
+        }
+
+        .countdown.due {
+            color: #ff3b30;
+            /* Apple red */
+            font-weight: 600;
+        }
+
+        /* BLINK */
+        @keyframes blink {
+            0% {
+                background-color: #e9e9e9;
+            }
+
+            50% {
+                background-color: #fff8d6;
+            }
+
+            100% {
+                background-color: #e9e9e9;
+            }
+        }
+
+        .blinking td {
+            animation: blink 1s infinite;
+        }
+    </style>
 </head>
 
 <body>
@@ -119,7 +422,301 @@
             </div>
         </div>
 
-        <script src="reminder_script.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Initialize sections from localStorage
+                initializeSections();
+
+                // Set up event listeners for all sections
+                document.querySelectorAll('.section').forEach(section => {
+                    setupSection(section);
+                });
+
+                // Check timers every second
+                setInterval(checkTimers, 1000);
+            });
+
+            function setupSection(section) {
+                const header = section.querySelector('.header');
+                const colorPickerBtn = header.querySelector('.color-picker-btn');
+                const colorPicker = header.querySelector('.color-picker');
+                const addRowBtn = header.querySelector('.add-row-btn');
+                const tableBody = section.querySelector('tbody');
+                const sectionTitle = header.querySelector('.section-title');
+
+                // Load section data from localStorage
+                const sectionId = Array.from(document.querySelectorAll('.section')).indexOf(section);
+                const savedData = JSON.parse(localStorage.getItem(`section-${sectionId}`)) || {};
+
+                if (savedData.title) {
+                    sectionTitle.value = savedData.title;
+                }
+
+                if (savedData.headerColor) {
+                    header.style.backgroundColor = savedData.headerColor;
+                }
+
+                if (savedData.rows) {
+                    savedData.rows.forEach(rowData => {
+                        addTableRow(tableBody, rowData.loadNumber, rowData.timerEnd, rowData.isBlinking);
+                    });
+                }
+
+                // Color picker functionality (now only applies to header)
+                colorPickerBtn.addEventListener('click', () => {
+                    colorPicker.click();
+                });
+
+                colorPicker.addEventListener('input', () => {
+                    header.style.backgroundColor = colorPicker.value;
+                    saveSectionData(section);
+                });
+
+                // Add row button
+                addRowBtn.addEventListener('click', () => {
+                    openTimerModal((loadNumber, date, time) => {
+                        const timerEnd = new Date(`${date}T${time}`).getTime();
+                        addTableRow(tableBody, loadNumber, timerEnd);
+                        saveSectionData(section);
+                    });
+                });
+
+                // Save title changes
+                sectionTitle.addEventListener('change', () => {
+                    saveSectionData(section);
+                });
+            }
+
+            function addTableRow(tableBody, loadNumber, timerEnd, isBlinking = false) {
+                const row = document.createElement('tr');
+                row.dataset.timerEnd = timerEnd;
+
+                if (isBlinking) {
+                    row.classList.add('blinking');
+                }
+
+                // Load number cell
+                const loadCell = document.createElement('td');
+                loadCell.className = 'load-number';
+                loadCell.textContent = loadNumber;
+                loadCell.addEventListener('click', () => {
+                    navigator.clipboard.writeText(loadNumber);
+                    alert(`Copied: ${loadNumber}`);
+                });
+
+                // Timer cell
+                const timerCell = document.createElement('td');
+                const timerDisplay = document.createElement('div');
+                timerDisplay.className = 'timer-display';
+
+                const timerSpan = document.createElement('span');
+                timerSpan.className = 'countdown';
+                updateTimerDisplay(timerSpan, timerEnd);
+
+                const timerBtn = document.createElement('button');
+                timerBtn.className = 'timer-btn';
+                timerBtn.innerHTML = '<i class="far fa-clock"></i>';
+                timerBtn.addEventListener('click', () => {
+                    openTimerModal((newLoadNumber, date, time) => {
+                        const newTimerEnd = new Date(`${date}T${time}`).getTime();
+
+                        // Update row data
+                        row.dataset.timerEnd = newTimerEnd;
+                        loadCell.textContent = newLoadNumber;
+
+                        // Update blinking status
+                        row.classList.remove('blinking');
+                        if (newTimerEnd <= Date.now()) {
+                            row.classList.add('blinking');
+                        }
+
+                        // Save changes
+                        const section = tableBody.closest('.section');
+                        saveSectionData(section);
+                    }, timerEnd, loadNumber);
+                });
+
+                timerDisplay.appendChild(timerSpan);
+                timerDisplay.appendChild(timerBtn);
+                timerCell.appendChild(timerDisplay);
+
+                // Delete cell
+                const deleteCell = document.createElement('td');
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                deleteBtn.addEventListener('click', () => {
+                    row.remove();
+                    const section = tableBody.closest('.section');
+                    saveSectionData(section);
+                });
+                deleteCell.appendChild(deleteBtn);
+
+                // Assemble row
+                row.appendChild(loadCell);
+                row.appendChild(timerCell);
+                row.appendChild(deleteCell);
+                tableBody.appendChild(row);
+
+                return row;
+            }
+
+            function openTimerModal(callback, existingTime = null, existingLoadNumber = '') {
+                const modal = document.getElementById('timerModal');
+                const closeBtn = document.querySelector('.close-modal');
+                const confirmBtn = document.getElementById('confirmTimer');
+
+                // Set existing values if provided
+                document.getElementById('loadNumber').value = existingLoadNumber;
+
+                if (existingTime) {
+                    const date = new Date(existingTime);
+                    document.getElementById('timerDate').value = date.toISOString().split('T')[0];
+                    document.getElementById('timerTime').value = date.toTimeString().substring(0, 5);
+                } else {
+                    // Default to current time + 1 hour
+                    const now = new Date();
+                    now.setHours(now.getHours() + 1);
+                    document.getElementById('timerDate').value = now.toISOString().split('T')[0];
+                    document.getElementById('timerTime').value = now.toTimeString().substring(0, 5);
+                }
+
+                modal.style.display = 'block';
+
+                closeBtn.onclick = function () {
+                    modal.style.display = 'none';
+                }
+
+                confirmBtn.onclick = function () {
+                    const loadNumber = document.getElementById('loadNumber').value;
+                    const date = document.getElementById('timerDate').value;
+                    const time = document.getElementById('timerTime').value;
+
+                    if (loadNumber && date && time) {
+                        callback(loadNumber, date, time);
+                        modal.style.display = 'none';
+                    } else {
+                        alert('Please fill all fields');
+                    }
+                }
+
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = 'none';
+                    }
+                }
+            }
+
+            function updateTimerDisplay(element, timerEnd) {
+                const now = Date.now();
+                const remaining = timerEnd - now;
+
+                if (remaining <= 0) {
+                    element.textContent = '00:00:00';
+                    element.className = 'countdown due';
+                } else {
+                    // Calculate days, hours, minutes, seconds
+                    const seconds = Math.floor(remaining / 1000);
+                    const days = Math.floor(seconds / (3600 * 24));
+                    const hours = Math.floor((seconds % (3600 * 24)) / 3600);
+                    const mins = Math.floor((seconds % 3600) / 60);
+                    const secs = Math.floor(seconds % 60);
+
+                    // Format as HH:MM:SS or D:HH:MM:SS if days > 0
+                    let timeStr = '';
+                    if (days > 0) {
+                        timeStr = `${days}d ${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                    } else {
+                        timeStr = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                    }
+
+                    element.textContent = timeStr;
+                    element.className = 'countdown';
+
+                    // Change color if less than 1 hour remaining
+                    if (hours < 1) {
+                        element.classList.add('due');
+                    }
+                }
+            }
+
+            function checkTimers() {
+                const now = Date.now();
+
+                document.querySelectorAll('.countdown').forEach(element => {
+
+                    const row = element.closest('tr');
+                    const timerEnd = parseInt(row.dataset.timerEnd);
+
+                    // actualizar contador
+                    updateTimerDisplay(element, timerEnd);
+
+                    // activar alerta SOLO cuando llega a cero
+                    if (now >= timerEnd) {
+
+                        if (!row.classList.contains("blinking")) {
+                            row.classList.add("blinking");
+                        }
+
+                    }
+                });
+            }
+
+            function saveSectionData(section) {
+                const sectionId = Array.from(document.querySelectorAll('.section')).indexOf(section);
+                const header = section.querySelector('.header');
+                const title = section.querySelector('.section-title').value;
+                const headerColor = header.style.backgroundColor;
+
+                const rows = [];
+                section.querySelectorAll('tbody tr').forEach(row => {
+                    const loadNumber = row.querySelector('.load-number').textContent;
+                    const timerEnd = row.dataset.timerEnd;
+                    const isBlinking = row.classList.contains('blinking');
+
+                    rows.push({
+                        loadNumber,
+                        timerEnd,
+                        isBlinking
+                    });
+                });
+
+                const sectionData = {
+                    title,
+                    headerColor,
+                    rows
+                };
+
+                localStorage.setItem(`section-${sectionId}`, JSON.stringify(sectionData));
+            }
+
+            function initializeSections() {
+                // Check if this is the first load
+                const hasData = localStorage.getItem('section-0') !== null;
+
+                if (!hasData) {
+                    // Create some sample data for demonstration
+                    const now = new Date();
+                    const futureTime = new Date(now.getTime() + 2 * 60 * 60 * 1000); // 2 hours from now
+
+                    const sampleData = {
+                        title: "Urgent Loads",
+                        headerColor: "#ffe6e6",
+                        rows: [
+                            {
+                                loadNumber: "30000180999",
+                                timerEnd: futureTime.getTime().toString(),
+                                isBlinking: false
+                            }
+                        ]
+                    };
+
+                    localStorage.setItem('section-0', JSON.stringify(sampleData));
+                }
+            }
+
+
+        </script>
 </body>
 
 </html>

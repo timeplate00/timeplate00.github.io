@@ -121,17 +121,24 @@ startBtn.addEventListener('click', async () => {
             video.srcObject = streamActivo;
             cameraText.style.display = 'none';
             video.style.display = 'block';
-            iniciarDeteccion();
+
+            // 🔥 Activar estado visual del botón
+            startBtn.classList.add("active");
+            startBtn.querySelector(".btn-label").textContent = "";
+            //iniciarDeteccion();
         } catch (error) {
             alert("No se pudo acceder a la cámara: " + error.message);
         }
     } else {
         streamActivo.getTracks().forEach(track => track.stop());
         streamActivo = null;
+
         video.style.display = 'none';
         cameraText.style.display = 'block';
-        fingerCountElement.textContent = "NO DETECTION";
-        if (camera) camera.stop();
+
+        // 🔥 Regresar estado visual del botón
+        startBtn.classList.remove("active");
+        startBtn.querySelector(".btn-label").textContent = "";
     }
 });
 

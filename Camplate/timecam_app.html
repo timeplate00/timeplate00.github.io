@@ -14,12 +14,21 @@
 
         <div id="header">
 
-            <!-- LOGO + TEXTO como bloque, ahora con LINK -->
-            <div id="branding">
-                <a href="../tools.html" id="logo-link">
-                    <img src="/logo_v4.png" alt="Logo de Timeplate" id="logo">
-                </a>
-                <h1>Camplate</h1>
+            <div class="header-inner">
+
+                <div id="branding">
+                    <a href="../tools.html" id="logo-link">
+                        <img src="/logo_v4.png" alt="Logo de Timeplate" id="logo">
+                    </a>
+                    <h1>Camplate</h1>
+                </div>
+
+                <!-- Indicador estilo sistema activo -->
+                <div class="system-status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">SYSTEM READY</span>
+                </div>
+
             </div>
 
         </div>
@@ -31,7 +40,11 @@
                 <canvas id="output-canvas"></canvas>
                 <div id="finger-count">Status: Off</div>
             </div>
-            <button class="play-btn" id="start-camera">&#9658;</button>
+
+            <button class="play-btn" id="start-camera">
+                <span class="btn-icon">▶</span>
+                <span class="btn-label"></span>
+            </button>
 
             <!-- Recuadros tipo teclado numérico -->
             <div class="keypad">

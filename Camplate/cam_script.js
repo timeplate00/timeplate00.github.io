@@ -121,24 +121,17 @@ startBtn.addEventListener('click', async () => {
             video.srcObject = streamActivo;
             cameraText.style.display = 'none';
             video.style.display = 'block';
-
-            // 🔥 Activar estado visual del botón
-            startBtn.classList.add("active");
-            startBtn.querySelector(".btn-label").textContent = "";
-            //iniciarDeteccion();
+            iniciarDeteccion();
         } catch (error) {
             alert("No se pudo acceder a la cámara: " + error.message);
         }
     } else {
         streamActivo.getTracks().forEach(track => track.stop());
         streamActivo = null;
-
         video.style.display = 'none';
         cameraText.style.display = 'block';
-
-        // 🔥 Regresar estado visual del botón
-        startBtn.classList.remove("active");
-        startBtn.querySelector(".btn-label").textContent = "";
+        fingerCountElement.textContent = "NO DETECTION";
+        if (camera) camera.stop();
     }
 });
 
@@ -192,8 +185,8 @@ function onResults(results) {
     let gestoCero = false;
 
     results.multiHandLandmarks.forEach((landmarks, idx) => {
-        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, { color: 'rgba(0, 0, 0, 1)', lineWidth: 10 });
-        drawLandmarks(canvasCtx, landmarks, { color: '#c7c7c74f', lineWidth: 1 });
+        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, { color: 'rgba(255, 255, 255, 1)', lineWidth: 2 });
+        drawLandmarks(canvasCtx, landmarks, { color: '#000000ff', lineWidth: 1 });
 
         let handLabel = null;
         if (results.multiHandedness && results.multiHandedness[idx]) {
@@ -211,10 +204,10 @@ function onResults(results) {
     });
 
     if (gestoCero) {
-        fingerCountElement.textContent = "Fingers: 0 ✅";
+        fingerCountElement.textContent = "Gesto CERO detectado ✅";
         copiarDescripcionKey(0);
     } else {
-        fingerCountElement.textContent = `Fingers: ${totalDedos}`;
+        fingerCountElement.textContent = `Dedos: ${totalDedos}`;
         if (totalDedos > 0 && totalDedos <= 10) {
             copiarDescripcionKey(totalDedos);
         }

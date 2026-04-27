@@ -174,11 +174,17 @@
             transform: translateY(-2px);
         }
 
-        /* About & Contact */
-        .about,
+        /* ===== ABOUT ===== */
+        .about {
+            background-color: #5f7536;
+            /* tono más oscuro basado en main-green */
+            color: var(--text-light);
+        }
+
         .contact {
-            background-color: #f4f7ef;
-            color: var(--dark-green);
+            background-color: #3f5224;
+            /* más oscuro que #5f7536 */
+            color: var(--text-light);
         }
 
         .about h2,
@@ -246,6 +252,134 @@
             z-index: 10000;
             transition: all 0.6s cubic-bezier(.4, 0, .2, 1);
         }
+
+        /* ===== ABOUT SHOWCASE ===== */
+
+        .about-text {
+            max-width: 600px;
+            text-align: center;
+            margin-bottom: 50px;
+            line-height: 1.7;
+        }
+
+        /* Contenedor */
+        .about-cards {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* Card */
+        .about-card {
+            width: 280px;
+            height: 180px;
+
+            border-radius: 16px;
+            border: 2px dashed rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            transition: 0.3s;
+        }
+
+        /* Hover */
+        .about-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--accent);
+        }
+
+        /* ===== CONTACT SHOWCASE ===== */
+
+        .contact {
+            background-color: #3f5224;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Contenedor */
+        .contact-container {
+            text-align: center;
+            max-width: 600px;
+        }
+
+        /* Título */
+        .contact-container h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+
+        /* Texto */
+        .contact-text {
+            line-height: 1.7;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        /* Botón */
+        .contact-btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 10px;
+            background: var(--main-green);
+            color: var(--dark-green);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        /* Hover */
+        .contact-btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* ===== CONTACT BOXES ===== */
+
+        .contact-boxes {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Cada caja */
+        .contact-box {
+            width: 240px;
+            padding: 20px;
+
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        /* Hover */
+        .contact-box:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        /* Título */
+        .contact-box h3 {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        /* Texto */
+        .contact-box p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
     </style>
 </head>
 
@@ -267,10 +401,9 @@
     <!-- HOME -->
     <section id="home" class="hero">
         <img src="logo_v5.png" alt="Logo Principal" id="hero-logo">
-        <h1>Make your operation easier</h1>
+        <h1>Welcome to Timeplate</h1>
         <p>
-            Timeplate is your digital space to work comfortably,
-            stay productive, and enjoy a modern, fresh experience.
+            Make your operation easier
         </p>
         <div class="buttons">
             <a href="tools.html">
@@ -282,19 +415,58 @@
     <!-- ABOUT -->
     <section id="about" class="about">
         <h2>About Timeplate</h2>
-        <p>
-            Timeplate was designed to simplify workflows and centralize tools
-            in a clean, efficient, and visually friendly environment.
+        <p class="about-text">
+            Timeplate is your digital space to work comfortably,
+            stay productive, and enjoy a modern, fresh experience.
         </p>
+        <p class="about-text">
+            To simplify workflows, we offer three tools ready to use:
+        </p>
+
+        <div class="about-cards">
+
+            <div class="about-card">
+                <!-- Imagen / gif / video -->
+            </div>
+
+            <div class="about-card">
+                <!-- Imagen / gif / video -->
+            </div>
+
+            <div class="about-card">
+                <!-- Imagen / gif / video -->
+            </div>
+
+        </div>
     </section>
+
 
     <!-- CONTACT -->
     <section id="contact" class="contact">
-        <h2>Contact</h2>
-        <p>
-            Want to collaborate or have questions?
-            Reach out and let’s build better digital experiences together.
-        </p>
+
+        <div class="contact-container">
+
+            <h2>Need help?</h2>
+
+            <p class="contact-text">
+                If you have questions, need support, or found an issue,
+                feel free to reach out.
+            </p>
+
+            <div class="contact-boxes">
+
+                <div class="contact-box">
+                    <h3>Email Support</h3>
+                    <p>support@timeplate.com</p>
+                </div>
+
+                <div class="contact-box">
+                    <h3>Direct Contact</h3>
+                    <p>+52 462 118 3645</p>
+                </div>
+
+            </div>
+
     </section>
 
     <div class="glow"></div>

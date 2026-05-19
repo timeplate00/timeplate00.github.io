@@ -8,7 +8,7 @@
     <title>Timeplate - Home page</title>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
         :root {
             --main-green: #83a04b;
@@ -16,6 +16,7 @@
             --accent: #a1d34a;
             --text-dark: #1e1e1e;
             --text-light: #ffffff;
+            --nav-height: 70px;
         }
 
         * {
@@ -25,19 +26,24 @@
             font-family: 'Inter', sans-serif;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: var(--main-green);
             color: var(--text-dark);
             overflow-x: hidden;
         }
 
-        /* Navbar */
+        /* ===== NAVBAR OPTIMIZADA ===== */
         nav {
             width: 100%;
+            height: var(--nav-height);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 1rem 4%;
+            padding: 0 4%;
             background: var(--dark-green);
             color: var(--text-light);
             position: fixed;
@@ -68,27 +74,24 @@
             list-style: none;
             display: flex;
             gap: 2rem;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
         }
 
         nav ul li a {
             text-decoration: none;
-            color: var(--text-light);
+            color: rgba(255, 255, 255, 0.8);
             font-weight: 500;
             cursor: pointer;
-            transition: 0.3s;
+            transition: color 0.3s ease, font-weight 0.3s ease;
             position: relative;
+            padding: 5px 0;
         }
 
         nav ul li a:hover {
-            color: var(--main-green);
+            color: var(--accent);
         }
 
-        /* Indicador activo */
         nav ul li a.active {
-            color: var(--main-green);
+            color: var(--accent);
             font-weight: 600;
         }
 
@@ -96,11 +99,12 @@
             content: "";
             position: absolute;
             left: 0;
-            bottom: -6px;
+            bottom: -2px;
             width: 100%;
             height: 3px;
-            background: var(--main-green);
+            background: var(--accent);
             border-radius: 10px;
+            animation: fadeIn 0.3s ease forwards;
         }
 
         nav button {
@@ -111,18 +115,39 @@
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease;
         }
 
         nav button:hover {
             background-color: var(--main-green);
             color: var(--dark-green);
+            box-shadow: 0 0 10px rgba(131, 160, 75, 0.4);
         }
 
-        /* Secciones */
+        /* Menu Hamburguesa (Mobile) */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px;
+            z-index: 110;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--text-light);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        /* ===== SECCIONES Y DISEÑO RESPONSIVE ===== */
         section {
             min-height: 100vh;
-            padding: 140px 20px 80px;
+            padding: calc(var(--nav-height) + 40px) 20px 60px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -130,23 +155,25 @@
             text-align: center;
         }
 
-        /* Home */
+        /* Home / Hero */
         .hero img {
             width: 120px;
             margin-bottom: 20px;
-            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+            animation: float 4s ease-in-out infinite;
         }
 
         .hero h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: var(--dark-green);
             margin-bottom: 15px;
+            font-weight: 700;
         }
 
         .hero p {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: #2f3b1f;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
             line-height: 1.6;
             max-width: 600px;
         }
@@ -157,7 +184,7 @@
         }
 
         .btn-primary {
-            padding: 12px 28px;
+            padding: 14px 32px;
             font-size: 1rem;
             font-weight: 600;
             border-radius: 10px;
@@ -165,60 +192,179 @@
             background-color: var(--dark-green);
             color: var(--main-green);
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .btn-primary:hover {
             background-color: var(--accent);
             color: var(--dark-green);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.15);
         }
 
-        /* ===== ABOUT ===== */
+        /* About Section */
         .about {
             background-color: #5f7536;
-            /* tono más oscuro basado en main-green */
-            color: var(--text-light);
-        }
-
-        .contact {
-            background-color: #3f5224;
-            /* más oscuro que #5f7536 */
             color: var(--text-light);
         }
 
         .about h2,
         .contact h2 {
-            font-size: 2.2rem;
-            margin-bottom: 20px;
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            color: var(--text-light);
         }
 
-        .about p,
-        .contact p {
+        .about-text {
             max-width: 650px;
-            font-size: 1.1rem;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.15rem;
             line-height: 1.7;
+            opacity: 0.95;
         }
 
-        /* Glow */
+        .about-cards {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 20px;
+        }
+
+        .about-card {
+            width: 280px;
+            height: 180px;
+            border-radius: 16px;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .about-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Contact Section */
+        .contact {
+            background-color: #3f5224;
+            color: var(--text-light);
+        }
+
+        .contact-container {
+            width: 100%;
+            max-width: 700px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .contact-text {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .contact-boxes {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .contact-box {
+            width: 260px;
+            padding: 25px 20px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .contact-box:hover {
+            transform: translateY(-6px);
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-box h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        .contact-box p {
+            font-size: 1rem;
+            opacity: 0.95;
+            word-break: break-word;
+        }
+
+        /* ===== EFECTOS DE ANIMACIÓN (SCROLL Y FLOATING) ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Glow Efecto */
         .glow {
             position: fixed;
             width: 400px;
             height: 400px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15), transparent);
             top: 60%;
             left: 50%;
             transform: translate(-50%, -50%);
             filter: blur(80px);
             z-index: -1;
             animation: pulse 6s infinite ease-in-out;
+            pointer-events: none;
         }
 
         @keyframes pulse {
 
             0%,
             100% {
-                opacity: 0.7;
+                opacity: 0.6;
             }
 
             50% {
@@ -226,159 +372,146 @@
             }
         }
 
-        @media (max-width: 768px) {
-            nav ul {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-        }
-
-        /* Overlay transición - TRANSICIÓN PARA ANIMAR EL LOGO */
+        /* ===== TRANSICIÓN DE PÁGINA REHECHA ===== */
         #page-transition {
             position: fixed;
             inset: 0;
-            background: rgba(27, 45, 11, 0.95);
+            background: rgba(27, 45, 11, 1);
             z-index: 9999;
-            display: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        #page-transition.active {
+            opacity: 1;
+            pointer-events: all;
         }
 
         #transition-logo {
             position: fixed;
-            width: 38px;
             pointer-events: none;
             z-index: 10000;
-            transition: all 0.6s cubic-bezier(.4, 0, .2, 1);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* ===== ABOUT SHOWCASE ===== */
+        /* ===== MEDIA QUERIES (RESPONSIVE) ===== */
+        @media (max-width: 900px) {
+            nav ul {
+                position: fixed;
+                top: var(--nav-height);
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - var(--nav-height));
+                background: var(--dark-green);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 3rem;
+                transition: left 0.4s cubic-bezier(0.77, 0.2, 0.05, 1);
+                z-index: 105;
+            }
 
-        .about-text {
-            max-width: 600px;
-            text-align: center;
-            margin-bottom: 50px;
-            line-height: 1.7;
+            nav ul.open {
+                left: 0;
+            }
+
+            nav ul li a {
+                font-size: 1.5rem;
+            }
+
+            nav .login-btn {
+                display: none;
+                /* Se oculta o se mueve dentro del menú si es necesario */
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            /* Hamburguesa animada al abrir */
+            .menu-toggle.open span:nth-child(1) {
+                transform: rotate(45deg) translate(6px, 5px);
+            }
+
+            .menu-toggle.open span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.open span:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -5px);
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .about h2,
+            .contact h2 {
+                font-size: 2rem;
+            }
         }
 
-        /* Contenedor */
-        .about-cards {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            flex-wrap: wrap;
-            width: 100%;
-            max-width: 1000px;
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero p,
+            .about-text,
+            .contact-text {
+                font-size: 1rem;
+            }
+
+            .about-card {
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .contact-box {
+                width: 100%;
+            }
         }
 
-        /* Card */
+
+
+
+
+
+
+        /* ===== ESTILOS PARA IMÁGENES DENTRO DE LAS CARDS ===== */
+
+        /* Forzar que la tarjeta no deje salir ninguna esquina de la imagen */
         .about-card {
-            width: 280px;
-            height: 180px;
-
-            border-radius: 16px;
-            border: 2px dashed rgba(255, 255, 255, 0.4);
-            background: rgba(255, 255, 255, 0.08);
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            /* Corta excesos para mantener el border-radius de 16px */
+            padding: 10px;
+            /* Un margen interno ligero para que la imagen respire */
         }
 
-        /* Hover */
-        .about-card:hover {
-            transform: translateY(-6px);
-            border-color: var(--accent);
-        }
-
-        /* ===== CONTACT SHOWCASE ===== */
-
-        .contact {
-            background-color: #3f5224;
-            color: var(--text-light);
+        /* Contenedor que centra la imagen perfectamente */
+        .card-image-wrapper {
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* Contenedor */
-        .contact-container {
-            text-align: center;
-            max-width: 600px;
+        /* Control responsive de la imagen */
+        .card-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            /* Evita que la interfaz de tu app se corte o se estire feo */
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* Título */
-        .contact-container h2 {
-            font-size: 2.2rem;
-            margin-bottom: 15px;
-        }
-
-        /* Texto */
-        .contact-text {
-            line-height: 1.7;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
-
-        /* Botón */
-        .contact-btn {
-            display: inline-block;
-            padding: 12px 28px;
-            border-radius: 10px;
-            background: var(--main-green);
-            color: var(--dark-green);
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        /* Hover */
-        .contact-btn:hover {
-            background: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        /* ===== CONTACT BOXES ===== */
-
-        .contact-boxes {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        /* Cada caja */
-        .contact-box {
-            width: 240px;
-            padding: 20px;
-
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-
-            text-align: center;
-            transition: 0.3s;
-        }
-
-        /* Hover */
-        .contact-box:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-        }
-
-        /* Título */
-        .contact-box h3 {
-            margin-bottom: 8px;
-            font-size: 1.1rem;
-        }
-
-        /* Texto */
-        .contact-box p {
-            font-size: 0.95rem;
-            opacity: 0.9;
+        /* Efecto visual al pasar el mouse por encima de la tarjeta */
+        .about-card:hover .card-img {
+            transform: scale(1.06);
+            /* Un zoom muy sutil y elegante */
         }
     </style>
 </head>
@@ -395,83 +528,85 @@
             <li><a data-section="about">About</a></li>
             <li><a data-section="contact">Contact</a></li>
         </ul>
-        <button>Login</button>
+        <button class="login-btn">Login</button>
+        <button class="menu-toggle" aria-label="Abrir menú">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </nav>
 
-    <!-- HOME -->
     <section id="home" class="hero">
         <img src="logo_v5.png" alt="Logo Principal" id="hero-logo">
         <h1>Welcome to Timeplate</h1>
-        <p>
-            Make your operation easier
-        </p>
+        <p>Make your operation easier</p>
         <div class="buttons">
-            <a href="tools.html">
-                <button class="btn-primary" id="startBtn">Start</button>
-            </a>
+            <button class="btn-primary" id="startBtn">Start</button>
         </div>
     </section>
 
-    <!-- ABOUT -->
     <section id="about" class="about">
-        <h2>About Timeplate</h2>
-        <p class="about-text">
-            Timeplate is your digital space to work comfortably,
-            stay productive, and enjoy a modern, fresh experience.
-        </p>
-        <p class="about-text">
-            To simplify workflows, we offer three tools ready to use:
-        </p>
+
+        <div class="reveal">
+            <h2>About Timeplate</h2>
+            <p class="about-text">
+                Timeplate is your digital space to work comfortably,
+                stay productive, and enjoy a modern, fresh experience.
+            </p>
+            <p class="about-text">
+                To simplify workflows, we offer three tools ready to use:
+            </p>
+        </div>
 
         <div class="about-cards">
 
             <div class="about-card">
-                <!-- Imagen / gif / video -->
+                <div class="card-image-wrapper">
+                    <img src="pasplateshow2.png" alt="Preview de Pasplate" class="card-img">
+                </div>
             </div>
 
             <div class="about-card">
-                <!-- Imagen / gif / video -->
+                <div class="card-image-wrapper">
+                    <img src="hand1_2.png" alt="Preview de Pasplate" class="card-img">
+                </div>
             </div>
 
+
             <div class="about-card">
-                <!-- Imagen / gif / video -->
+                <div class="card-image-wrapper">
+                    <img src="reminder2.png" alt="Preview de Pasplate" class="card-img">
+                </div>
             </div>
+
 
         </div>
+
     </section>
 
-
-    <!-- CONTACT -->
     <section id="contact" class="contact">
-
-        <div class="contact-container">
-
+        <div class="contact-container reveal">
             <h2>Need help?</h2>
-
             <p class="contact-text">
                 If you have questions, need support, or found an issue,
                 feel free to reach out.
             </p>
 
             <div class="contact-boxes">
-
                 <div class="contact-box">
                     <h3>Email Support</h3>
                     <p>support@timeplate.com</p>
                 </div>
-
                 <div class="contact-box">
                     <h3>Direct Contact</h3>
-                    <p>+52 462 118 3645</p>
+                    <p>+52 462 120 3004</p>
                 </div>
-
             </div>
-
+        </div>
     </section>
 
     <div class="glow"></div>
 
-    <!-- Función de sonido -->
     <audio id="transitionSound" preload="auto">
         <source src="transition.mp3" type="audio/mpeg">
     </audio>
@@ -479,95 +614,124 @@
     <script>
         const navLinks = document.querySelectorAll('nav ul li a');
         const sections = document.querySelectorAll('section');
-        const navHeight = document.querySelector('nav').offsetHeight;
+        const nav = document.querySelector('nav');
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('nav ul');
 
-        /* Scroll suave */
+        /* ===== MENÚ MÓVIL (HAMBURGUESA) ===== */
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('open');
+            navMenu.classList.toggle('open');
+        });
+
+        /* Scroll suave y cierre de menú móvil */
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
+                // Cerrar menú si está abierto (móvil)
+                menuToggle.classList.remove('open');
+                navMenu.classList.remove('open');
+
                 const sectionId = link.dataset.section;
                 const section = document.getElementById(sectionId);
-                const y = section.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                const y = section.getBoundingClientRect().top + window.pageYOffset - nav.offsetHeight;
 
                 window.scrollTo({ top: y, behavior: 'smooth' });
             });
         });
 
-        /* Indicador activo */
-        window.addEventListener('scroll', () => {
-            let current = '';
+        /* ===== INTERSECTION OBSERVER PARA SECCIONES ACTIVAS ===== */
+        const navObserverOptions = {
+            root: null,
+            threshold: 0.4, // Se activa cuando el 40% de la sección es visible
+            rootMargin: `-${nav.offsetHeight}px 0px 0px 0px`
+        };
 
-            sections.forEach(sec => {
-                if (scrollY >= sec.offsetTop - navHeight - 50) {
-                    current = sec.id;
+        const navObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const currentId = entry.target.id;
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.dataset.section === currentId) {
+                            link.classList.add('active');
+                        }
+                    });
                 }
             });
+        }, navObserverOptions);
 
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.dataset.section === current) {
-                    link.classList.add('active');
+        sections.forEach(sec => navObserver.observe(sec));
+
+
+        /* ===== INTERSECTION OBSERVER PARA EFECTO REVEAL (SCROLL ANIMATION) ===== */
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
                 }
             });
-        });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
 
         /* ============================
-           TRANSICIÓN A TOOLS
+           TRANSICIÓN FLUIDA A TOOLS
         ============================ */
-
         const startBtn = document.getElementById('startBtn');
         const logo = document.getElementById('hero-logo');
-        //Agregar función de sonido 
         const sound = document.getElementById('transitionSound');
 
+        // Crear overlay de manera dinámica y limpia
+        const overlay = document.getElementById('page-transition') || (() => {
+            const div = document.createElement('div');
+            div.id = 'page-transition';
+            document.body.appendChild(div);
+            return div;
+        })();
 
-        // Overlay
-        const overlay = document.createElement('div');
-        overlay.id = 'page-transition';
-        document.body.appendChild(overlay);
+        startBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // Detener cualquier comportamiento extraño
 
-        startBtn.addEventListener('click', () => {
-
+            // Intentar reproducir sonido de manera segura
             sound.currentTime = 0;
             sound.volume = 0.7;
-            sound.play();
+            sound.play().catch(err => console.log("Audio play prevenido por el navegador"));
 
             const rect = logo.getBoundingClientRect();
 
-            // Guardar datos
+            // Guardar coordenadas exactas para la siguiente página
             sessionStorage.setItem('logoTransition', JSON.stringify({
-                top: rect.top,
-                left: rect.left,
+                top: rect.top + window.scrollY,
+                left: rect.left + window.scrollX,
                 width: rect.width,
                 height: rect.height
             }));
 
-            // Clon
+            // Crear y estilizar clon del logo de manera precisa
             const clone = logo.cloneNode(true);
             clone.id = 'transition-logo';
-
             clone.style.top = rect.top + 'px';
             clone.style.left = rect.left + 'px';
             clone.style.width = rect.width + 'px';
-
+            clone.style.position = 'fixed';
             document.body.appendChild(clone);
 
-            // Mostrar overlay
-            overlay.style.display = 'block';
+            // Activar el fondo oscuro
+            overlay.classList.add('active');
 
-            // Animación pequeña
+            // Ejecutar animación de escalado del logo
             setTimeout(() => {
-                clone.style.transform = 'scale(1.3)';
+                clone.style.transform = 'scale(1.4)';
+                clone.style.opacity = '0'; // Se desvanece suavemente al final del escalado
             }, 50);
 
-            // Redirigir (esperar a que termine el sonido)
+            // Redirección controlada tras terminar la animación
             setTimeout(() => {
                 window.location.href = 'tools.html';
-            }, 1000);
-            ;
+            }, 850);
         });
     </script>
-
-
 </body>
 
 </html>

@@ -1,31 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 
-
-<!-- Cambio antes de agregar secciones-->
-
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="logo_v5.png">
     <title>Timeplate - Tools</title>
     <style>
-        /* Estilo del link del logo */
-        #logo-link {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
-
-        /* Logo */
-        #logo {
-            width: 70px;
-            height: auto;
-            user-select: none;
-            pointer-events: none;
-            align-items: center;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
         :root {
             /* Modo claro */
@@ -36,6 +18,7 @@
             --forest: #1b2d0b;
             --text-main: #1b1b1b;
             --card-bg: #ffffff;
+            --sidebar-width: 220px;
         }
 
         body.dark-mode {
@@ -49,104 +32,130 @@
 
         * {
             box-sizing: border-box;
-            transition: background 0.5s ease, color 0.5s ease, border 0.5s ease;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
             background-color: var(--main-bg);
             color: var(--text-main);
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
         .app-container {
-            display: grid;
-            grid-template-columns: 190px 1fr;
+            display: flex;
             min-height: 100vh;
-            background-color: var(--main-bg);
         }
 
-        /* Sidebar */
+        /* ===== SIDEBAR OPTIMIZADO ===== */
         .sidebar {
+            width: var(--sidebar-width);
             background-color: var(--dark-gray);
             color: var(--lime);
-            padding: 20px 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
+            flex-shrink: 0;
+            z-index: 10;
         }
 
         .logo {
+            width: 100%;
             text-align: center;
-            padding: 20px 60px 20px;
+            padding: 30px 20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .logo img {
-            width: 80px;
-            margin-bottom: 10px;
-            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.3));
+        #logo-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            gap: 10px;
+        }
+
+        #logo {
+            width: 70px;
+            height: auto;
+            user-select: none;
+            pointer-events: none;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+            transition: transform 0.3s ease;
+        }
+
+        #logo-link:hover #logo {
+            transform: scale(1.05);
         }
 
         .logo h1 {
             margin: 0;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             color: var(--lime);
             letter-spacing: 1px;
+            font-weight: 700;
         }
 
         .logo span {
             font-size: 0.8rem;
             opacity: 0.8;
             color: var(--lime);
+            margin-top: 2px;
         }
 
         .nav-menu {
             width: 100%;
-            margin-top: 20px;
+            padding: 20px 0;
         }
 
         .nav-item {
-            padding: 12px 25px;
-            margin: 6px 10px;
-            border-radius: 10px 50px 50px 10px;
+            padding: 14px 25px;
+            margin: 8px 15px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-weight: 500;
             color: var(--lime);
+            display: flex;
+            align-items: center;
         }
 
         .nav-item:hover {
-            background-color: rgba(145, 199, 9, 0.15);
+            background-color: rgba(197, 232, 108, 0.12);
+            transform: translateX(4px);
         }
 
         .nav-item.active {
             background-color: var(--lime);
             color: var(--forest);
             font-weight: 600;
+            box-shadow: 0 4px 10px rgba(197, 232, 108, 0.2);
         }
 
-        /* Main content */
+        /* ===== MAIN CONTENT ===== */
         .main-content {
+            flex-grow: 1;
             padding: 40px;
             background-color: var(--main-bg);
-            position: relative;
-            overflow: hidden;
+            min-width: 0;
+            /* Previene desbordamiento en flexboxes */
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--medium-gray);
+            padding-bottom: 15px;
         }
 
         .page-title h2 {
             margin: 0;
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: var(--forest);
             font-weight: 700;
             letter-spacing: 0.5px;
@@ -162,33 +171,7 @@
             align-items: center;
         }
 
-        .btn {
-            padding: 8px 18px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary {
-            background-color: var(--forest);
-            color: var(--lime);
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-secondary {
-            background-color: var(--lime);
-            color: var(--forest);
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-        }
-
-        .btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-
-        /* Botón de modo day / night  */
+        /* Botón Modo noche */
         .mode-toggle {
             background-color: transparent;
             border: 2px solid var(--forest);
@@ -200,12 +183,16 @@
             font-size: 18px;
             position: relative;
             overflow: hidden;
-            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .mode-toggle:hover {
             background-color: var(--forest);
             color: var(--lime);
+            transform: scale(1.05);
         }
 
         body.dark-mode .mode-toggle {
@@ -218,71 +205,88 @@
             color: var(--forest);
         }
 
-        /* Ripple Effect for theme switch */
         .ripple {
             position: absolute;
             border-radius: 50%;
             transform: scale(0);
-            animation: ripple 0.8s linear;
-            background-color: rgba(197, 232, 108, 0.5);
+            animation: ripple 0.6s ease-out;
+            background-color: rgba(197, 232, 108, 0.4);
             pointer-events: none;
         }
 
         @keyframes ripple {
             to {
-                transform: scale(12);
+                transform: scale(4);
                 opacity: 0;
             }
         }
 
-        /* Card grid */
+        /* ===== CARDS GRID CON ANIMACIÓN ANIMADA ===== */
         .camera-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
         }
 
         .camera-card {
             background-color: var(--card-bg);
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
             border-top: 5px solid var(--lime);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+                box-shadow 0.4s ease,
+                opacity 0.4s ease;
+        }
+
+        .camera-card.show {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .camera-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
         }
 
         .camera-preview {
             height: 160px;
             background-color: var(--medium-gray);
             position: relative;
+            background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.02) 25%, transparent 25%),
+                linear-gradient(-45deg, rgba(0, 0, 0, 0.02) 25%, transparent 25%);
+            background-size: 20px 20px;
         }
 
         .camera-number {
             position: absolute;
-            top: 12px;
-            left: 12px;
+            top: 15px;
+            left: 15px;
             background-color: var(--forest);
             color: var(--lime);
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         .camera-info {
-            padding: 20px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
 
         .camera-name {
-            margin: 0 0 8px;
-            font-size: 1.2rem;
+            margin: 0 0 6px;
+            font-size: 1.3rem;
             color: var(--forest);
-            font-weight: 600;
+            font-weight: 700;
         }
 
         body.dark-mode .camera-name {
@@ -290,105 +294,91 @@
         }
 
         .camera-status {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            margin-bottom: 10px;
-            background-color: rgba(0, 174, 255, 0.288);
-            /* background-color: rgba(189, 232, 108, 0.582);*/
-            color: var(--forest);
-            font-weight: 500;
+            align-self: flex-start;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            background-color: rgba(131, 160, 75, 0.15);
+            color: #5f7536;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        body.dark-mode .camera-status {
+            background-color: rgba(197, 232, 108, 0.1);
+            color: var(--lime);
+        }
+
+        .camera-info p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            opacity: 0.8;
+            flex-grow: 1;
         }
 
         .camera-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 12px;
+            margin-top: auto;
+            width: 100%;
+        }
+
+        .camera-actions a {
+            text-decoration: none;
+            display: block;
+            width: 100%;
         }
 
         .action-btn {
-            padding: 6px 40px;
-            font-size: 0.85rem;
-            border-radius: 6px;
+            width: 100%;
+            padding: 12px;
+            font-size: 0.95rem;
+            border-radius: 10px;
             cursor: pointer;
             border: none;
-            transition: all 0.2s ease;
             font-weight: 600;
+            transition: all 0.3s ease;
         }
 
         .view-btn {
-            background-color: rgb(0, 0, 0);
-            color: rgb(255, 255, 255);
-
-            /*  background-color: var(--forest); */
-            /* color: var(--lime); */
+            background-color: var(--forest);
+            color: var(--lime);
+            box-shadow: 0 4px 6px rgba(27, 45, 11, 0.15);
         }
 
         .view-btn:hover {
-            background-color: rgb(0, 38, 255);
-            color: rgb(255, 255, 255);
-
-            /*background-color: var(--forest); */
-            /* color: var(--lime); */
+            background-color: var(--lime);
+            color: var(--forest);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(197, 232, 108, 0.3);
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .app-container {
-                grid-template-columns: 1fr;
-            }
-
-            .sidebar {
-                flex-direction: row;
-                justify-content: space-between;
-                padding: 10px 20px;
-            }
-
-            .nav-menu {
-                display: flex;
-                gap: 10px;
-                overflow-x: auto;
-            }
-
-            .main-content {
-                padding: 20px;
-            }
-        }
-
-        /* Logo transición */
+        /* Clon de Transición */
         #transition-logo {
             position: fixed;
             pointer-events: none;
             z-index: 9999;
-            transition: all 0.8s cubic-bezier(.4, 0, .2, 1);
+            transition: all 0.6s cubic-bezier(.4, 0, .2, 1);
         }
 
-
-
-
-        /* ========== GLOBAL PAGE LOADER ========== */
-
+        /* ===== GLOBAL LOADER FLUIDO ===== */
         #global-loader {
             position: fixed;
             inset: 0;
-            background: rgba(15, 25, 10, 0.95);
+            background: rgba(27, 45, 11, 0.98);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 99999;
-
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s ease;
         }
 
         #global-loader.active {
             opacity: 1;
             pointer-events: all;
         }
-
-        /* Dots animation */
 
         .loader-dots {
             display: flex;
@@ -398,10 +388,9 @@
         .loader-dots span {
             width: 14px;
             height: 14px;
-            background: #9dff57;
+            background: var(--lime);
             border-radius: 50%;
-
-            animation: pulse 1.4s infinite ease-in-out both;
+            animation: pulse 1.2s infinite ease-in-out both;
         }
 
         .loader-dots span:nth-child(1) {
@@ -421,47 +410,145 @@
             0%,
             80%,
             100% {
-                transform: scale(0);
+                transform: scale(0.3);
                 opacity: 0.3;
             }
 
             40% {
-                transform: scale(1);
+                transform: scale(1.1);
                 opacity: 1;
             }
+        }
+
+        /* ===== RESPONSIVE MEDIA QUERIES ===== */
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px;
+                position: sticky;
+                top: 0;
+                height: 70px;
+            }
+
+            .logo {
+                width: auto;
+                padding: 0;
+                border-bottom: none;
+                text-align: left;
+            }
+
+            #logo-link {
+                flex-direction: row;
+                gap: 8px;
+            }
+
+            #logo {
+                width: 38px;
+            }
+
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+
+            .logo span {
+                display: none;
+                /* Ocultar texto secundario en mobile */
+            }
+
+            .nav-menu {
+                display: flex;
+                padding: 0;
+                width: auto;
+                margin-top: 0;
+            }
+
+            .nav-item {
+                padding: 8px 16px;
+                margin: 0 4px;
+                font-size: 0.9rem;
+                border-radius: 8px;
+            }
+
+            .nav-item:hover {
+                transform: translateY(-2px);
+            }
+
+            .main-content {
+                padding: 25px 20px;
+            }
+
+            .header {
+                margin-bottom: 25px;
+            }
+
+            .page-title h2 {
+                font-size: 1.6rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                padding: 10px;
+            }
+
+            .logo h1 {
+                display: none;
+                /* Solo dejamos el icono en pantallas extra chicas */
+            }
+
+            .nav-item {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+
+            .camera-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Esto hace que la imagen llene el espacio sin deformarse */
+            display: block;
         }
     </style>
 </head>
 
-<!-- Global Loader -->
-<div id="global-loader">
-    <div class="loader-dots">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-</div>
-
 <body>
+
+    <div id="global-loader">
+        <div class="loader-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
     <div class="app-container">
-        <!-- Sidebar -->
         <div class="sidebar">
-
             <div class="logo">
-                <a href="../index.html" id="logo-link">
+                <a href="index.html" id="logo-link">
                     <img src="logo_v5.png" alt="Timeplate Logo" id="logo">
+                    <h1>Timeplate</h1>
+                    <span>Work space</span>
                 </a>
-
             </div>
 
             <div class="nav-menu">
                 <div class="nav-item active">Tools</div>
                 <div class="nav-item">Tutorial</div>
-                <div class="nav-item">Settings</div>
             </div>
         </div>
 
-        <!-- Main Content -->
         <div class="main-content">
             <div class="header">
                 <div class="page-title">
@@ -469,15 +556,15 @@
                 </div>
                 <div class="user-actions">
                     <button class="mode-toggle" id="modeToggle">🌙</button>
-                    <!--<button class="btn btn-secondary">Button1</button>
-                    <button class="btn btn-primary">Button2</button> -->
                 </div>
             </div>
-
-            <!-- Boton 1 -->
             <div class="camera-grid">
+
                 <div class="camera-card">
-                    <div class="camera-preview"><span class="camera-number">1</span></div>
+                    <div class="camera-preview">
+                        <span class="camera-number">1</span>
+                        <img src="pasplateshow2.png" alt="Vista previa de Pasplate" class="card-img">
+                    </div>
                     <div class="camera-info">
                         <h3 class="camera-name">Pasplate</h3>
                         <span class="camera-status">Activated</span>
@@ -488,9 +575,11 @@
                     </div>
                 </div>
 
-                <!-- Boton 2 -->
                 <div class="camera-card">
-                    <div class="camera-preview"><span class="camera-number">2</span></div>
+                    <div class="camera-preview">
+                        <span class="camera-number">2</span>
+                        <img src="hand1_2.png" alt="Vista previa de Camplate" class="card-img">
+                    </div>
                     <div class="camera-info">
                         <h3 class="camera-name">Camplate</h3>
                         <span class="camera-status">Activated</span>
@@ -501,9 +590,11 @@
                     </div>
                 </div>
 
-                <!-- Boton 3 -->
                 <div class="camera-card">
-                    <div class="camera-preview"><span class="camera-number">3</span></div>
+                    <div class="camera-preview">
+                        <span class="camera-number">3</span>
+                        <img src="reminder2.png" alt="Vista previa de Reminder" class="card-img">
+                    </div>
                     <div class="camera-info">
                         <h3 class="camera-name">Reminder</h3>
                         <span class="camera-status">Activated</span>
@@ -517,20 +608,19 @@
             </div>
         </div>
     </div>
-    </div>
 
     <script>
         const toggleBtn = document.getElementById('modeToggle');
         const body = document.body;
-        const currentMode = localStorage.getItem('theme');
 
+        /* ===== ACCESIBILIDAD Y MANEJO DEL TEMA ===== */
+        const currentMode = localStorage.getItem('theme');
         if (currentMode === 'dark') {
             body.classList.add('dark-mode');
-            toggleBtn.textContent = 'L';
+            toggleBtn.textContent = '☀️';
         }
-        //Emojis ☀️ & 🌙 
+
         toggleBtn.addEventListener('click', (e) => {
-            // Efecto ripple
             const ripple = document.createElement('span');
             ripple.classList.add('ripple');
             const rect = e.target.getBoundingClientRect();
@@ -538,105 +628,97 @@
             ripple.style.top = `${e.clientY - rect.top}px`;
             e.target.appendChild(ripple);
 
-            setTimeout(() => ripple.remove(), 800);
+            setTimeout(() => ripple.remove(), 600);
 
-            // Alternar tema
             body.classList.toggle('dark-mode');
             const isDark = body.classList.contains('dark-mode');
-            toggleBtn.textContent = isDark ? 'L' : 'D';
+            toggleBtn.textContent = isDark ? '☀️' : '🌙';
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         });
 
         /* ============================
-   TRANSICIÓN DESDE INDEX
-============================ */
-
-        window.addEventListener('load', () => {
-
+           TRANSICIÓN ENTRANTE DEL LOGO (FLUIDA)
+        ============================ */
+        window.addEventListener('DOMContentLoaded', () => {
             const data = sessionStorage.getItem('logoTransition');
             if (!data) return;
 
             const logoData = JSON.parse(data);
             const realLogo = document.getElementById('logo');
-
             if (!realLogo) return;
 
+            // Medir la posición final real calculando el scroll actual
             const target = realLogo.getBoundingClientRect();
 
-            // Crear clon
             const clone = realLogo.cloneNode(true);
             clone.id = 'transition-logo';
 
-            clone.style.top = logoData.top + 'px';
+            // Colocar el clon justo donde se quedó en la página anterior (Viewport coordinado)
+            clone.style.position = 'fixed';
+            clone.style.top = (logoData.top - window.scrollY) + 'px';
             clone.style.left = logoData.left + 'px';
             clone.style.width = logoData.width + 'px';
-
             document.body.appendChild(clone);
 
-            // Ocultar real
-            realLogo.style.opacity = 0;
+            realLogo.style.opacity = '0';
 
+            // Desplazar hacia la posición final en la barra de herramientas
             requestAnimationFrame(() => {
-
                 clone.style.top = target.top + 'px';
                 clone.style.left = target.left + 'px';
                 clone.style.width = target.width + 'px';
-
             });
 
-            // Finalizar
+            // Limpieza exacta a los 600ms (tiempo de la transición CSS)
             setTimeout(() => {
                 clone.remove();
-                realLogo.style.opacity = 1;
+                realLogo.style.opacity = '1';
                 sessionStorage.removeItem('logoTransition');
-            }, 80000000);
+            }, 600);
         });
 
+        /* ===== EFECTO DE APARICIÓN DE CARDS (INTERSECTION OBSERVER) ===== */
+        const cards = document.querySelectorAll('.camera-card');
+        const cardObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    // Agrega un pequeño retraso (stagger) para que aparezcan una tras otra
+                    setTimeout(() => {
+                        entry.target.classList.add('show');
+                    }, index * 100);
+                    cardObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
 
-        /* ========== GLOBAL LOADER MODULE ========== */
+        cards.forEach(card => cardObserver.observe(card));
 
+        /* ========== GLOBAL LOADER MODULE (SALIDA) ========== */
         const globalLoader = document.getElementById('global-loader');
 
-        /* Mostrar loader */
         function showGlobalLoader() {
             globalLoader.classList.add('active');
         }
 
-        /* Ocultar loader */
-        function hideGlobalLoader() {
-            globalLoader.classList.remove('active');
-        }
-
-        /* Conectar loader a botones */
-        function enableLinkButtonTransitions(selector, delay = 800) {
-
+        function enableLinkButtonTransitions(selector, delay = 600) {
             const links = document.querySelectorAll(selector);
-
             links.forEach(link => {
-
                 link.addEventListener('click', e => {
-
-                    e.preventDefault();
-
                     const href = link.getAttribute('href');
                     if (!href) return;
+                    e.preventDefault();
 
                     showGlobalLoader();
-
                     setTimeout(() => {
                         window.location.href = href;
                     }, delay);
-
                 });
-
             });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             enableLinkButtonTransitions('.camera-actions a');
         });
-
-
     </script>
 </body>
 

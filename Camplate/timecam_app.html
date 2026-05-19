@@ -6,22 +6,375 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Timeplate - Tool 2</title>
     <link rel="icon" type="image/png" href="/logo_v5.png">
-    <link rel="stylesheet" href="cam_styles.css" />
+    
+    <style>
+        /* ==========================================================================
+           ESTILOS GENERALES (cam_styles.css)
+           ========================================================================== */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Encabezado */
+        #header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #58595cc7;
+            backdrop-filter: blur(50px);
+            padding: 12px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.288);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            margin-bottom: 35px;
+        }
+
+        /* Contenedor del logo y el texto */
+        #branding {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            min-width: 200px;
+            flex-shrink: 0;
+        }
+
+        /* Texto Pasplate */
+        #branding h1 {
+            margin: 0;
+            font-size: 25px;
+            font-weight: 700;
+            color: #ffffffb7;
+            font-family: 'Montserrat', sans-serif;
+            border-bottom: 3px solid #ff0000;
+            padding-bottom: 5px;
+        }
+
+        /* Estilo del link del logo */
+        #logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        /* Logo */
+        #logo {
+            width: 70px;
+            height: auto;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 20px;
+        }
+
+        .camera-box {
+            background-color: #111;
+            border: 1px solid #333;
+            width: 600px;
+            height: 250px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 6px;
+        }
+
+        .camera-box video,
+        .camera-box canvas {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #finger-count {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 1rem;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .play-btn {
+            background-color: transparent;
+            border: 2px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Keypad styles */
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 200px);
+            grid-auto-rows: 90px;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .key {
+            background-color: #222;
+            border-radius: 12px;
+            color: #aaa;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            gap: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+        }
+
+        .key-number {
+            background: #444;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .key-title {
+            flex: 1;
+            text-align: left;
+        }
+
+        /* Animación de parpadeo / resaltado temporal */
+        @keyframes keyFlash {
+            0% {
+                box-shadow: 0 0 0 rgba(0, 255, 204, 0);
+                transform: scale(1);
+            }
+            25% {
+                box-shadow: 0 0 10px rgba(0, 255, 204, 0.6);
+                transform: scale(1.02);
+            }
+            50% {
+                box-shadow: 0 0 0 rgba(0, 255, 204, 0);
+                transform: scale(1);
+            }
+            75% {
+                box-shadow: 0 0 10px rgba(0, 255, 204, 0.6);
+                transform: scale(1.02);
+            }
+            100% {
+                box-shadow: 0 0 0 rgba(0, 255, 204, 0);
+                transform: scale(1);
+            }
+        }
+
+        .key.active {
+            border: 2px solid #00ffcc;
+            animation: keyFlash 1.8s ease-in-out;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            background: #333;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 350px;
+            color: white;
+            text-align: left;
+        }
+
+        .close-btn {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        #modal-input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            font-size: 1rem;
+            border-radius: 6px;
+            border: 1px solid #666;
+            background: #222;
+            color: white;
+        }
+
+        #modal-description {
+            width: 100%;
+            min-height: 120px;
+            resize: vertical;
+            padding: 8px;
+            margin: 10px 0 20px 0;
+            font-size: 1rem;
+            font-family: Arial, sans-serif;
+            border-radius: 6px;
+            border: 1px solid #666;
+            background: #222;
+            color: white;
+        }
+
+        #save-title {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* --------------------------------------------------
+           HEADER ESTILO INDUSTRIAL / CÁMARA PROFESIONAL
+        -------------------------------------------------- */
+        #header {
+            width: 100%;
+            background: linear-gradient(180deg, #0f1115, #0a0c0f);
+            border-bottom: 1px solid rgba(0, 255, 200, 0.2);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        /* Línea inferior tipo scanner */
+        #header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ffcc, transparent);
+            opacity: 0.6;
+        }
+
+        /* Contenedor interno */
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Branding (logo + texto) */
+        #branding {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        #logo {
+            height: 40px;
+        }
+
+        /* Título */
+        #branding h1 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #e6e6e6;
+        }
+
+        /* Estado del sistema */
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            color: #00ffcc;
+            letter-spacing: 1px;
+        }
+
+        /* Punto tipo LED */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ffcc;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #00ffcc;
+            animation: pulseStatus 1.5s infinite;
+        }
+
+        /* Animación tipo sistema activo */
+        @keyframes pulseStatus {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.4);
+                opacity: 0.6;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Mejora del boton de play/Record */
+        .play-btn.active {
+            border-color: #00ffcc;
+            color: #00ffcc;
+            box-shadow:
+                0 0 15px rgba(0, 255, 204, 0.4),
+                inset 0 0 8px rgba(0, 255, 204, 0.2);
+        }
+    </style>
 </head>
 
 <body>
     <div id="main-container">
-
         <div id="header">
+            <div class="header-inner">
+                <div id="branding">
+                    <a href="../tools.html" id="logo-link">
+                        <img src="/logo_v4.png" alt="Logo de Timeplate" id="logo">
+                    </a>
+                    <h1>Camplate</h1>
+                </div>
 
-            <!-- LOGO + TEXTO como bloque, ahora con LINK -->
-            <div id="branding">
-                <a href="../tools.html" id="logo-link">
-                    <img src="/logo_v4.png" alt="Logo de Timeplate" id="logo">
-                </a>
-                <h1>Camplate</h1>
+                <div class="system-status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">SYSTEM READY</span>
+                </div>
             </div>
-
         </div>
 
         <main class="main-content">
@@ -29,62 +382,340 @@
                 <p id="camera-text">CAMERA</p>
                 <video id="camera-video" autoplay playsinline style="display:none;"></video>
                 <canvas id="output-canvas"></canvas>
-                <div id="finger-count">NO DETECTION</div>
+                <div id="finger-count">Status: Off</div>
             </div>
-            <button class="play-btn" id="start-camera">&#9658;</button>
 
-            <!-- Recuadros tipo teclado numérico -->
+            <button class="play-btn" id="start-camera">
+                <span class="btn-icon">▶</span>
+                <span class="btn-label"></span>
+            </button>
+
             <div class="keypad">
-                <div class="key" data-key="1"><span class="key-number">1</span><span class="key-title">Name 1</span>
-                </div>
-                <div class="key" data-key="2"><span class="key-number">2</span><span class="key-title">Name 2</span>
-                </div>
-                <div class="key" data-key="3"><span class="key-number">3</span><span class="key-title">Name 3</span>
-                </div>
-                <div class="key" data-key="4"><span class="key-number">4</span><span class="key-title">Name 4</span>
-                </div>
-                <div class="key" data-key="5"><span class="key-number">5</span><span class="key-title">Name 5</span>
-                </div>
-                <div class="key" data-key="6"><span class="key-number">6</span><span class="key-title">Name 6</span>
-                </div>
-                <div class="key" data-key="7"><span class="key-number">7</span><span class="key-title">Name 7</span>
-                </div>
-                <div class="key" data-key="8"><span class="key-number">8</span><span class="key-title">Name 8</span>
-                </div>
-                <div class="key" data-key="9"><span class="key-number">9</span><span class="key-title">Name 9</span>
-                </div>
-                <div class="key" data-key="0"><span class="key-number">0</span><span class="key-title">Name 0</span>
-                </div>
-                <div class="key" data-key="10"><span class="key-number">10</span><span class="key-title">Name 10</span>
-                </div>
+                <div class="key" data-key="1"><span class="key-number">1</span><span class="key-title">Name 1</span></div>
+                <div class="key" data-key="2"><span class="key-number">2</span><span class="key-title">Name 2</span></div>
+                <div class="key" data-key="3"><span class="key-number">3</span><span class="key-title">Name 3</span></div>
+                <div class="key" data-key="4"><span class="key-number">4</span><span class="key-title">Name 4</span></div>
+                <div class="key" data-key="5"><span class="key-number">5</span><span class="key-title">Name 5</span></div>
+                <div class="key" data-key="6"><span class="key-number">6</span><span class="key-title">Name 6</span></div>
+                <div class="key" data-key="7"><span class="key-number">7</span><span class="key-title">Name 7</span></div>
+                <div class="key" data-key="8"><span class="key-number">8</span><span class="key-title">Name 8</span></div>
+                <div class="key" data-key="9"><span class="key-number">9</span><span class="key-title">Name 9</span></div>
+                <div class="key" data-key="0"><span class="key-number">0</span><span class="key-title">Name 0</span></div>
+                <div class="key" data-key="10"><span class="key-number">10</span><span class="key-title">Name 10</span></div>
             </div>
         </main>
     </div>
 
-    <!-- Modal para edición -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <span id="close-modal" class="close-btn">&times;</span>
-            <h2>Editar título</h2>
+            <h2>Title</h2>
             <input type="text" id="modal-input" placeholder="Nuevo título...">
 
-            <h3>Descripción</h3>
+            <h3>Content</h3>
             <textarea id="modal-description" placeholder="Escribe el texto aquí..."></textarea>
 
-            <button id="save-title">Guardar</button>
+            <button id="save-title">Save</button>
         </div>
     </div>
 
-    <!-- MediaPipe Hands (CDN) -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
 
-    <!-- Al final del body, antes de script.js -->
     <audio id="sound" src="sound.mp3" preload="auto"></audio>
 
+    <script>
+        const video = document.getElementById('camera-video');
+        const cameraText = document.getElementById('camera-text');
+        const startBtn = document.getElementById('start-camera');
+        const canvasElement = document.getElementById('output-canvas');
+        const canvasCtx = canvasElement.getContext('2d');
+        const fingerCountElement = document.getElementById('finger-count');
+        const copySound = document.getElementById('sound');
 
-    <script src="cam_script.js"></script>
+        let streamActivo = null;
+        let cameraInstance = null; // Cambiado de 'camera' a 'cameraInstance' para evitar colisión de scope con la clase global Camera de MediaPipe
+        let hands = null;
+
+        let keyData = {}; 
+
+        let lastCopiedKey = null;
+        let lastCopyTime = 0;
+        const COPY_COOLDOWN = 2000; 
+        const COPY_DELAY = 500; 
+
+        function distancia(p1, p2) {
+            const dx = p1.x - p2.x;
+            const dy = p1.y - p2.y;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        function contarDedosMano(landmarks, handLabel) {
+            let dedos = 0;
+            const thumbTip = landmarks[4];
+            const thumbIP = landmarks[3];
+
+            if (handLabel) {
+                if (handLabel === 'Right') {
+                    if (thumbTip.x < thumbIP.x) dedos++;
+                } else if (handLabel === 'Left') {
+                    if (thumbTip.x > thumbIP.x) dedos++;
+                }
+            } else {
+                const wristX = landmarks[0].x;
+                if (thumbTip.x < wristX && thumbTip.x < thumbIP.x) {
+                    dedos++;
+                } else if (thumbTip.x > wristX && thumbTip.x > thumbIP.x) {
+                    dedos++;
+                }
+            }
+
+            if (landmarks[8].y < landmarks[6].y) dedos++;
+            if (landmarks[12].y < landmarks[10].y) dedos++;
+            if (landmarks[16].y < landmarks[14].y) dedos++;
+            if (landmarks[20].y < landmarks[18].y) dedos++;
+
+            return dedos;
+        }
+
+        function guardarConfiguracion() {
+            localStorage.setItem("timeplateKeyData", JSON.stringify(keyData));
+        }
+
+        function cargarConfiguracion() {
+            const data = localStorage.getItem("timeplateKeyData");
+            if (data) {
+                keyData = JSON.parse(data);
+
+                Object.keys(keyData).forEach(num => {
+                    const keyElem = document.querySelector(`.key[data-key="${num}"] .key-title`);
+                    if (keyElem) keyElem.textContent = keyData[num].title || `Name ${num}`;
+                });
+            }
+        }
+
+        function copiarDescripcionKey(numeroKey) {
+            const now = Date.now();
+            if (numeroKey === lastCopiedKey && (now - lastCopyTime) < COPY_COOLDOWN) {
+                return; 
+            }
+
+            const keyElem = document.querySelector(`.key[data-key="${numeroKey}"]`);
+            if (!keyElem) return;
+
+            const descripcion = keyData[numeroKey]?.description || "";
+
+            setTimeout(() => {
+                document.querySelectorAll('.key').forEach(k => k.classList.remove('active'));
+                keyElem.classList.add('active');
+
+                if (descripcion.trim() !== "") {
+                    navigator.clipboard.writeText(descripcion)
+                        .then(() => {
+                            console.log(`Descripción del key ${numeroKey} copiada:`, descripcion);
+                            lastCopiedKey = numeroKey;
+                            lastCopyTime = Date.now();
+
+                            if (copySound) {
+                                copySound.currentTime = 0;
+                                copySound.play().catch(err => console.warn("No se pudo reproducir el sonido:", err));
+                            }
+                        })
+                        .catch(err => console.error("Error al copiar:", err));
+                } else {
+                    console.log(`Key ${numeroKey} no tiene descripción para copiar.`);
+                    lastCopiedKey = numeroKey;
+                    lastCopyTime = Date.now();
+                }
+
+                setTimeout(() => keyElem.classList.remove('active'), 2000);
+            }, COPY_DELAY);
+        }
+
+        startBtn.addEventListener('click', async () => {
+            if (!streamActivo) {
+                try {
+                    streamActivo = await navigator.mediaDevices.getUserMedia({ video: true });
+                    video.srcObject = streamActivo;
+                    cameraText.style.display = 'none';
+                    video.style.display = 'block';
+
+                    startBtn.classList.add("active");
+                    startBtn.querySelector(".btn-label").textContent = "";
+                    iniciarDeteccion(); 
+                } catch (error) {
+                    alert("No se pudo acceder a la cámara: " + error.message);
+                }
+            } else {
+                if (cameraInstance) {
+                    cameraInstance.stop();
+                }
+                streamActivo.getTracks().forEach(track => track.stop());
+                streamActivo = null;
+
+                video.style.display = 'none';
+                cameraText.style.display = 'block';
+
+                startBtn.classList.remove("active");
+                startBtn.querySelector(".btn-label").textContent = "";
+                fingerCountElement.textContent = "Status: Off";
+            }
+        });
+
+        function iniciarDeteccion() {
+            if (!hands) {
+                hands = new Hands({
+                    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+                });
+
+                hands.setOptions({
+                    maxNumHands: 2,
+                    modelComplexity: 1,
+                    minDetectionConfidence: 0.7,
+                    minTrackingConfidence: 0.7
+                });
+
+                hands.onResults(onResults);
+            }
+
+            if (!cameraInstance) {
+                // Ahora llama correctamente a la clase constructora global 'Camera' de MediaPipe
+                cameraInstance = new Camera(video, {
+                    onFrame: async () => {
+                        await hands.send({ image: video });
+                    },
+                    width: 600,
+                    height: 250
+                });
+            }
+            cameraInstance.start();
+        }
+
+        function onResults(results) {
+            if (video.videoWidth && video.videoHeight) {
+                canvasElement.width = video.videoWidth;
+                canvasElement.height = video.videoHeight;
+            }
+
+            canvasCtx.save();
+            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+            if (results.image) {
+                canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+            }
+
+            const handsDetected = results.multiHandLandmarks && results.multiHandLandmarks.length > 0;
+
+            if (!handsDetected) {
+                fingerCountElement.textContent = "NO DETECTION";
+                document.querySelectorAll('.key').forEach(k => k.classList.remove('active'));
+                canvasCtx.restore();
+                return;
+            }
+
+            let totalDedos = 0;
+            let gestoCero = false;
+
+            results.multiHandLandmarks.forEach((landmarks, idx) => {
+                if (typeof drawConnectors !== 'undefined' && typeof HAND_CONNECTIONS !== 'undefined') {
+                    drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, { color: 'rgba(0, 0, 0, 1)', lineWidth: 10 });
+                }
+                if (typeof drawLandmarks !== 'undefined') {
+                    drawLandmarks(canvasCtx, landmarks, { color: '#c7c7c74f', lineWidth: 1 });
+                }
+
+                let handLabel = null;
+                if (results.multiHandedness && results.multiHandedness[idx]) {
+                    const classification = results.multiHandedness[idx];
+                    handLabel = classification.label || (classification.classification && classification.classification[0] && classification.classification[0].label) || null;
+                }
+
+                const dedosEstaMano = contarDedosMano(landmarks, handLabel);
+                totalDedos += dedosEstaMano;
+
+                const dist = distancia(landmarks[4], landmarks[8]);
+                if (dist < 0.05) {
+                    gestoCero = true;
+                }
+            });
+
+            if (gestoCero) {
+                fingerCountElement.textContent = "Fingers: 0 ✅";
+                copiarDescripcionKey(0);
+            } else {
+                fingerCountElement.textContent = `Fingers: ${totalDedos}`;
+                if (totalDedos > 0 && totalDedos <= 10) {
+                    copiarDescripcionKey(totalDedos);
+                }
+            }
+
+            canvasCtx.restore();
+        }
+
+        // --- Modal de edición ---
+        const modal = document.getElementById('modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const modalInput = document.getElementById('modal-input');
+        const modalDescription = document.getElementById('modal-description');
+        const saveBtn = document.getElementById('save-title');
+
+        let currentTitleElement = null;
+
+        document.querySelectorAll('.key').forEach(key => {
+            const number = key.getAttribute('data-key');
+            const titleText = key.querySelector('.key-title')?.textContent || "";
+            keyData[number] = {
+                title: titleText,
+                description: ""
+            };
+        });
+
+        document.querySelectorAll('.key').forEach(key => {
+            const title = key.querySelector('.key-title');
+            const number = key.getAttribute('data-key');
+            if (!title) return;
+
+            title.addEventListener('click', (e) => {
+                e.stopPropagation();
+                currentTitleElement = title;
+
+                modalInput.value = title.textContent;
+                modalDescription.value = keyData[number]?.description || "";
+
+                modal.style.display = 'block';
+                modalInput.focus();
+            });
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        saveBtn.addEventListener('click', () => {
+            if (currentTitleElement && modalInput.value.trim() !== '') {
+                const parentKey = currentTitleElement.closest('.key');
+                const keyNumber = parentKey.getAttribute('data-key');
+
+                currentTitleElement.textContent = modalInput.value.trim();
+                keyData[keyNumber] = {
+                    title: modalInput.value.trim(),
+                    description: modalDescription.value.trim()
+                };
+
+                guardarConfiguracion(); 
+            }
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        cargarConfiguracion();
+    </script>
 </body>
 
 </html>

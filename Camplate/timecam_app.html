@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Timeplate - Tool 2</title>
     <link rel="icon" type="image/png" href="/logo_v5.png">
-    
+
     <style>
         /* ==========================================================================
            ESTILOS GENERALES (cam_styles.css)
@@ -25,56 +25,6 @@
             align-items: center;
         }
 
-        /* Encabezado */
-        #header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #58595cc7;
-            backdrop-filter: blur(50px);
-            padding: 12px 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.288);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            margin-bottom: 35px;
-        }
-
-        /* Contenedor del logo y el texto */
-        #branding {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            min-width: 200px;
-            flex-shrink: 0;
-        }
-
-        /* Texto Pasplate */
-        #branding h1 {
-            margin: 0;
-            font-size: 25px;
-            font-weight: 700;
-            color: #ffffffb7;
-            font-family: 'Montserrat', sans-serif;
-            border-bottom: 3px solid #ff0000;
-            padding-bottom: 5px;
-        }
-
-        /* Estilo del link del logo */
-        #logo-link {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
-
-        /* Logo */
-        #logo {
-            width: 70px;
-            height: auto;
-            user-select: none;
-            pointer-events: none;
-        }
-
         .main-content {
             display: flex;
             flex-direction: column;
@@ -84,6 +34,42 @@
             gap: 20px;
         }
 
+        /* ==========================================================================
+           ANIMACIÓN DE ENTRADA AL INICIO (Optimizada para visibilidad total)
+           ========================================================================== */
+        @keyframes elementEntrance {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .camera-box,
+        .play-btn {
+            opacity: 0;
+            animation: elementEntrance 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .camera-box {
+            animation-delay: 0.1s;
+        }
+
+        .play-btn {
+            animation-delay: 0.2s;
+        }
+
+        .keypad {
+            animation: elementEntrance 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        /* ==========================================================================
+           COMPONENTES INTERNOS (Totalmente Visibles)
+           ========================================================================== */
         .camera-box {
             background-color: #111;
             border: 1px solid #333;
@@ -105,6 +91,14 @@
             object-fit: cover;
         }
 
+        #camera-text {
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: #444;
+            user-select: none;
+            margin: 0;
+        }
+
         #finger-count {
             position: absolute;
             bottom: 8px;
@@ -115,6 +109,7 @@
             font-size: 1rem;
             backdrop-filter: blur(4px);
             border: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 2;
         }
 
         .play-btn {
@@ -129,6 +124,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.08);
         }
 
         /* Keypad styles */
@@ -153,6 +153,15 @@
             gap: 12px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
             cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.15s ease, border-color 0.15s ease, opacity 0.2s;
+            box-sizing: border-box;
+            border: 2px solid transparent;
+            opacity: 1 !important;
+        }
+
+        .key:hover {
+            background-color: #2a2a2a;
+            color: #fff;
         }
 
         .key-number {
@@ -162,11 +171,15 @@
             border-radius: 6px;
             font-size: 1rem;
             flex-shrink: 0;
+            user-select: none;
         }
 
         .key-title {
             flex: 1;
             text-align: left;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         /* Animación de parpadeo / resaltado temporal */
@@ -175,18 +188,24 @@
                 box-shadow: 0 0 0 rgba(0, 255, 204, 0);
                 transform: scale(1);
             }
+
             25% {
                 box-shadow: 0 0 10px rgba(0, 255, 204, 0.6);
                 transform: scale(1.02);
+                background-color: #2a2a2a;
             }
+
             50% {
                 box-shadow: 0 0 0 rgba(0, 255, 204, 0);
                 transform: scale(1);
             }
+
             75% {
                 box-shadow: 0 0 10px rgba(0, 255, 204, 0.6);
                 transform: scale(1.02);
+                background-color: #2a2a2a;
             }
+
             100% {
                 box-shadow: 0 0 0 rgba(0, 255, 204, 0);
                 transform: scale(1);
@@ -195,10 +214,13 @@
 
         .key.active {
             border: 2px solid #00ffcc;
-            animation: keyFlash 1.8s ease-in-out;
+            color: #fff;
+            animation: keyFlash 1.8s ease-in-out forwards;
         }
 
-        /* Modal */
+        /* ==========================================================================
+           VENTANA DE EDICIÓN PROFESIONAL (ESTILO PANEL CONTEXTUAL)
+           ========================================================================== */
         .modal {
             display: none;
             position: fixed;
@@ -207,61 +229,134 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(3px);
+            transition: all 0.25s ease;
         }
 
         .modal-content {
-            background: #333;
-            margin: 10% auto;
-            padding: 20px;
-            border-radius: 8px;
-            width: 350px;
+            background: #11141a;
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 255, 204, 0.05);
+            margin: 12% auto;
+            padding: 22px;
+            border-radius: 10px;
+            width: 340px;
             color: white;
             text-align: left;
+            position: relative;
+            box-sizing: border-box;
+            animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.96) translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
 
         .close-btn {
-            float: right;
-            font-size: 24px;
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            font-size: 20px;
+            color: #666;
             cursor: pointer;
+            transition: color 0.15s ease;
         }
 
-        #modal-input {
+        .close-btn:hover {
+            color: #00ffcc;
+        }
+
+        .modal-content h2 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #e6e6e6;
+            margin: 0 0 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 8px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .input-group label {
+            font-size: 0.75rem;
+            color: #00ffcc;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        #modal-input,
+        #modal-description {
             width: 100%;
-            padding: 8px;
-            margin: 10px 0;
-            font-size: 1rem;
+            padding: 10px;
+            font-size: 0.9rem;
             border-radius: 6px;
-            border: 1px solid #666;
-            background: #222;
+            border: 1px solid #2d3545;
+            background: #090b0e;
             color: white;
+            box-sizing: border-box;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        #modal-input:focus,
+        #modal-description:focus {
+            outline: none;
+            border-color: #00ffcc;
+            box-shadow: 0 0 6px rgba(0, 255, 204, 0.2);
         }
 
         #modal-description {
-            width: 100%;
-            min-height: 120px;
+            min-height: 90px;
             resize: vertical;
-            padding: 8px;
-            margin: 10px 0 20px 0;
-            font-size: 1rem;
             font-family: Arial, sans-serif;
-            border-radius: 6px;
-            border: 1px solid #666;
-            background: #222;
-            color: white;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .btn-panel {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-sizing: border-box;
         }
 
         #save-title {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            cursor: pointer;
-            border-radius: 5px;
+            background: #00ffcc;
+            color: #0a0c0f;
+            border: 1px solid #00ffcc;
+        }
+
+        #save-title:hover {
+            background: transparent;
+            color: #00ffcc;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
         }
 
         /* --------------------------------------------------
-           HEADER ESTILO INDUSTRIAL / CÁMARA PROFESIONAL
+           HEADER ESTILO INDUSTRIAL
         -------------------------------------------------- */
         #header {
             width: 100%;
@@ -269,9 +364,9 @@
             border-bottom: 1px solid rgba(0, 255, 200, 0.2);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
             position: relative;
+            box-sizing: border-box;
         }
 
-        /* Línea inferior tipo scanner */
         #header::after {
             content: "";
             position: absolute;
@@ -283,7 +378,6 @@
             opacity: 0.6;
         }
 
-        /* Contenedor interno */
         .header-inner {
             max-width: 1200px;
             margin: 0 auto;
@@ -291,28 +385,55 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            box-sizing: border-box;
         }
 
-        /* Branding (logo + texto) */
         #branding {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        #logo {
-            height: 40px;
+        #logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            height: 100%;
         }
 
-        /* Título */
+        #logo {
+            height: 42px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+            user-select: none;
+            pointer-events: none;
+            filter: drop-shadow(0 0 0px transparent);
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), filter 0.25s ease;
+        }
+
+        #logo-link:hover #logo {
+            transform: scale(1.06);
+            filter: drop-shadow(0 0 6px rgba(0, 255, 204, 0.6));
+        }
+
         #branding h1 {
             font-size: 1.4rem;
             font-weight: 600;
             letter-spacing: 1px;
             color: #e6e6e6;
+            margin: 0;
+            padding: 0;
+            border: none;
         }
 
-        /* Estado del sistema */
+        /* Contenedor derecho del header */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
         .system-status {
             display: flex;
             align-items: center;
@@ -322,7 +443,6 @@
             letter-spacing: 1px;
         }
 
-        /* Punto tipo LED */
         .status-dot {
             width: 8px;
             height: 8px;
@@ -332,29 +452,121 @@
             animation: pulseStatus 1.5s infinite;
         }
 
-        /* Animación tipo sistema activo */
         @keyframes pulseStatus {
             0% {
                 transform: scale(1);
                 opacity: 1;
             }
+
             50% {
                 transform: scale(1.4);
                 opacity: 0.6;
             }
+
             100% {
                 transform: scale(1);
                 opacity: 1;
             }
         }
 
-        /* Mejora del boton de play/Record */
         .play-btn.active {
             border-color: #00ffcc;
             color: #00ffcc;
-            box-shadow:
-                0 0 15px rgba(0, 255, 204, 0.4),
-                inset 0 0 8px rgba(0, 255, 204, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4), inset 0 0 8px rgba(0, 255, 204, 0.2);
+        }
+
+        /* ==========================================================================
+           BOTÓN Y MINI MENÚ DE CONFIGURACIÓN (EXTRAÍDO DE PASPLATE_APP)
+           ========================================================================== */
+        #settings-btn {
+            font-size: 22px;
+            background-color: transparent;
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #settings-btn:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: rotate(45deg);
+        }
+
+        #settings-menu {
+            position: fixed;
+            background: #080e1f;
+            color: white;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            padding: 12px;
+            z-index: 1005;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            animation: menuFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            transform-origin: top left;
+            width: 200px;
+        }
+
+        @keyframes menuFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        #settings-menu ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #settings-menu li {
+            padding: 10px 14px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #settings-menu li:hover {
+            background: #2d4263;
+        }
+
+        #volume-control:hover,
+        #sound-control:hover {
+            background: transparent !important;
+        }
+
+        #volume-control,
+        #sound-control {
+            cursor: default !important;
+            flex-direction: column;
+            align-items: flex-start !important;
+            gap: 6px;
+        }
+
+        #volume-control input[type="range"] {
+            width: 100%;
+            accent-color: #00ffcc;
+        }
+
+        #sound-upload {
+            width: 100%;
+            font-size: 11px;
+            color: #aaa;
         }
     </style>
 </head>
@@ -370,9 +582,13 @@
                     <h1>Camplate</h1>
                 </div>
 
-                <div class="system-status">
-                    <span class="status-dot"></span>
-                    <span class="status-text">SYSTEM READY</span>
+                <div class="header-actions">
+                    <div class="system-status">
+                        <span class="status-dot"></span>
+                        <span class="status-text">SYSTEM READY</span>
+                    </div>
+                    <!-- Botón de configuración posicionado en el lado derecho -->
+                    <button id="settings-btn" title="Configuración de sonido">⚙️</button>
                 </div>
             </div>
         </div>
@@ -391,17 +607,28 @@
             </button>
 
             <div class="keypad">
-                <div class="key" data-key="1"><span class="key-number">1</span><span class="key-title">Name 1</span></div>
-                <div class="key" data-key="2"><span class="key-number">2</span><span class="key-title">Name 2</span></div>
-                <div class="key" data-key="3"><span class="key-number">3</span><span class="key-title">Name 3</span></div>
-                <div class="key" data-key="4"><span class="key-number">4</span><span class="key-title">Name 4</span></div>
-                <div class="key" data-key="5"><span class="key-number">5</span><span class="key-title">Name 5</span></div>
-                <div class="key" data-key="6"><span class="key-number">6</span><span class="key-title">Name 6</span></div>
-                <div class="key" data-key="7"><span class="key-number">7</span><span class="key-title">Name 7</span></div>
-                <div class="key" data-key="8"><span class="key-number">8</span><span class="key-title">Name 8</span></div>
-                <div class="key" data-key="9"><span class="key-number">9</span><span class="key-title">Name 9</span></div>
-                <div class="key" data-key="0"><span class="key-number">0</span><span class="key-title">Name 0</span></div>
-                <div class="key" data-key="10"><span class="key-number">10</span><span class="key-title">Name 10</span></div>
+                <div class="key" data-key="1"><span class="key-number">1</span><span class="key-title">Name 1</span>
+                </div>
+                <div class="key" data-key="2"><span class="key-number">2</span><span class="key-title">Name 2</span>
+                </div>
+                <div class="key" data-key="3"><span class="key-number">3</span><span class="key-title">Name 3</span>
+                </div>
+                <div class="key" data-key="4"><span class="key-number">4</span><span class="key-title">Name 4</span>
+                </div>
+                <div class="key" data-key="5"><span class="key-number">5</span><span class="key-title">Name 5</span>
+                </div>
+                <div class="key" data-key="6"><span class="key-number">6</span><span class="key-title">Name 6</span>
+                </div>
+                <div class="key" data-key="7"><span class="key-number">7</span><span class="key-title">Name 7</span>
+                </div>
+                <div class="key" data-key="8"><span class="key-number">8</span><span class="key-title">Name 8</span>
+                </div>
+                <div class="key" data-key="9"><span class="key-number">9</span><span class="key-title">Name 9</span>
+                </div>
+                <div class="key" data-key="0"><span class="key-number">0</span><span class="key-title">Name 0</span>
+                </div>
+                <div class="key" data-key="10"><span class="key-number">10</span><span class="key-title">Name 10</span>
+                </div>
             </div>
         </main>
     </div>
@@ -409,13 +636,22 @@
     <div id="modal" class="modal">
         <div class="modal-content">
             <span id="close-modal" class="close-btn">&times;</span>
-            <h2>Title</h2>
-            <input type="text" id="modal-input" placeholder="Nuevo título...">
+            <h2 id="modal-panel-title">Editar Parámetro</h2>
 
-            <h3>Content</h3>
-            <textarea id="modal-description" placeholder="Escribe el texto aquí..."></textarea>
+            <div class="input-group">
+                <label for="modal-input">Etiqueta / Nombre</label>
+                <input type="text" id="modal-input" placeholder="Ej. Copiar correo...">
+            </div>
 
-            <button id="save-title">Save</button>
+            <div class="input-group">
+                <label for="modal-description">Contenido de Portapapeles</label>
+                <textarea id="modal-description"
+                    placeholder="Escribe o pega el texto que se copiará al detectar este número..."></textarea>
+            </div>
+
+            <div class="modal-actions">
+                <button id="save-title" class="btn-panel">Guardar Cambios</button>
+            </div>
         </div>
     </div>
 
@@ -423,7 +659,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
 
-    <audio id="sound" src="sound.mp3" preload="auto"></audio>
+    <!-- Elemento de audio base actualizado a 3.mp3 -->
+    <audio id="sound" src="3.mp3" preload="auto"></audio>
 
     <script>
         const video = document.getElementById('camera-video');
@@ -433,18 +670,144 @@
         const canvasCtx = canvasElement.getContext('2d');
         const fingerCountElement = document.getElementById('finger-count');
         const copySound = document.getElementById('sound');
+        const settingsBtn = document.getElementById('settings-btn');
 
         let streamActivo = null;
-        let cameraInstance = null; // Cambiado de 'camera' a 'cameraInstance' para evitar colisión de scope con la clase global Camera de MediaPipe
+        let cameraInstance = null;
         let hands = null;
 
-        let keyData = {}; 
+        let keyData = {};
+        let isMuted = false;
+        let defaultSound = '3.mp3'; // Variable base actualizada
 
         let lastCopiedKey = null;
         let lastCopyTime = 0;
-        const COPY_COOLDOWN = 2000; 
-        const COPY_DELAY = 500; 
+        const COPY_COOLDOWN = 2000;
+        const COPY_DELAY = 500;
 
+        let currentDetectedNumber = null;
+        let detectionTimestamp = 0;
+        const GREEN_DURATION = 1000;
+
+        // ==========================================================================
+        // CREACIÓN DINÁMICA DEL MENU DE CONFIGURACIÓN (PASPLATE STYLE)
+        // ==========================================================================
+        const settingsMenu = document.createElement('div');
+        settingsMenu.id = 'settings-menu';
+        settingsMenu.innerHTML = `
+            <ul>
+                <li id="toggle-mute">🔊 Mute</li>
+                <li id="volume-control">
+                    🔈 Volume
+                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
+                </li>
+                <li id="sound-control">
+                    🎵 Sound
+                    <input type="file" id="sound-upload" accept="audio/*">
+                    <button id="remove-sound" style="background: #ff3b30; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-size: 11px; margin-top: 5px; width: 100%; font-weight: bold;">Delete sound</button>
+                </li>
+            </ul>
+        `;
+        settingsMenu.style.display = 'none';
+        document.body.appendChild(settingsMenu);
+
+        // Desplegar / Ocultar Menú Contextual
+        settingsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            settingsMenu.style.display = settingsMenu.style.display === 'block' ? 'none' : 'block';
+            const rect = settingsBtn.getBoundingClientRect();
+            settingsMenu.style.top = (rect.bottom + window.scrollY) + 'px';
+            settingsMenu.style.left = (rect.left - 160 + window.scrollX) + 'px';
+        });
+
+        document.addEventListener('click', () => {
+            settingsMenu.style.display = 'none';
+        });
+        settingsMenu.addEventListener('click', (e) => e.stopPropagation());
+
+        // Mute / Unmute
+        const toggleMuteOption = document.getElementById('toggle-mute');
+        const volumeSlider = document.getElementById('volume-slider');
+
+        toggleMuteOption.addEventListener('click', () => {
+            isMuted = !isMuted;
+            if (isMuted) {
+                copySound.volume = 0;
+                volumeSlider.value = 0;
+            } else {
+                copySound.volume = 1;
+                volumeSlider.value = 1;
+            }
+            toggleMuteOption.textContent = isMuted ? '🔇 <Unmute>' : '🔊 Mute';
+            localStorage.setItem('camplateVolume', copySound.volume);
+        });
+
+        // Control de Deslizador de Volumen
+        volumeSlider.addEventListener('input', () => {
+            const volume = volumeSlider.value;
+            copySound.volume = volume;
+            if (volume == 0) {
+                isMuted = true;
+                toggleMuteOption.textContent = '🔇 <Unmute>';
+            } else {
+                isMuted = false;
+                toggleMuteOption.textContent = '🔊 Mute';
+            }
+            localStorage.setItem('camplateVolume', volume);
+        });
+
+        // Cargar Audio Personalizado (Límite 4MB)
+        const soundUpload = document.getElementById('sound-upload');
+        const removeSoundBtn = document.getElementById('remove-sound');
+        const MAX_SIZE = 4 * 1024 * 1024;
+
+        soundUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (file.size > MAX_SIZE) {
+                alert('El archivo supera el tamaño permitido de 4MB');
+                soundUpload.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const base64Sound = event.target.result;
+                copySound.src = base64Sound;
+                localStorage.setItem('camplateCustomSound', base64Sound);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        removeSoundBtn.addEventListener('click', () => {
+            localStorage.removeItem('camplateCustomSound');
+            copySound.src = defaultSound;
+            soundUpload.value = '';
+            alert('Sonido restablecido al predeterminado');
+        });
+
+        // Inicializar volumen y sonidos guardados al cargar la app
+        function inicializarAudioSettings() {
+            const savedCustomSound = localStorage.getItem('camplateCustomSound');
+            if (savedCustomSound) {
+                copySound.src = savedCustomSound;
+            }
+
+            const savedVolume = localStorage.getItem('camplateVolume');
+            if (savedVolume !== null) {
+                copySound.volume = savedVolume;
+                volumeSlider.value = savedVolume;
+                if (savedVolume == 0) {
+                    isMuted = true;
+                    toggleMuteOption.textContent = '🔇 <Unmute>';
+                }
+            }
+        }
+
+        // ==========================================================================
+        // LÓGICA DE DETECCIÓN Y HERRAMIENTAS DE CÁMARA
+        // ==========================================================================
         function distancia(p1, p2) {
             const dx = p1.x - p2.x;
             const dy = p1.y - p2.y;
@@ -497,8 +860,14 @@
 
         function copiarDescripcionKey(numeroKey) {
             const now = Date.now();
+
+            if (numeroKey !== currentDetectedNumber) {
+                currentDetectedNumber = numeroKey;
+                detectionTimestamp = now;
+            }
+
             if (numeroKey === lastCopiedKey && (now - lastCopyTime) < COPY_COOLDOWN) {
-                return; 
+                return;
             }
 
             const keyElem = document.querySelector(`.key[data-key="${numeroKey}"]`);
@@ -517,14 +886,17 @@
                             lastCopiedKey = numeroKey;
                             lastCopyTime = Date.now();
 
-                            if (copySound) {
+                            // Reproducir el sonido si no está en mute
+                            if (copySound && !isMuted) {
                                 copySound.currentTime = 0;
-                                copySound.play().catch(err => console.warn("No se pudo reproducir el sonido:", err));
+                                const playPromise = copySound.play();
+                                if (playPromise !== undefined) {
+                                    playPromise.catch(err => console.warn("Audio bloqueado:", err));
+                                }
                             }
                         })
                         .catch(err => console.error("Error al copiar:", err));
                 } else {
-                    console.log(`Key ${numeroKey} no tiene descripción para copiar.`);
                     lastCopiedKey = numeroKey;
                     lastCopyTime = Date.now();
                 }
@@ -534,6 +906,14 @@
         }
 
         startBtn.addEventListener('click', async () => {
+            // Desbloqueo inicial del contexto de audio por interacción
+            if (copySound) {
+                copySound.play().then(() => {
+                    copySound.pause();
+                    copySound.currentTime = 0;
+                }).catch(e => console.log("Pre-carga lista"));
+            }
+
             if (!streamActivo) {
                 try {
                     streamActivo = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -542,8 +922,7 @@
                     video.style.display = 'block';
 
                     startBtn.classList.add("active");
-                    startBtn.querySelector(".btn-label").textContent = "";
-                    iniciarDeteccion(); 
+                    iniciarDeteccion();
                 } catch (error) {
                     alert("No se pudo acceder a la cámara: " + error.message);
                 }
@@ -558,8 +937,10 @@
                 cameraText.style.display = 'block';
 
                 startBtn.classList.remove("active");
-                startBtn.querySelector(".btn-label").textContent = "";
                 fingerCountElement.textContent = "Status: Off";
+
+                currentDetectedNumber = null;
+                detectionTimestamp = 0;
             }
         });
 
@@ -580,7 +961,6 @@
             }
 
             if (!cameraInstance) {
-                // Ahora llama correctamente a la clase constructora global 'Camera' de MediaPipe
                 cameraInstance = new Camera(video, {
                     onFrame: async () => {
                         await hands.send({ image: video });
@@ -610,6 +990,10 @@
             if (!handsDetected) {
                 fingerCountElement.textContent = "NO DETECTION";
                 document.querySelectorAll('.key').forEach(k => k.classList.remove('active'));
+
+                currentDetectedNumber = null;
+                detectionTimestamp = 0;
+
                 canvasCtx.restore();
                 return;
             }
@@ -618,13 +1002,6 @@
             let gestoCero = false;
 
             results.multiHandLandmarks.forEach((landmarks, idx) => {
-                if (typeof drawConnectors !== 'undefined' && typeof HAND_CONNECTIONS !== 'undefined') {
-                    drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, { color: 'rgba(0, 0, 0, 1)', lineWidth: 10 });
-                }
-                if (typeof drawLandmarks !== 'undefined') {
-                    drawLandmarks(canvasCtx, landmarks, { color: '#c7c7c74f', lineWidth: 1 });
-                }
-
                 let handLabel = null;
                 if (results.multiHandedness && results.multiHandedness[idx]) {
                     const classification = results.multiHandedness[idx];
@@ -640,6 +1017,36 @@
                 }
             });
 
+            let numeroFrameActual = gestoCero ? 0 : totalDedos;
+
+            let lineColor = 'rgba(0, 0, 0, 1)';
+            const now = Date.now();
+
+            canvasCtx.setLineDash([]);
+            canvasCtx.lineDashOffset = 0;
+
+            if (numeroFrameActual === currentDetectedNumber && detectionTimestamp > 0) {
+                const tiempoTranscurrido = now - detectionTimestamp;
+
+                if (tiempoTranscurrido < GREEN_DURATION) {
+                    lineColor = '#00ffcc';
+                    canvasCtx.setLineDash([12, 8]);
+                    canvasCtx.lineDashOffset = -(tiempoTranscurrido * 0.05);
+                }
+            }
+
+            results.multiHandLandmarks.forEach((landmarks) => {
+                if (typeof drawConnectors !== 'undefined' && typeof HAND_CONNECTIONS !== 'undefined') {
+                    drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, { color: lineColor, lineWidth: 6 });
+                }
+                if (typeof drawLandmarks !== 'undefined') {
+                    canvasCtx.save();
+                    canvasCtx.setLineDash([]);
+                    drawLandmarks(canvasCtx, landmarks, { color: '#ffffff', lineWidth: 1 });
+                    canvasCtx.restore();
+                }
+            });
+
             if (gestoCero) {
                 fingerCountElement.textContent = "Fingers: 0 ✅";
                 copiarDescripcionKey(0);
@@ -647,17 +1054,21 @@
                 fingerCountElement.textContent = `Fingers: ${totalDedos}`;
                 if (totalDedos > 0 && totalDedos <= 10) {
                     copiarDescripcionKey(totalDedos);
+                } else if (totalDedos > 10 || totalDedos === 0) {
+                    currentDetectedNumber = null;
+                    detectionTimestamp = 0;
                 }
             }
 
             canvasCtx.restore();
         }
 
-        // --- Modal de edición ---
+        // --- Ventana modal ---
         const modal = document.getElementById('modal');
         const closeModalBtn = document.getElementById('close-modal');
         const modalInput = document.getElementById('modal-input');
         const modalDescription = document.getElementById('modal-description');
+        const panelTitle = document.getElementById('modal-panel-title');
         const saveBtn = document.getElementById('save-title');
 
         let currentTitleElement = null;
@@ -680,6 +1091,7 @@
                 e.stopPropagation();
                 currentTitleElement = title;
 
+                panelTitle.textContent = `Configurar Key ${number}`;
                 modalInput.value = title.textContent;
                 modalDescription.value = keyData[number]?.description || "";
 
@@ -703,7 +1115,7 @@
                     description: modalDescription.value.trim()
                 };
 
-                guardarConfiguracion(); 
+                guardarConfiguracion();
             }
             modal.style.display = 'none';
         });
@@ -714,6 +1126,8 @@
             }
         });
 
+        // Ejecutar cargas iniciales al iniciar el DOM
+        inicializarAudioSettings();
         cargarConfiguracion();
     </script>
 </body>

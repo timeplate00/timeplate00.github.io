@@ -1,390 +1,99 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Timeplate - Tool 2</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeplate - Tool 1</title>
     <link rel="icon" type="image/png" href="/logo_v5.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
 
     <style>
         /* ==========================================================================
-           ESTILOS GENERALES (cam_styles.css)
+           Estilos Generales y Reseteo (Fondo Corregido para Scroll Absoluto)
            ========================================================================== */
         body {
             margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: black;
-            color: white;
-        }
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-top: 30px;
-            gap: 20px;
-        }
-
-        /* ==========================================================================
-           ANIMACIÓN DE ENTRADA AL INICIO (Optimizada para visibilidad total)
-           ========================================================================== */
-        @keyframes elementEntrance {
-            from {
-                opacity: 0;
-                transform: scale(0.95) translateY(15px);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-
-        .camera-box,
-        .play-btn {
-            opacity: 0;
-            animation: elementEntrance 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-
-        .camera-box {
-            animation-delay: 0.1s;
-        }
-
-        .play-btn {
-            animation-delay: 0.2s;
-        }
-
-        .keypad {
-            animation: elementEntrance 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-
-        /* ==========================================================================
-           COMPONENTES INTERNOS (Totalmente Visibles)
-           ========================================================================== */
-        .camera-box {
-            background-color: #111;
-            border: 1px solid #333;
-            width: 600px;
-            height: 250px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-family: 'Poppins', Arial, sans-serif;
+            background-color: #0a2239;
+            background-attachment: fixed;
+            /* Mantiene el fondo anclado mientras haces scroll */
+            min-height: 100vh;
             overflow: hidden;
-            border-radius: 6px;
+            /* Evita scrolls dobles extraños en el body */
         }
 
-        .camera-box video,
-        .camera-box canvas {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        /* Estilización de las barras de desplazamiento (Scrollbars Modernas) */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
         }
 
-        #camera-text {
-            font-size: 1.5rem;
-            letter-spacing: 2px;
-            color: #444;
-            user-select: none;
-            margin: 0;
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
         }
 
-        #finger-count {
-            position: absolute;
-            bottom: 8px;
-            left: 8px;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 1rem;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            z-index: 2;
-        }
-
-        .play-btn {
-            background-color: transparent;
-            border: 2px solid white;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 24px;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-        }
-
-        .play-btn:hover {
-            transform: scale(1.08);
-        }
-
-        /* Keypad styles */
-        .keypad {
-            display: grid;
-            grid-template-columns: repeat(3, 200px);
-            grid-auto-rows: 90px;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .key {
-            background-color: #222;
-            border-radius: 12px;
-            color: #aaa;
-            font-weight: bold;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            padding: 0 12px;
-            gap: 12px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-            cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.15s ease, border-color 0.15s ease, opacity 0.2s;
-            box-sizing: border-box;
-            border: 2px solid transparent;
-            opacity: 1 !important;
-        }
-
-        .key:hover {
-            background-color: #2a2a2a;
-            color: #fff;
-        }
-
-        .key-number {
-            background: #444;
-            color: white;
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 1rem;
-            flex-shrink: 0;
-            user-select: none;
-        }
-
-        .key-title {
-            flex: 1;
-            text-align: left;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        /* Animación de parpadeo / resaltado temporal */
-        @keyframes keyFlash {
-            0% {
-                box-shadow: 0 0 0 rgba(0, 255, 204, 0);
-                transform: scale(1);
-            }
-
-            25% {
-                box-shadow: 0 0 10px rgba(0, 255, 204, 0.6);
-                transform: scale(1.02);
-                background-color: #2a2a2a;
-            }
-
-            50% {
-                box-shadow: 0 0 0 rgba(0, 255, 204, 0);
-                transform: scale(1);
-            }
-
-            75% {
-                box-shadow: 0 0 10px rgba(0, 255, 204, 0.6);
-                transform: scale(1.02);
-                background-color: #2a2a2a;
-            }
-
-            100% {
-                box-shadow: 0 0 0 rgba(0, 255, 204, 0);
-                transform: scale(1);
-            }
-        }
-
-        .key.active {
-            border: 2px solid #00ffcc;
-            color: #fff;
-            animation: keyFlash 1.8s ease-in-out forwards;
-        }
-
-        /* ==========================================================================
-           VENTANA DE EDICIÓN PROFESIONAL (ESTILO PANEL CONTEXTUAL)
-           ========================================================================== */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(3px);
-            transition: all 0.25s ease;
-        }
-
-        .modal-content {
-            background: #11141a;
-            border: 1px solid rgba(0, 255, 204, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 255, 204, 0.05);
-            margin: 12% auto;
-            padding: 22px;
-            border-radius: 10px;
-            width: 340px;
-            color: white;
-            text-align: left;
-            position: relative;
-            box-sizing: border-box;
-            animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.96) translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 14px;
-            right: 16px;
-            font-size: 20px;
-            color: #666;
-            cursor: pointer;
-            transition: color 0.15s ease;
-        }
-
-        .close-btn:hover {
-            color: #00ffcc;
-        }
-
-        .modal-content h2 {
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #e6e6e6;
-            margin: 0 0 16px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding-bottom: 8px;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-bottom: 14px;
-        }
-
-        .input-group label {
-            font-size: 0.75rem;
-            color: #00ffcc;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-
-        #modal-input,
-        #modal-description {
-            width: 100%;
-            padding: 10px;
-            font-size: 0.9rem;
-            border-radius: 6px;
-            border: 1px solid #2d3545;
-            background: #090b0e;
-            color: white;
-            box-sizing: border-box;
-            transition: border-color 0.15s ease, box-shadow 0.15s ease;
-        }
-
-        #modal-input:focus,
-        #modal-description:focus {
-            outline: none;
-            border-color: #00ffcc;
-            box-shadow: 0 0 6px rgba(0, 255, 204, 0.2);
-        }
-
-        #modal-description {
-            min-height: 90px;
-            resize: vertical;
-            font-family: Arial, sans-serif;
-        }
-
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 18px;
-        }
-
-        .btn-panel {
-            padding: 8px 16px;
-            font-size: 0.85rem;
-            font-weight: bold;
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            box-sizing: border-box;
         }
 
-        #save-title {
-            background: #00ffcc;
-            color: #0a0c0f;
-            border: 1px solid #00ffcc;
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(166, 255, 0, 0.6);
+            box-shadow: 0 0 8px rgba(166, 255, 0, 0.4);
         }
 
-        #save-title:hover {
-            background: transparent;
-            color: #00ffcc;
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
-        }
-
-        /* --------------------------------------------------
-           HEADER ESTILO INDUSTRIAL
-        -------------------------------------------------- */
-        #header {
+        /* Contenedor Principal de la App */
+        #main-container {
             width: 100%;
-            background: linear-gradient(180deg, #0f1115, #0a0c0f);
-            border-bottom: 1px solid rgba(0, 255, 200, 0.2);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
-            position: relative;
-            box-sizing: border-box;
-        }
-
-        #header::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #00ffcc, transparent);
-            opacity: 0.6;
-        }
-
-        .header-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 12px 20px;
+            height: 100vh;
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Contenedor Intermedio: Agrupa Sidebar + Contenido del Workspace */
+        #app-body {
+            display: flex;
+            flex-direction: row;
+            flex-grow: 1;
+            width: 100%;
+            height: calc(100vh - 60px);
+            /* Descuenta el tamaño del header */
+            overflow: hidden;
+        }
+
+        /* Área de contenido del scroll (Barra de boards + lienzo) */
+        #content-area {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            overflow: auto;
+            /* Aquí es donde ocurre la navegación del lienzo */
+            position: relative;
+        }
+
+        /* ==========================================================================
+           Header (Fijo y Responsivo)
+           ========================================================================== */
+        #header {
+            display: flex;
             justify-content: space-between;
+            align-items: center;
+            background: rgba(88, 89, 92, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 12px 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            height: 60px;
             box-sizing: border-box;
         }
 
@@ -392,105 +101,328 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            min-width: unset;
+            flex-shrink: 0;
+        }
+
+        #branding h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.9);
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+            letter-spacing: 0.5px;
+        }
+
+        #branding h1::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #a6ff00;
+            border-radius: 2px;
+            box-shadow: 0 0 8px rgba(166, 255, 0, 0.6);
         }
 
         #logo-link {
             display: flex;
             align-items: center;
             text-decoration: none;
-            height: 100%;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #logo-link:hover {
+            transform: scale(1.08);
         }
 
         #logo {
-            height: 42px;
-            width: auto;
-            object-fit: contain;
-            display: block;
+            width: 60px;
+            height: auto;
             user-select: none;
             pointer-events: none;
-            filter: drop-shadow(0 0 0px transparent);
-            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), filter 0.25s ease;
         }
 
-        #logo-link:hover #logo {
-            transform: scale(1.06);
-            filter: drop-shadow(0 0 6px rgba(0, 255, 204, 0.6));
-        }
-
-        #branding h1 {
-            font-size: 1.4rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            color: #e6e6e6;
-            margin: 0;
-            padding: 0;
-            border: none;
-        }
-
-        /* Contenedor derecho del header */
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 20px;
-        }
-
-        .system-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.75rem;
-            color: #00ffcc;
-            letter-spacing: 1px;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: #00ffcc;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #00ffcc;
-            animation: pulseStatus 1.5s infinite;
-        }
-
-        @keyframes pulseStatus {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-
-            50% {
-                transform: scale(1.4);
-                opacity: 0.6;
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .play-btn.active {
-            border-color: #00ffcc;
-            color: #00ffcc;
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4), inset 0 0 8px rgba(0, 255, 204, 0.2);
+            gap: 10px;
         }
 
         /* ==========================================================================
-           BOTÓN Y MINI MENÚ DE CONFIGURACIÓN (EXTRAÍDO DE PASPLATE_APP)
+           Sidebar Vertical Colapsable Avanzado
            ========================================================================== */
-        #settings-btn {
-            font-size: 22px;
-            background-color: transparent;
+        #sidebar {
+            width: 70px;
+            background: rgba(20, 35, 55, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            gap: 20px;
+            flex-shrink: 0;
+            z-index: 98;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.15);
+            transition: width 0.35s cubic-bezier(0.25, 1, 0.5, 1), padding 0.35s ease, border-color 0.35s ease;
+            overflow: hidden;
+            /* Evita desbordamiento al colapsar */
+        }
+
+        /* Estado colapsado del Sidebar */
+        #sidebar.collapsed {
+            width: 0px;
+            padding-left: 0;
+            padding-right: 0;
+            border-right-color: transparent;
+        }
+
+        .sidebar-section-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 1px;
+            margin-bottom: -10px;
+            font-weight: bold;
+            user-select: none;
+            transition: opacity 0.2s ease;
+        }
+
+        #sidebar.collapsed .sidebar-section-title,
+        #sidebar.collapsed button {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Botón de control del colapso (Ubicado en el cabezal o flotante) */
+        #toggle-sidebar-btn {
+            background: rgba(255, 255, 255, 0.1);
             color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        #toggle-sidebar-btn:hover {
+            background: #a6ff00;
+            color: #000000;
+            box-shadow: 0 0 10px rgba(166, 255, 0, 0.5);
+            border-color: transparent;
+        }
+
+        /* ==========================================================================
+           Barra de Boards (Tabs)
+           ========================================================================== */
+        #boards-bar {
+            display: flex;
+            align-items: center;
+            background: rgba(20, 35, 55, 0.4);
+            padding: 6px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            gap: 8px;
+            user-select: none;
+            position: sticky;
+            top: 0;
+            z-index: 97;
+            flex-shrink: 0;
+            height: 46px;
+            box-sizing: border-box;
+        }
+
+        #add-board-btn {
+            background: #ffffff;
+            color: #000000;
             border: none;
-            border-radius: 50%;
-            width: 42px;
-            height: 42px;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            flex-shrink: 0;
+        }
+
+        #add-board-btn:hover:not(:disabled) {
+            background: #e5e5e5;
+            transform: scale(1.05);
+        }
+
+        #add-board-btn:disabled {
+            background: #4a5568;
+            color: #718096;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        #boards-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        #boards-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .board-tab {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
+            gap: 8px;
+            animation: tabEntrance 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes tabEntrance {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .board-tab.animation-exit {
+            animation: tabExit 0.25s ease forwards !important;
+        }
+
+        @keyframes tabExit {
+            from {
+                opacity: 1;
+                transform: scale(1);
+                width: var(--tab-width, auto);
+                padding-left: 14px;
+                padding-right: 14px;
+                margin-right: 6px;
+            }
+
+            to {
+                opacity: 0;
+                transform: scale(0.8);
+                width: 0;
+                padding-left: 0;
+                padding-right: 0;
+                margin-right: 0;
+                visibility: hidden;
+            }
+        }
+
+        .board-tab:hover {
+            background: rgba(255, 255, 255, 0.18);
+            color: #fff;
+        }
+
+        .board-tab.active {
+            background: #a6ff00;
+            color: #000000;
+            box-shadow: 0 0 12px rgba(166, 255, 0, 0.4);
+        }
+
+        .board-tab .close-board-btn {
+            background: transparent;
+            border: none;
+            color: inherit;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 0 2px;
+            border-radius: 4px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .board-tab .close-board-btn:hover {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .board-tab.active .close-board-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        /* ==========================================================================
+           Botones de Acción (Animaciones Micro-interacciones)
+           ========================================================================== */
+        #add-box-btn,
+        #add-line-box-btn,
+        #settings-btn {
+            font-family: 'Poppins', sans-serif;
+            border: none;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #add-box-btn {
+            font-size: 22px;
+            background-color: #ffffff;
+            color: #000000;
+            border-radius: 12px;
+            width: 46px;
+            height: 46px;
+        }
+
+        #add-box-btn:hover {
+            background-color: #e5e5e5;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        #add-line-box-btn {
+            font-size: 20px;
+            background-color: #000000;
+            color: #ffffff;
+            border-radius: 10px;
+            width: 38px;
+            height: 38px;
+        }
+
+        #add-line-box-btn:hover {
+            background-color: #1a1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        #settings-btn {
+            font-size: 22px;
+            background-color: transparent;
+            color: #ffffff;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            box-shadow: none;
         }
 
         #settings-btn:hover {
@@ -498,14 +430,222 @@
             transform: rotate(45deg);
         }
 
+        #add-box-btn:active,
+        #add-line-box-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* ==========================================================================
+           Workspace (Lienzo infinito con límite definido y limpio)
+           ========================================================================== */
+        #workspace {
+            position: relative;
+            width: 3000px;
+            /* Límite de navegación aceptable X */
+            height: 3000px;
+            /* Límite de navegación aceptable Y */
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        @keyframes boxEntrance {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .box,
+        .line-box {
+            animation: boxEntrance 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            will-change: transform, top, left;
+            transition: box-shadow 0.25s ease, background-color 0.3s ease;
+        }
+
+        .box {
+            width: 300px;
+            max-width: 90vw;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+            position: absolute;
+            cursor: grab;
+            background-color: #a1a1a1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .box:hover:not(.locked) {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .box:active:not(.locked) {
+            cursor: grabbing;
+        }
+
+        .line-box {
+            width: 260px;
+            max-width: 85vw;
+            height: auto;
+            min-height: 40px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+            position: absolute;
+            cursor: grab;
+            background-color: #ffffff;
+            border: 1px solid #000000;
+        }
+
+        /* Textareas */
+        .box textarea,
+        .line-box textarea {
+            width: 100%;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.25s ease, border-color 0.25s ease;
+        }
+
+        .box textarea {
+            resize: none;
+            overflow: hidden;
+            border-radius: 8px;
+            height: auto;
+            padding: 8px;
+            background-color: #e9e7e7;
+            font-size: 15px;
+            font-weight: bold;
+            border: 1px solid transparent;
+        }
+
+        .box textarea:focus {
+            outline: none;
+            background-color: #ffffff;
+            border-color: #a6ff00;
+        }
+
+        .line-box textarea {
+            resize: none;
+            overflow: hidden;
+            height: 24px !important;
+            border: none;
+            background-color: inherit;
+            font-size: 14px;
+            padding: 2px 5px;
+            font-weight: 500;
+        }
+
+        .line-box textarea:focus {
+            outline: none;
+        }
+
+        /* Botoneras internas */
+        .box-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            gap: 6px;
+        }
+
+        .box button,
+        .line-box button {
+            padding: 6px 12px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .box button:hover,
+        .line-box button:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        .box button:active,
+        .line-box button:active {
+            transform: scale(0.95);
+        }
+
+        .box .copy-btn {
+            flex-grow: 1;
+            padding: 8px;
+            background-color: black;
+            color: white;
+            cursor: copy;
+            font-size: 15px;
+        }
+
+        .box .delete-btn {
+            background-color: #ff3b30;
+            color: white;
+            cursor: pointer;
+        }
+
+        .box .lock-btn {
+            background-color: #f5cb8d;
+            color: #333;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            padding: 0;
+        }
+
+        .box .lock-btn.active,
+        .line-box .lock-btn.active {
+            background-color: #e0a847;
+            color: white;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .line-box-buttons {
+            display: flex;
+            gap: 4px;
+            margin-top: 6px;
+            justify-content: flex-end;
+        }
+
+        .line-box .color-btn {
+            background-color: #bfcfbf;
+            color: #2e4a2e;
+        }
+
+        .line-box .delete-btn {
+            background-color: #f77067;
+            color: white;
+        }
+
+        .line-box .lock-btn {
+            background-color: #f5cb8d;
+            color: #333;
+        }
+
+        /* ==========================================================================
+           Modales y Menús Flotantes (UI Premium)
+           ========================================================================== */
         #settings-menu {
             position: fixed;
+            /* Fixed para evitar que se desplace con el lienzo */
             background: #080e1f;
             color: white;
             border-radius: 14px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             padding: 12px;
-            z-index: 1005;
+            z-index: 1000;
             border: 1px solid rgba(255, 255, 255, 0.08);
             animation: menuFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
             transform-origin: top left;
@@ -534,7 +674,7 @@
             padding: 10px 14px;
             cursor: pointer;
             border-radius: 8px;
-            transition: background 0.2s ease;
+            transition: background 0.2s ease, transform 0.1s ease;
             font-size: 14px;
             display: flex;
             align-items: center;
@@ -546,12 +686,22 @@
         }
 
         #volume-control:hover,
-        #sound-control:hover {
+        #sound-control:hover,
+        #organized-control:hover,
+        #background-settings:hover {
             background: transparent !important;
         }
 
         #volume-control,
-        #sound-control {
+        #sound-control,
+        #organized-control,
+        #background-settings {
+            cursor: pointer;
+        }
+
+        #volume-control,
+        #sound-control,
+        #organized-control {
             cursor: default !important;
             flex-direction: column;
             align-items: flex-start !important;
@@ -560,13 +710,330 @@
 
         #volume-control input[type="range"] {
             width: 100%;
-            accent-color: #00ffcc;
+            accent-color: #a6ff00;
         }
 
-        #sound-upload {
+        #background-options,
+        #organized-options {
+            margin-top: 5px;
+            border-left: 2px solid #2d4263;
+            padding-left: 8px;
             width: 100%;
+            box-sizing: border-box;
+            list-style: none;
+        }
+
+        #background-options li,
+        #organized-options li {
+            font-size: 13px !important;
+            padding: 8px 10px !important;
+            display: block !important;
+            cursor: pointer !important;
+            border-radius: 6px !important;
+            background: transparent !important;
+            transition: background 0.2s ease !important;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        #background-options li:hover,
+        #organized-options li:hover {
+            background: #2d4263 !important;
+            color: #ffffff !important;
+        }
+
+        /* ==========================================================================
+           SELECTOR DE COLOR CONTEXTUAL OPTIMIZADO (Presets + Flotante)
+           ========================================================================== */
+        .color-picker {
+            position: absolute;
+            /* Cambiado a absolute para flotar relativo a la posición del LineBox en el lienzo */
+            z-index: 1005;
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 14px;
+            width: 210px;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+            transition: opacity 0.15s ease, transform 0.15s ease;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .color-picker.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+        }
+
+        .color-picker-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .color-picker-header h3 {
+            margin: 0;
+            font-size: 13px;
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        #close-color-picker {
+            background: transparent;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #a0aec0;
+            line-height: 1;
+            padding: 0;
+        }
+
+        #close-color-picker:hover {
+            color: #4a5568;
+        }
+
+        /* Cuadrícula de Presets Estables */
+        .color-presets-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .color-preset-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .color-preset-circle:hover {
+            transform: scale(1.12);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .color-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid #edf2f7;
+            padding-top: 10px;
+            gap: 10px;
+        }
+
+        .color-controls span {
             font-size: 11px;
-            color: #aaa;
+            color: #718096;
+            font-weight: 500;
+        }
+
+        #custom-color {
+            width: 34px;
+            height: 34px;
+            border: none;
+            cursor: pointer;
+            background: transparent;
+            padding: 0;
+        }
+
+        .color-preview {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e0;
+        }
+
+        /* Backdrop invisible para cerrar el picker al hacer clic fuera */
+        .color-picker-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: transparent;
+            z-index: 1004;
+            display: none;
+        }
+
+        .color-picker-backdrop.active {
+            display: block;
+        }
+
+        /* Modal de Confirmación Custom (Premium) */
+        .confirm-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            z-index: 2000;
+            background: #080e1f;
+            color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            padding: 24px;
+            width: 340px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .confirm-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Animación de parpadeo suave/destello rojo de advertencia */
+        @keyframes alertPulse {
+            0% {
+                border-color: rgba(255, 255, 255, 0.1);
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            }
+
+            50% {
+                border-color: #ff3b30;
+                box-shadow: 0 0 25px rgba(255, 59, 48, 0.6), 0 20px 50px rgba(0, 0, 0, 0.6);
+            }
+
+            100% {
+                border-color: rgba(255, 255, 255, 0.1);
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            }
+        }
+
+        .confirm-modal.pulse-danger {
+            animation: alertPulse 1.2s infinite ease-in-out;
+        }
+
+        .confirm-modal h3 {
+            margin: 0 0 12px 0;
+            font-size: 18px;
+            font-family: 'Montserrat', sans-serif;
+            word-wrap: break-word;
+        }
+
+        .confirm-modal p {
+            margin: 0 0 20px 0;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .confirm-buttons button {
+            padding: 8px 18px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            min-width: 80px;
+        }
+
+        .confirm-btn-yes {
+            background: #a6ff00;
+            color: black;
+        }
+
+        .confirm-btn-yes.danger {
+            background: #ff3b30;
+            color: white;
+        }
+
+        .confirm-btn-no {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        .confirm-buttons button:hover {
+            filter: brightness(1.1);
+            transform: scale(1.03);
+        }
+
+        /* ==========================================================================
+           Animaciones Especiales y Estados de Bloqueo
+           ========================================================================== */
+        @keyframes neonGlow {
+            0% {
+                box-shadow: 0 0 0px rgba(166, 255, 0, 0);
+            }
+
+            50% {
+                box-shadow: 0 0 25px rgba(166, 255, 0, 0.9);
+                border-color: #a6ff00;
+            }
+
+            100% {
+                box-shadow: 0 0 0px rgba(166, 255, 0, 0);
+            }
+        }
+
+        .box.glow {
+            animation: neonGlow 0.6s ease-out !important;
+        }
+
+        .locked {
+            cursor: default !important;
+            opacity: 0.85;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ==========================================================================
+           Adaptabilidad Responsiva (Móviles / Tablets)
+           ========================================================================== */
+        @media (max-width: 600px) {
+            #header {
+                padding: 10px 16px;
+            }
+
+            #branding h1 {
+                font-size: 20px;
+            }
+
+            #logo {
+                width: 48px;
+            }
+
+            #sidebar {
+                width: 60px;
+                padding: 15px 0;
+                gap: 15px;
+            }
+
+            #sidebar.collapsed {
+                width: 0px;
+            }
+
+            #add-box-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+
+            #add-line-box-btn {
+                width: 34px;
+                height: 34px;
+                font-size: 16px;
+            }
+
+            .box {
+                width: 280px;
+            }
+
+            .line-box {
+                width: 220px;
+            }
         }
     </style>
 </head>
@@ -574,150 +1041,171 @@
 <body>
     <div id="main-container">
         <div id="header">
-            <div class="header-inner">
-                <div id="branding">
-                    <a href="../tools.html" id="logo-link">
-                        <img src="/logo_v4.png" alt="Logo de Timeplate" id="logo">
-                    </a>
-                    <h1>Camplate</h1>
-                </div>
-
-                <div class="header-actions">
-                    <div class="system-status">
-                        <span class="status-dot"></span>
-                        <span class="status-text">SYSTEM READY</span>
-                    </div>
-                    <!-- Botón de configuración posicionado en el lado derecho -->
-                    <button id="settings-btn" title="Configuración de sonido">⚙️</button>
-                </div>
+            <div id="branding">
+                <button id="toggle-sidebar-btn" title="Mostrar/Ocultar Menú Lateral">◀</button>
+                <a href="../tools.html" id="logo-link">
+                    <img src="/logo_v4.png" alt="Logo de Timeplate" id="logo">
+                </a>
+                <h1>Pasplate</h1>
+            </div>
+            <div class="header-actions">
+                <button id="settings-btn">⚙️</button>
             </div>
         </div>
 
-        <main class="main-content">
-            <div class="camera-box">
-                <p id="camera-text">CAMERA</p>
-                <video id="camera-video" autoplay playsinline style="display:none;"></video>
-                <canvas id="output-canvas"></canvas>
-                <div id="finger-count">Status: Off</div>
+        <div id="app-body">
+            <div id="sidebar">
+                <span class="sidebar-section-title">Add</span>
+                <button id="add-box-btn" title="Agregar Recuadro">+</button>
+                <button id="add-line-box-btn" title="Agregar LineBox">+</button>
             </div>
 
-            <button class="play-btn" id="start-camera">
-                <span class="btn-icon">▶</span>
-                <span class="btn-label"></span>
-            </button>
+            <div id="content-area">
+                <div id="boards-bar">
+                    <button id="add-board-btn">+</button>
+                    <div id="boards-container"></div>
+                </div>
 
-            <div class="keypad">
-                <div class="key" data-key="1"><span class="key-number">1</span><span class="key-title">Name 1</span>
-                </div>
-                <div class="key" data-key="2"><span class="key-number">2</span><span class="key-title">Name 2</span>
-                </div>
-                <div class="key" data-key="3"><span class="key-number">3</span><span class="key-title">Name 3</span>
-                </div>
-                <div class="key" data-key="4"><span class="key-number">4</span><span class="key-title">Name 4</span>
-                </div>
-                <div class="key" data-key="5"><span class="key-number">5</span><span class="key-title">Name 5</span>
-                </div>
-                <div class="key" data-key="6"><span class="key-number">6</span><span class="key-title">Name 6</span>
-                </div>
-                <div class="key" data-key="7"><span class="key-number">7</span><span class="key-title">Name 7</span>
-                </div>
-                <div class="key" data-key="8"><span class="key-number">8</span><span class="key-title">Name 8</span>
-                </div>
-                <div class="key" data-key="9"><span class="key-number">9</span><span class="key-title">Name 9</span>
-                </div>
-                <div class="key" data-key="0"><span class="key-number">0</span><span class="key-title">Name 0</span>
-                </div>
-                <div class="key" data-key="10"><span class="key-number">10</span><span class="key-title">Name 10</span>
-                </div>
+                <div id="workspace"></div>
             </div>
-        </main>
-    </div>
+        </div>
 
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span id="close-modal" class="close-btn">&times;</span>
-            <h2 id="modal-panel-title">Editar Parámetro</h2>
-
-            <div class="input-group">
-                <label for="modal-input">Etiqueta / Nombre</label>
-                <input type="text" id="modal-input" placeholder="Ej. Copiar correo...">
+        <div id="color-picker" class="color-picker">
+            <div class="color-picker-header">
+                <h3>Colores</h3>
+                <button id="close-color-picker">×</button>
             </div>
+            <div class="color-presets-grid" id="color-presets-grid"></div>
 
-            <div class="input-group">
-                <label for="modal-description">Contenido de Portapapeles</label>
-                <textarea id="modal-description"
-                    placeholder="Escribe o pega el texto que se copiará al detectar este número..."></textarea>
+            <div class="color-controls">
+                <span>Personalizado:</span>
+                <input type="color" id="custom-color" value="#ffffff">
+                <div class="color-preview" id="color-preview"></div>
             </div>
+        </div>
 
-            <div class="modal-actions">
-                <button id="save-title" class="btn-panel">Guardar Cambios</button>
+        <div id="custom-confirm" class="confirm-modal">
+            <h3 id="confirm-title">Delete?</h3>
+            <p id="confirm-msg">This action cannot be undone.</p>
+            <div class="confirm-buttons">
+                <button id="confirm-yes" class="confirm-btn-yes">Yes</button>
+                <button id="confirm-no" class="confirm-btn-no">Cancel</button>
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
-
-    <!-- Elemento de audio base actualizado a 3.mp3 -->
-    <audio id="sound" src="3.mp3" preload="auto"></audio>
 
     <script>
-        const video = document.getElementById('camera-video');
-        const cameraText = document.getElementById('camera-text');
-        const startBtn = document.getElementById('start-camera');
-        const canvasElement = document.getElementById('output-canvas');
-        const canvasCtx = canvasElement.getContext('2d');
-        const fingerCountElement = document.getElementById('finger-count');
-        const copySound = document.getElementById('sound');
+        const workspace = document.getElementById('workspace');
+        const contentArea = document.getElementById('content-area');
+        const sidebar = document.getElementById('sidebar');
+        const toggleSidebarBtn = document.getElementById('toggle-sidebar-btn');
+        const addBoxBtn = document.getElementById('add-box-btn');
+        const addLineBoxBtn = document.getElementById('add-line-box-btn');
+        const colorPicker = document.getElementById('color-picker');
+        const colorPresetsGrid = document.getElementById('color-presets-grid');
+        const customColorInput = document.getElementById('custom-color');
+        const colorPreview = document.getElementById('color-preview');
+        const closeColorPickerBtn = document.getElementById('close-color-picker');
+
+        // Elementos de Boards
+        const boardsContainer = document.getElementById('boards-container');
+        const addBoardBtn = document.getElementById('add-board-btn');
+
+        // Modal Custom
+        const customConfirm = document.getElementById('custom-confirm');
+        const confirmYes = document.getElementById('confirm-yes');
+        const confirmNo = document.getElementById('confirm-no');
+
+        let currentBoxForColor = null;
+        let isMuted = false;
+
+        // Estado de los Boards
+        let activeBoardId = 1;
+        let boardsList = [1]; // Inicia con el Board 1
+
+        // ============================
+        // LÓGICA DE APERTURA/CIERRE DEL SIDEBAR
+        // ============================
+        toggleSidebarBtn.addEventListener('click', () => {
+            const isCollapsed = sidebar.classList.toggle('collapsed');
+            toggleSidebarBtn.textContent = isCollapsed ? '▶' : '◀';
+            localStorage.setItem('sidebarCollapsed', isCollapsed);
+        });
+
+        function initializeSidebarState() {
+            const wasCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            if (wasCollapsed) {
+                sidebar.classList.add('collapsed');
+                toggleSidebarBtn.textContent = '▶';
+            } else {
+                sidebar.classList.remove('collapsed');
+                toggleSidebarBtn.textContent = '◀';
+            }
+        }
+
+        // ============================
+        // AUDIO BASE
+        // ============================
+        let defaultSound = 'audio_1.mp3';
+        let copySound = new Audio(defaultSound);
+
+        // ============================
+        // LOAD CUSTOM SOUND
+        // ============================
+        const savedCustomSound = localStorage.getItem('customSound');
+        if (savedCustomSound) {
+            copySound.src = savedCustomSound;
+        }
+
+        // Obtener el botón de Configuración
         const settingsBtn = document.getElementById('settings-btn');
 
-        let streamActivo = null;
-        let cameraInstance = null;
-        let hands = null;
-
-        let keyData = {};
-        let isMuted = false;
-        let defaultSound = '3.mp3'; // Variable base actualizada
-
-        let lastCopiedKey = null;
-        let lastCopyTime = 0;
-        const COPY_COOLDOWN = 2000;
-        const COPY_DELAY = 500;
-
-        let currentDetectedNumber = null;
-        let detectionTimestamp = 0;
-        const GREEN_DURATION = 1000;
-
-        // ==========================================================================
-        // CREACIÓN DINÁMICA DEL MENU DE CONFIGURACIÓN (PASPLATE STYLE)
-        // ==========================================================================
+        // ============================
+        // SETTINGS MENU
+        // ============================
         const settingsMenu = document.createElement('div');
         settingsMenu.id = 'settings-menu';
         settingsMenu.innerHTML = `
-            <ul>
-                <li id="toggle-mute">🔊 Mute</li>
-                <li id="volume-control">
-                    🔈 Volume
-                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
-                </li>
-                <li id="sound-control">
-                    🎵 Sound
-                    <input type="file" id="sound-upload" accept="audio/*">
-                    <button id="remove-sound" style="background: #ff3b30; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-size: 11px; margin-top: 5px; width: 100%; font-weight: bold;">Delete sound</button>
-                </li>
+        <ul>
+            <li id="toggle-mute">🔊 Mute</li>
+            <li id="volume-control">
+                🔈 Volume
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
+            </li>
+            <li id="sound-control">
+                🎵 Sound
+                <input type="file" id="sound-upload" accept="audio/*">
+                <button id="remove-sound" style="background: #f77067; color: white; border: none; padding: 5px; border-radius: 5px; cursor: pointer; font-size: 12px; margin-top: 5px;">Delete sound    </button>
+            </li>
+            <li id="organized-control">
+                <span id="organized-trigger" style="cursor:pointer; display:block; width:100%;">+ Boxes Organized</span>
+                <ul id="organized-options" style="display:none;">
+                    <li data-action="template">- Template boxes</li>
+                    <li data-action="color">- Color boxes</li>
+                    <li data-action="empty">- Empty boxes</li>
+                </ul>
+            </li>
+            <li id="background-settings">+ Background</li>
+            <ul id="background-options" style="display:none; margin-left:15px;">
+                <li data-bg="#0a2239">- Blue</li>
+                <li data-bg="#121212">- Gray</li>
+                <li data-bg="#0f3d3e">- Green</li>
+                <li data-bg="linear-gradient(135deg, #1a1f36, #2d4263)">- Elegant</li>
             </ul>
+        </ul>
         `;
         settingsMenu.style.display = 'none';
         document.body.appendChild(settingsMenu);
 
-        // Desplegar / Ocultar Menú Contextual
+        // ============================
+        // TOGGLE MENU
+        // ============================
         settingsBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             settingsMenu.style.display = settingsMenu.style.display === 'block' ? 'none' : 'block';
             const rect = settingsBtn.getBoundingClientRect();
-            settingsMenu.style.top = (rect.bottom + window.scrollY) + 'px';
-            settingsMenu.style.left = (rect.left - 160 + window.scrollX) + 'px';
+            settingsMenu.style.top = (rect.bottom) + 'px';
+            settingsMenu.style.left = (rect.left - 160) + 'px';
         });
 
         document.addEventListener('click', () => {
@@ -725,7 +1213,9 @@
         });
         settingsMenu.addEventListener('click', (e) => e.stopPropagation());
 
-        // Mute / Unmute
+        // ============================ 
+        // MUTE
+        // ============================
         const toggleMuteOption = document.getElementById('toggle-mute');
         const volumeSlider = document.getElementById('volume-slider');
 
@@ -739,10 +1229,22 @@
                 volumeSlider.value = 1;
             }
             toggleMuteOption.textContent = isMuted ? '🔇 <Unmute>' : '🔊 Mute';
-            localStorage.setItem('camplateVolume', copySound.volume);
+            localStorage.setItem('soundVolume', copySound.volume);
         });
 
-        // Control de Deslizador de Volumen
+        // ============================
+        // VOLUME CONTROL
+        // ============================
+        const savedVolume = localStorage.getItem('soundVolume');
+        if (savedVolume !== null) {
+            copySound.volume = savedVolume;
+            volumeSlider.value = savedVolume;
+            if (savedVolume == 0) {
+                isMuted = true;
+                toggleMuteOption.textContent = '🔇 <Unmute>';
+            }
+        }
+
         volumeSlider.addEventListener('input', () => {
             const volume = volumeSlider.value;
             copySound.volume = volume;
@@ -753,13 +1255,15 @@
                 isMuted = false;
                 toggleMuteOption.textContent = '🔊 Mute';
             }
-            localStorage.setItem('camplateVolume', volume);
+            localStorage.setItem('soundVolume', volume);
         });
 
-        // Cargar Audio Personalizado (Límite 4MB)
+        // ============================
+        // SOUND UPLOAD (VALIDACIÓN 4MB)
+        // ============================
         const soundUpload = document.getElementById('sound-upload');
         const removeSoundBtn = document.getElementById('remove-sound');
-        const MAX_SIZE = 4 * 1024 * 1024;
+        const MAX_SIZE = 4 * 1024 * 1024; // 4MB
 
         soundUpload.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -775,360 +1279,689 @@
             reader.onload = function (event) {
                 const base64Sound = event.target.result;
                 copySound.src = base64Sound;
-                localStorage.setItem('camplateCustomSound', base64Sound);
+                localStorage.setItem('customSound', base64Sound);
             };
             reader.readAsDataURL(file);
         });
 
         removeSoundBtn.addEventListener('click', () => {
-            localStorage.removeItem('camplateCustomSound');
+            localStorage.removeItem('customSound');
             copySound.src = defaultSound;
-            soundUpload.value = '';
-            alert('Sonido restablecido al predeterminado');
         });
 
-        // Inicializar volumen y sonidos guardados al cargar la app
-        function inicializarAudioSettings() {
-            const savedCustomSound = localStorage.getItem('camplateCustomSound');
-            if (savedCustomSound) {
-                copySound.src = savedCustomSound;
-            }
+        // ============================
+        // SUBMENÚ BOXES ORGANIZED
+        // ============================
+        const organizedTrigger = document.getElementById('organized-trigger');
+        const organizedOptions = document.getElementById('organized-options');
 
-            const savedVolume = localStorage.getItem('camplateVolume');
-            if (savedVolume !== null) {
-                copySound.volume = savedVolume;
-                volumeSlider.value = savedVolume;
-                if (savedVolume == 0) {
-                    isMuted = true;
-                    toggleMuteOption.textContent = '🔇 <Unmute>';
-                }
-            }
-        }
-
-        // ==========================================================================
-        // LÓGICA DE DETECCIÓN Y HERRAMIENTAS DE CÁMARA
-        // ==========================================================================
-        function distancia(p1, p2) {
-            const dx = p1.x - p2.x;
-            const dy = p1.y - p2.y;
-            return Math.sqrt(dx * dx + dy * dy);
-        }
-
-        function contarDedosMano(landmarks, handLabel) {
-            let dedos = 0;
-            const thumbTip = landmarks[4];
-            const thumbIP = landmarks[3];
-
-            if (handLabel) {
-                if (handLabel === 'Right') {
-                    if (thumbTip.x < thumbIP.x) dedos++;
-                } else if (handLabel === 'Left') {
-                    if (thumbTip.x > thumbIP.x) dedos++;
-                }
-            } else {
-                const wristX = landmarks[0].x;
-                if (thumbTip.x < wristX && thumbTip.x < thumbIP.x) {
-                    dedos++;
-                } else if (thumbTip.x > wristX && thumbTip.x > thumbIP.x) {
-                    dedos++;
-                }
-            }
-
-            if (landmarks[8].y < landmarks[6].y) dedos++;
-            if (landmarks[12].y < landmarks[10].y) dedos++;
-            if (landmarks[16].y < landmarks[14].y) dedos++;
-            if (landmarks[20].y < landmarks[18].y) dedos++;
-
-            return dedos;
-        }
-
-        function guardarConfiguracion() {
-            localStorage.setItem("timeplateKeyData", JSON.stringify(keyData));
-        }
-
-        function cargarConfiguracion() {
-            const data = localStorage.getItem("timeplateKeyData");
-            if (data) {
-                keyData = JSON.parse(data);
-
-                Object.keys(keyData).forEach(num => {
-                    const keyElem = document.querySelector(`.key[data-key="${num}"] .key-title`);
-                    if (keyElem) keyElem.textContent = keyData[num].title || `Name ${num}`;
-                });
-            }
-        }
-
-        function copiarDescripcionKey(numeroKey) {
-            const now = Date.now();
-
-            if (numeroKey !== currentDetectedNumber) {
-                currentDetectedNumber = numeroKey;
-                detectionTimestamp = now;
-            }
-
-            if (numeroKey === lastCopiedKey && (now - lastCopyTime) < COPY_COOLDOWN) {
-                return;
-            }
-
-            const keyElem = document.querySelector(`.key[data-key="${numeroKey}"]`);
-            if (!keyElem) return;
-
-            const descripcion = keyData[numeroKey]?.description || "";
-
-            setTimeout(() => {
-                document.querySelectorAll('.key').forEach(k => k.classList.remove('active'));
-                keyElem.classList.add('active');
-
-                if (descripcion.trim() !== "") {
-                    navigator.clipboard.writeText(descripcion)
-                        .then(() => {
-                            console.log(`Descripción del key ${numeroKey} copiada:`, descripcion);
-                            lastCopiedKey = numeroKey;
-                            lastCopyTime = Date.now();
-
-                            // Reproducir el sonido si no está en mute
-                            if (copySound && !isMuted) {
-                                copySound.currentTime = 0;
-                                const playPromise = copySound.play();
-                                if (playPromise !== undefined) {
-                                    playPromise.catch(err => console.warn("Audio bloqueado:", err));
-                                }
-                            }
-                        })
-                        .catch(err => console.error("Error al copiar:", err));
-                } else {
-                    lastCopiedKey = numeroKey;
-                    lastCopyTime = Date.now();
-                }
-
-                setTimeout(() => keyElem.classList.remove('active'), 2000);
-            }, COPY_DELAY);
-        }
-
-        startBtn.addEventListener('click', async () => {
-            // Desbloqueo inicial del contexto de audio por interacción
-            if (copySound) {
-                copySound.play().then(() => {
-                    copySound.pause();
-                    copySound.currentTime = 0;
-                }).catch(e => console.log("Pre-carga lista"));
-            }
-
-            if (!streamActivo) {
-                try {
-                    streamActivo = await navigator.mediaDevices.getUserMedia({ video: true });
-                    video.srcObject = streamActivo;
-                    cameraText.style.display = 'none';
-                    video.style.display = 'block';
-
-                    startBtn.classList.add("active");
-                    iniciarDeteccion();
-                } catch (error) {
-                    alert("No se pudo acceder a la cámara: " + error.message);
-                }
-            } else {
-                if (cameraInstance) {
-                    cameraInstance.stop();
-                }
-                streamActivo.getTracks().forEach(track => track.stop());
-                streamActivo = null;
-
-                video.style.display = 'none';
-                cameraText.style.display = 'block';
-
-                startBtn.classList.remove("active");
-                fingerCountElement.textContent = "Status: Off";
-
-                currentDetectedNumber = null;
-                detectionTimestamp = 0;
-            }
+        organizedTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            organizedOptions.style.display = organizedOptions.style.display === 'block' ? 'none' : 'block';
         });
 
-        function iniciarDeteccion() {
-            if (!hands) {
-                hands = new Hands({
-                    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
-                });
-
-                hands.setOptions({
-                    maxNumHands: 2,
-                    modelComplexity: 1,
-                    minDetectionConfidence: 0.7,
-                    minTrackingConfidence: 0.7
-                });
-
-                hands.onResults(onResults);
-            }
-
-            if (!cameraInstance) {
-                cameraInstance = new Camera(video, {
-                    onFrame: async () => {
-                        await hands.send({ image: video });
-                    },
-                    width: 600,
-                    height: 250
-                });
-            }
-            cameraInstance.start();
-        }
-
-        function onResults(results) {
-            if (video.videoWidth && video.videoHeight) {
-                canvasElement.width = video.videoWidth;
-                canvasElement.height = video.videoHeight;
-            }
-
-            canvasCtx.save();
-            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-
-            if (results.image) {
-                canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
-            }
-
-            const handsDetected = results.multiHandLandmarks && results.multiHandLandmarks.length > 0;
-
-            if (!handsDetected) {
-                fingerCountElement.textContent = "NO DETECTION";
-                document.querySelectorAll('.key').forEach(k => k.classList.remove('active'));
-
-                currentDetectedNumber = null;
-                detectionTimestamp = 0;
-
-                canvasCtx.restore();
-                return;
-            }
-
-            let totalDedos = 0;
-            let gestoCero = false;
-
-            results.multiHandLandmarks.forEach((landmarks, idx) => {
-                let handLabel = null;
-                if (results.multiHandedness && results.multiHandedness[idx]) {
-                    const classification = results.multiHandedness[idx];
-                    handLabel = classification.label || (classification.classification && classification.classification[0] && classification.classification[0].label) || null;
-                }
-
-                const dedosEstaMano = contarDedosMano(landmarks, handLabel);
-                totalDedos += dedosEstaMano;
-
-                const dist = distancia(landmarks[4], landmarks[8]);
-                if (dist < 0.05) {
-                    gestoCero = true;
-                }
-            });
-
-            let numeroFrameActual = gestoCero ? 0 : totalDedos;
-
-            let lineColor = 'rgba(0, 0, 0, 1)';
-            const now = Date.now();
-
-            canvasCtx.setLineDash([]);
-            canvasCtx.lineDashOffset = 0;
-
-            if (numeroFrameActual === currentDetectedNumber && detectionTimestamp > 0) {
-                const tiempoTranscurrido = now - detectionTimestamp;
-
-                if (tiempoTranscurrido < GREEN_DURATION) {
-                    lineColor = '#00ffcc';
-                    canvasCtx.setLineDash([12, 8]);
-                    canvasCtx.lineDashOffset = -(tiempoTranscurrido * 0.05);
-                }
-            }
-
-            results.multiHandLandmarks.forEach((landmarks) => {
-                if (typeof drawConnectors !== 'undefined' && typeof HAND_CONNECTIONS !== 'undefined') {
-                    drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, { color: lineColor, lineWidth: 6 });
-                }
-                if (typeof drawLandmarks !== 'undefined') {
-                    canvasCtx.save();
-                    canvasCtx.setLineDash([]);
-                    drawLandmarks(canvasCtx, landmarks, { color: '#ffffff', lineWidth: 1 });
-                    canvasCtx.restore();
-                }
-            });
-
-            if (gestoCero) {
-                fingerCountElement.textContent = "Fingers: 0 ✅";
-                copiarDescripcionKey(0);
-            } else {
-                fingerCountElement.textContent = `Fingers: ${totalDedos}`;
-                if (totalDedos > 0 && totalDedos <= 10) {
-                    copiarDescripcionKey(totalDedos);
-                } else if (totalDedos > 10 || totalDedos === 0) {
-                    currentDetectedNumber = null;
-                    detectionTimestamp = 0;
-                }
-            }
-
-            canvasCtx.restore();
-        }
-
-        // --- Ventana modal ---
-        const modal = document.getElementById('modal');
-        const closeModalBtn = document.getElementById('close-modal');
-        const modalInput = document.getElementById('modal-input');
-        const modalDescription = document.getElementById('modal-description');
-        const panelTitle = document.getElementById('modal-panel-title');
-        const saveBtn = document.getElementById('save-title');
-
-        let currentTitleElement = null;
-
-        document.querySelectorAll('.key').forEach(key => {
-            const number = key.getAttribute('data-key');
-            const titleText = key.querySelector('.key-title')?.textContent || "";
-            keyData[number] = {
-                title: titleText,
-                description: ""
-            };
-        });
-
-        document.querySelectorAll('.key').forEach(key => {
-            const title = key.querySelector('.key-title');
-            const number = key.getAttribute('data-key');
-            if (!title) return;
-
-            title.addEventListener('click', (e) => {
+        organizedOptions.querySelectorAll('li').forEach(option => {
+            option.addEventListener('click', (e) => {
                 e.stopPropagation();
-                currentTitleElement = title;
-
-                panelTitle.textContent = `Configurar Key ${number}`;
-                modalInput.value = title.textContent;
-                modalDescription.value = keyData[number]?.description || "";
-
-                modal.style.display = 'block';
-                modalInput.focus();
+                settingsMenu.style.display = 'none';
+                const action = option.dataset.action;
+                startDoubleConfirmation(action);
             });
         });
 
-        closeModalBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
+        // ============================
+        // BACKGROUND (CORREGIDO PARA ADAPTARSE AL BODY)
+        // ============================
+        const backgroundSettings = document.getElementById('background-settings');
+        const backgroundOptions = document.getElementById('background-options');
+
+        backgroundSettings.addEventListener('click', (e) => {
+            e.stopPropagation();
+            backgroundOptions.style.display = backgroundOptions.style.display === 'block' ? 'none' : 'block';
         });
 
-        saveBtn.addEventListener('click', () => {
-            if (currentTitleElement && modalInput.value.trim() !== '') {
-                const parentKey = currentTitleElement.closest('.key');
-                const keyNumber = parentKey.getAttribute('data-key');
+        backgroundOptions.querySelectorAll('li').forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const bgValue = option.dataset.bg;
+                document.body.style.background = bgValue;
+                document.body.style.backgroundAttachment = 'fixed';
+                localStorage.setItem('selectedBackground', bgValue);
+                settingsMenu.style.display = 'none';
+            });
+        });
 
-                currentTitleElement.textContent = modalInput.value.trim();
-                keyData[keyNumber] = {
-                    title: modalInput.value.trim(),
-                    description: modalDescription.value.trim()
+        // ============================
+        // MIGRACIÓN DE DATOS
+        // ============================
+        function runDataMigration() {
+            const oldBoxes = localStorage.getItem('boxes');
+            const oldLineBoxes = localStorage.getItem('lineBoxes');
+
+            if (oldBoxes && !localStorage.getItem('boxes_b1')) {
+                localStorage.setItem('boxes_b1', oldBoxes);
+                localStorage.removeItem('boxes');
+            }
+            if (oldLineBoxes && !localStorage.getItem('lineBoxes_b1')) {
+                localStorage.setItem('lineBoxes_b1', oldLineBoxes);
+                localStorage.removeItem('lineBoxes');
+            }
+        }
+
+        // ============================
+        // LÓGICA DE BOARDS (GESTIÓN)
+        // ============================
+        function getLowestAvailableId() {
+            for (let i = 1; i <= 3; i++) {
+                if (!boardsList.includes(i)) return i;
+            }
+            return null;
+        }
+
+        function renderBoards() {
+            boardsContainer.innerHTML = '';
+            boardsList.sort((a, b) => a - b);
+
+            boardsList.forEach(id => {
+                const tab = document.createElement('div');
+                tab.classList.add('board-tab');
+                if (id === activeBoardId) tab.classList.add('active');
+                tab.textContent = `Board ${id}`;
+
+                // El Board 1 NO puede borrarse y no debe renderizar el botón de cierre
+                if (id !== 1) {
+                    const closeBtn = document.createElement('button');
+                    closeBtn.classList.add('close-board-btn');
+                    closeBtn.textContent = '×';
+                    closeBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        askDeleteBoard(id, tab);
+                    });
+                    tab.appendChild(closeBtn);
+                }
+
+                tab.addEventListener('click', () => {
+                    if (activeBoardId !== id) {
+                        switchBoard(id);
+                    }
+                });
+
+                boardsContainer.appendChild(tab);
+            });
+
+            addBoardBtn.disabled = boardsList.length >= 3;
+        }
+
+        function switchBoard(id) {
+            activeBoardId = id;
+            localStorage.setItem('activeBoardId', activeBoardId);
+
+            workspace.innerHTML = '';
+            loadBoxes();
+            loadLineBoxes();
+            renderBoards();
+            closeColorPicker();
+
+            contentArea.scrollTop = 0;
+            contentArea.scrollLeft = 0;
+        }
+
+        addBoardBtn.addEventListener('click', () => {
+            if (boardsList.length >= 3) return;
+
+            const nextId = getLowestAvailableId();
+            if (nextId) {
+                boardsList.push(nextId);
+                localStorage.setItem('boardsList', JSON.stringify(boardsList));
+                switchBoard(nextId);
+            }
+        });
+
+        // MODAL CUSTOM DE GESTIÓN (CONFIRMACIONES)
+        let onConfirmAction = null;
+        let confirmBackdrop = null;
+
+        function askDeleteBoard(id, tabElement) {
+            initConfirmBackdrop();
+            customConfirm.classList.remove('pulse-danger');
+
+            // Primer paso de confirmación
+            document.getElementById('confirm-title').textContent = `Delete Board ${id}?`;
+            document.getElementById('confirm-msg').textContent = 'All the boxes saved in this space will disappear forever.';
+            confirmYes.classList.add('danger');
+            confirmYes.textContent = 'Delete';
+
+            confirmBackdrop.classList.add('active');
+            customConfirm.classList.add('active');
+
+            // Lógica de Doble Confirmación implementada secuencialmente
+            onConfirmAction = () => {
+                customConfirm.classList.add('pulse-danger');
+                document.getElementById('confirm-title').textContent = 'Are you absolutely sure?';
+                document.getElementById('confirm-msg').textContent = 'Please confirm';
+                confirmYes.textContent = 'Yes, Delete';
+
+                // Segundo paso definitivo
+                onConfirmAction = () => {
+                    const width = tabElement.offsetWidth;
+                    tabElement.style.setProperty('--tab-width', `${width}px`);
+                    tabElement.classList.add('animation-exit');
+
+                    tabElement.addEventListener('animationend', () => {
+                        boardsList = boardsList.filter(b => b !== id);
+                        localStorage.setItem('boardsList', JSON.stringify(boardsList));
+
+                        localStorage.removeItem(`boxes_b${id}`);
+                        localStorage.removeItem(`lineBoxes_b${id}`);
+
+                        if (activeBoardId === id) {
+                            activeBoardId = boardsList[0];
+                            localStorage.setItem('activeBoardId', activeBoardId);
+                        }
+
+                        workspace.innerHTML = '';
+                        loadBoxes();
+                        loadLineBoxes();
+                        renderBoards();
+                    }, { once: true });
+                    closeConfirmModal();
+                };
+            };
+        }
+
+        // CONFIRMACIÓN DE BORRADO INDIVIDUAL
+        function askDeleteElement(element, typeName, saveCallback) {
+            initConfirmBackdrop();
+
+            customConfirm.classList.add('pulse-danger');
+
+            document.getElementById('confirm-title').textContent = `Delete ${typeName}?`;
+            document.getElementById('confirm-msg').textContent = 'This action will remove the box from your workspace immediately.';
+            confirmYes.classList.add('danger');
+            confirmYes.textContent = 'Delete';
+
+            confirmBackdrop.classList.add('active');
+            customConfirm.classList.add('active');
+
+            onConfirmAction = () => {
+                workspace.removeChild(element);
+                saveCallback();
+                closeConfirmModal();
+            };
+        }
+
+        // FLUJO DE CONFIRMACIÓN DOBLE
+        function startDoubleConfirmation(type) {
+            initConfirmBackdrop();
+            customConfirm.classList.remove('pulse-danger');
+            confirmYes.classList.remove('danger');
+            confirmYes.textContent = 'Yes';
+
+            let titleA = "";
+            let msgA = "This action will arrange elements automatically.";
+
+            if (type === 'template') titleA = " Organize template boxes?";
+            if (type === 'color') titleA = " Organize color boxes?";
+            if (type === 'empty') titleA = "Organize empty blank boxes?";
+
+            document.getElementById('confirm-title').textContent = titleA;
+            document.getElementById('confirm-msg').textContent = msgA;
+
+            confirmBackdrop.classList.add('active');
+            customConfirm.classList.add('active');
+
+            onConfirmAction = () => {
+                document.getElementById('confirm-title').textContent = "Please confirm you want to organize";
+                document.getElementById('confirm-msg').textContent = "Are you absolutely sure?";
+
+                onConfirmAction = () => {
+                    executeIntelligentOrganization(type);
+                    closeConfirmModal();
+                };
+            };
+        }
+
+        function initConfirmBackdrop() {
+            if (!confirmBackdrop) {
+                confirmBackdrop = document.createElement('div');
+                confirmBackdrop.classList.add('color-picker-backdrop');
+                document.body.appendChild(confirmBackdrop);
+                confirmBackdrop.addEventListener('click', closeConfirmModal);
+            }
+        }
+
+        confirmYes.addEventListener('click', () => {
+            if (onConfirmAction) onConfirmAction();
+        });
+
+        confirmNo.addEventListener('click', closeConfirmModal);
+
+        function closeConfirmModal() {
+            if (confirmBackdrop) confirmBackdrop.classList.remove('active');
+            customConfirm.classList.remove('active');
+            customConfirm.classList.remove('pulse-danger');
+            onConfirmAction = null;
+        }
+
+        // ============================
+        // ALGORITMO INTELIGENTE DE ORGANIZACIÓN
+        // ============================
+        function executeIntelligentOrganization(type) {
+            let targets = [];
+
+            if (type === 'template') {
+                targets = Array.from(workspace.querySelectorAll('.box'));
+            } else if (type === 'color') {
+                targets = Array.from(workspace.querySelectorAll('.line-box'));
+            } else if (type === 'empty') {
+                targets = Array.from(workspace.querySelectorAll('.box')).filter(b => {
+                    return b.querySelector('textarea').value.trim() === "";
+                });
+            }
+
+            if (targets.length === 0) return;
+
+            const startX = 40;
+            const startY = 40;
+            const gapX = 30;
+            const gapY = 30;
+            const maxWorkspaceWidth = workspace.clientWidth || window.innerWidth;
+
+            let currentX = startX;
+            let currentY = startY;
+            let maxHeightInCurrentRow = 0;
+
+            targets.forEach((element) => {
+                const rect = element.getBoundingClientRect();
+                const elementWidth = rect.width || (element.classList.contains('box') ? 300 : 260);
+                const elementHeight = rect.height || 120;
+
+                if (currentX + elementWidth > maxWorkspaceWidth - 40 && currentX > startX) {
+                    currentX = startX;
+                    currentY += maxHeightInCurrentRow + gapY;
+                    maxHeightInCurrentRow = 0;
+                }
+
+                element.style.left = `${currentX}px`;
+                element.style.top = `${currentY}px`;
+
+                currentX += elementWidth + gapX;
+
+                if (elementHeight > maxHeightInCurrentRow) {
+                    maxHeightInCurrentRow = elementHeight;
+                }
+            });
+
+            saveBoxes();
+            saveLineBoxes();
+        }
+
+        // ============================
+        // DOM READY
+        // ============================
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedBg = localStorage.getItem('selectedBackground');
+            if (savedBg) {
+                document.body.style.background = savedBg;
+                document.body.style.backgroundAttachment = 'fixed';
+            }
+
+            runDataMigration();
+
+            const savedBoardsList = localStorage.getItem('boardsList');
+            const savedActiveBoardId = localStorage.getItem('activeBoardId');
+
+            if (savedBoardsList) {
+                boardsList = JSON.parse(savedBoardsList);
+            }
+            if (savedActiveBoardId && boardsList.includes(parseInt(savedActiveBoardId))) {
+                activeBoardId = parseInt(savedActiveBoardId);
+            } else {
+                activeBoardId = boardsList[0] || 1;
+            }
+
+            // Inicializar estado del menú lateral
+            initializeSidebarState();
+
+            renderBoards();
+            loadBoxes();
+            loadLineBoxes();
+            generateColorPresets(); // Iniciar paleta fija
+        });
+
+        // ============================
+        // + BUTTONS (SIDEBAR)
+        // ============================
+        addBoxBtn.addEventListener('click', () => {
+            const currentScrollTop = contentArea.scrollTop;
+            const currentScrollLeft = contentArea.scrollLeft;
+            createBox({ text: '', left: `${currentScrollLeft + 50}px`, top: `${currentScrollTop + 150}px`, locked: 'false' });
+            saveBoxes();
+        });
+
+        addLineBoxBtn.addEventListener('click', () => {
+            const currentScrollTop = contentArea.scrollTop;
+            const currentScrollLeft = contentArea.scrollLeft;
+            createLineBox({
+                text: '',
+                left: `${currentScrollLeft + 50}px`,
+                top: `${currentScrollTop + 150}px`,
+                color: '#ffffff',
+                locked: 'false'
+            });
+            saveLineBoxes();
+        });
+
+        // ============================
+        // CREATE BOX
+        // ============================
+        function createBox(data) {
+            const box = document.createElement('div');
+            box.classList.add('box');
+            box.style.left = data.left;
+            box.style.top = data.top;
+
+            const textarea = document.createElement('textarea');
+            textarea.placeholder = 'Texto...';
+            textarea.value = data.text;
+            box.dataset.locked = data.locked || 'false';
+
+            textarea.addEventListener('input', () => {
+                textarea.style.height = 'auto';
+                textarea.style.height = `${textarea.scrollHeight}px`;
+                saveBoxes();
+            });
+
+            const buttonsDiv = document.createElement('div');
+            buttonsDiv.classList.add('box-buttons');
+
+            const copyBtn = document.createElement('button');
+            copyBtn.classList.add('copy-btn');
+            copyBtn.textContent = '+';
+            copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(textarea.value);
+                if (!isMuted) {
+                    copySound.currentTime = 0;
+                    copySound.play().catch(e => console.log("Audio play prevented"));
+                }
+
+                box.classList.remove('glow');
+                void box.offsetWidth;
+                box.classList.add('glow');
+            });
+
+            const lockBtn = document.createElement('button');
+            lockBtn.classList.add('lock-btn');
+            lockBtn.textContent = '🔒';
+            lockBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isLocked = box.dataset.locked === 'true';
+                box.dataset.locked = !isLocked;
+                if (!isLocked) {
+                    box.classList.add('locked');
+                    lockBtn.classList.add('active');
+                } else {
+                    box.classList.remove('locked');
+                    lockBtn.classList.remove('active');
+                }
+                saveBoxes();
+            });
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.classList.add('delete-btn');
+            deleteBtn.textContent = '-';
+            deleteBtn.addEventListener('click', () => {
+                askDeleteElement(box, 'box', saveBoxes);
+            });
+
+            buttonsDiv.appendChild(copyBtn);
+            buttonsDiv.appendChild(lockBtn);
+            buttonsDiv.appendChild(deleteBtn);
+            box.appendChild(textarea);
+            box.appendChild(buttonsDiv);
+            workspace.appendChild(box);
+
+            if (box.dataset.locked === 'true') {
+                box.classList.add('locked');
+                lockBtn.classList.add('active');
+            }
+
+            textarea.style.height = `${textarea.scrollHeight}px`;
+            makeDraggable(box);
+        }
+
+        // ============================
+        // CREATE LINE BOX
+        // ============================
+        function createLineBox(data) {
+            const box = document.createElement('div');
+            box.classList.add('line-box');
+            box.style.left = data.left;
+            box.style.top = data.top;
+            box.style.backgroundColor = data.color;
+            box.dataset.locked = data.locked || 'false';
+
+            if (data.locked === 'true') {
+                box.classList.add('locked');
+            }
+
+            const textarea = document.createElement('textarea');
+            textarea.placeholder = 'Texto...';
+            textarea.value = data.text || '';
+            textarea.setAttribute('value', data.text || '');
+
+            textarea.addEventListener('mousedown', (e) => e.stopPropagation());
+            textarea.addEventListener('touchstart', (e) => e.stopPropagation());
+
+            textarea.addEventListener('input', () => {
+                textarea.setAttribute('value', textarea.value);
+                saveLineBoxes();
+            });
+
+            const buttonsDiv = document.createElement('div');
+            buttonsDiv.classList.add('line-box-buttons');
+
+            const colorBtn = document.createElement('button');
+            colorBtn.classList.add('color-btn');
+            colorBtn.textContent = '🎨';
+            colorBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                currentBoxForColor = box;
+                showColorPicker(colorBtn); // Enviamos el botón de referencia para el cálculo de posición
+            });
+
+            const lockBtn = document.createElement('button');
+            lockBtn.classList.add('lock-btn');
+            lockBtn.textContent = '🔒';
+            if (data.locked === 'true') {
+                lockBtn.classList.add('active');
+            }
+            lockBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isLocked = box.dataset.locked === 'true';
+                box.dataset.locked = !isLocked;
+                if (!isLocked) {
+                    box.classList.add('locked');
+                    lockBtn.classList.add('active');
+                } else {
+                    box.classList.remove('locked');
+                    lockBtn.classList.remove('active');
+                }
+                saveLineBoxes();
+            });
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.classList.add('delete-btn');
+            deleteBtn.textContent = 'X';
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                askDeleteElement(box, 'LineBox', saveLineBoxes);
+            });
+
+            buttonsDiv.appendChild(colorBtn);
+            buttonsDiv.appendChild(lockBtn);
+            buttonsDiv.appendChild(deleteBtn);
+
+            box.appendChild(textarea);
+            box.appendChild(buttonsDiv);
+            workspace.appendChild(box);
+
+            makeDraggable(box);
+        }
+
+        // ============================
+        // DRAG
+        // ============================
+        function makeDraggable(element) {
+            let offsetX, offsetY;
+
+            const startDrag = (clientX, clientY, target) => {
+                if (target.tagName === 'TEXTAREA' || target.tagName === 'BUTTON' || element.classList.contains('locked')) return;
+
+                offsetX = clientX - element.offsetLeft;
+                offsetY = clientY - element.offsetTop;
+
+                const moveAt = (moveX, moveY) => {
+                    let newLeft = moveX - offsetX;
+                    let newTop = moveY - offsetY;
+
+                    if (newLeft < 10) newLeft = 10;
+                    if (newTop < 10) newTop = 10;
+                    if (newLeft > 2650) newLeft = 2650;
+                    if (newTop > 2850) newTop = 2850;
+
+                    element.style.left = `${newLeft}px`;
+                    element.style.top = `${newTop}px`;
                 };
 
-                guardarConfiguracion();
+                const onMouseMove = (e) => moveAt(e.clientX, e.clientY);
+                const onTouchMove = (e) => {
+                    if (e.touches.length > 0) moveAt(e.touches[0].clientX, e.touches[0].clientY);
+                };
+
+                const stopDrag = () => {
+                    document.removeEventListener('mousemove', onMouseMove);
+                    document.removeEventListener('touchmove', onTouchMove);
+
+                    if (element.classList.contains('box')) {
+                        saveBoxes();
+                    } else {
+                        saveLineBoxes();
+                    }
+                };
+
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('touchmove', onTouchMove, { passive: false });
+                document.addEventListener('mouseup', stopDrag, { once: true });
+                document.addEventListener('touchend', stopDrag, { once: true });
+            };
+
+            element.addEventListener('mousedown', (e) => startDrag(e.clientX, e.clientY, e.target));
+            element.addEventListener('touchstart', (e) => {
+                if (e.touches.length > 0) startDrag(e.touches[0].clientX, e.touches[0].clientY, e.target);
+            }, { passive: true });
+        }
+
+        // ============================
+        // OPTIMIZED CONTEXTUAL COLOR PICKER
+        // ============================
+        let pickerBackdrop = null;
+        const presetColors = [
+            '#ffffff', '#f7fafc', '#edf2f7', '#e2e8f0', '#cbd5e0',
+            '#feb2b2', '#fbd38d', '#faf089', '#9ae6b4', '#9decf9',
+            '#fc8181', '#f6ad55', '#f6e05e', '#68d391', '#4fd1c5',
+            '#f56565', '#ed8936', '#ecc94b', '#48bb78', '#38b2ac',
+            '#e53e3e', '#dd6b20', '#d69e2e', '#38a169', '#319795'
+        ];
+
+        function generateColorPresets() {
+            colorPresetsGrid.innerHTML = '';
+            presetColors.forEach(color => {
+                const circle = document.createElement('div');
+                circle.classList.add('color-preset-circle');
+                circle.style.backgroundColor = color;
+                circle.addEventListener('click', () => {
+                    applyColor(color);
+                    closeColorPicker(); // Cierre automático cómodo al seleccionar
+                });
+                colorPresetsGrid.appendChild(circle);
+            });
+        }
+
+        function showColorPicker(triggerButton) {
+            if (!pickerBackdrop) {
+                pickerBackdrop = document.createElement('div');
+                pickerBackdrop.classList.add('color-picker-backdrop');
+                document.body.appendChild(pickerBackdrop);
+                pickerBackdrop.addEventListener('click', closeColorPicker);
             }
-            modal.style.display = 'none';
+
+            // Conseguir la posición del LineBox en el lienzo infinito
+            const lineBox = triggerButton.closest('.line-box');
+            const posX = parseInt(lineBox.style.left);
+            const posY = parseInt(lineBox.style.top);
+
+            // Posicionar el selector flotante alineado de manera precisa al componente
+            colorPicker.style.left = `${posX}px`;
+            colorPicker.style.top = `${posY + 45}px`;
+
+            pickerBackdrop.classList.add('active');
+            colorPicker.classList.add('active');
+        }
+
+        function closeColorPicker() {
+            if (pickerBackdrop) pickerBackdrop.classList.remove('active');
+            colorPicker.classList.remove('active');
+        }
+
+        closeColorPickerBtn.addEventListener('click', closeColorPicker);
+
+        customColorInput.addEventListener('input', () => {
+            applyColor(customColorInput.value);
         });
 
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
+        function applyColor(color) {
+            if (!currentBoxForColor) return;
 
-        // Ejecutar cargas iniciales al iniciar el DOM
-        inicializarAudioSettings();
-        cargarConfiguracion();
+            currentBoxForColor.style.backgroundColor = color;
+            currentBoxForColor.querySelector('textarea').style.backgroundColor = color;
+            colorPreview.style.backgroundColor = color;
+            saveLineBoxes();
+        }
+
+        // ============================
+        // SAVE / LOAD 
+        // ============================
+        function saveBoxes() {
+            const boxes = Array.from(workspace.querySelectorAll('.box')).map(box => ({
+                text: box.querySelector('textarea').value,
+                left: box.style.left,
+                top: box.style.top,
+                locked: box.dataset.locked
+            }));
+            localStorage.setItem(`boxes_b${activeBoardId}`, JSON.stringify(boxes));
+        }
+
+        function loadBoxes() {
+            const savedBoxes = JSON.parse(localStorage.getItem(`boxes_b${activeBoardId}`) || '[]');
+            savedBoxes.forEach(data => createBox(data));
+        }
+
+        function saveLineBoxes() {
+            const lineBoxes = Array.from(workspace.querySelectorAll('.line-box')).map(box => ({
+                text: box.querySelector('textarea').value,
+                left: box.style.left,
+                top: box.style.top,
+                color: box.style.backgroundColor,
+                locked: box.dataset.locked
+            }));
+            localStorage.setItem(`lineBoxes_b${activeBoardId}`, JSON.stringify(lineBoxes));
+        }
+
+        function loadLineBoxes() {
+            const savedLineBoxes = JSON.parse(localStorage.getItem(`lineBoxes_b${activeBoardId}`) || '[]');
+            savedLineBoxes.forEach(data => createLineBox(data));
+        }
     </script>
 </body>
 

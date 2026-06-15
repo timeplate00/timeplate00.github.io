@@ -19,9 +19,11 @@
             margin: 0;
             font-family: 'Poppins', Arial, sans-serif;
             background-color: #0a2239;
-            background-attachment: fixed; /* Mantiene el fondo anclado mientras haces scroll */
+            background-attachment: fixed;
+            /* Mantiene el fondo anclado mientras haces scroll */
             min-height: 100vh;
-            overflow: hidden; /* Evita scrolls dobles extraños en el body */
+            overflow: hidden;
+            /* Evita scrolls dobles extraños en el body */
         }
 
         /* Estilización de las barras de desplazamiento (Scrollbars Modernas) */
@@ -59,7 +61,8 @@
             flex-direction: row;
             flex-grow: 1;
             width: 100%;
-            height: calc(100vh - 60px); /* Descuenta el tamaño del header */
+            height: calc(100vh - 60px);
+            /* Descuenta el tamaño del header */
             overflow: hidden;
         }
 
@@ -68,7 +71,8 @@
             display: flex;
             flex-direction: column;
             flex-grow: 1;
-            overflow: auto; /* Aquí es donde ocurre la navegación del lienzo */
+            overflow: auto;
+            /* Aquí es donde ocurre la navegación del lienzo */
             position: relative;
         }
 
@@ -165,7 +169,8 @@
             z-index: 98;
             box-shadow: 4px 0 15px rgba(0, 0, 0, 0.15);
             transition: width 0.35s cubic-bezier(0.25, 1, 0.5, 1), padding 0.35s ease, border-color 0.35s ease;
-            overflow: hidden; /* Evita desbordamiento al colapsar */
+            overflow: hidden;
+            /* Evita desbordamiento al colapsar */
         }
 
         /* Estado colapsado del Sidebar */
@@ -435,8 +440,10 @@
            ========================================================================== */
         #workspace {
             position: relative;
-            width: 3000px;  /* Límite de navegación aceptable X */
-            height: 3000px; /* Límite de navegación aceptable Y */
+            width: 3000px;
+            /* Límite de navegación aceptable X */
+            height: 3000px;
+            /* Límite de navegación aceptable Y */
             padding: 40px;
             box-sizing: border-box;
         }
@@ -631,7 +638,8 @@
            Modales y Menús Flotantes (UI Premium)
            ========================================================================== */
         #settings-menu {
-            position: fixed; /* Fixed para evitar que se desplace con el lienzo */
+            position: fixed;
+            /* Fixed para evitar que se desplace con el lienzo */
             background: #080e1f;
             color: white;
             border-radius: 14px;
@@ -715,7 +723,7 @@
             list-style: none;
         }
 
-        #background-options li, 
+        #background-options li,
         #organized-options li {
             font-size: 13px !important;
             padding: 8px 10px !important;
@@ -727,7 +735,7 @@
             color: rgba(255, 255, 255, 0.85);
         }
 
-        #background-options li:hover, 
+        #background-options li:hover,
         #organized-options li:hover {
             background: #2d4263 !important;
             color: #ffffff !important;
@@ -737,7 +745,8 @@
            SELECTOR DE COLOR CONTEXTUAL OPTIMIZADO (Presets + Flotante)
            ========================================================================== */
         .color-picker {
-            position: absolute; /* Cambiado a absolute para flotar relativo a la posición del LineBox en el lienzo */
+            position: absolute;
+            /* Cambiado a absolute para flotar relativo a la posición del LineBox en el lienzo */
             z-index: 1005;
             background: #ffffff;
             border-radius: 14px;
@@ -804,7 +813,7 @@
 
         .color-preset-circle:hover {
             transform: scale(1.12);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
 
         .color-controls {
@@ -886,10 +895,12 @@
                 border-color: rgba(255, 255, 255, 0.1);
                 box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
             }
+
             50% {
                 border-color: #ff3b30;
                 box-shadow: 0 0 25px rgba(255, 59, 48, 0.6), 0 20px 50px rgba(0, 0, 0, 0.6);
             }
+
             100% {
                 border-color: rgba(255, 255, 255, 0.1);
                 box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
@@ -1065,7 +1076,7 @@
                 <button id="close-color-picker">×</button>
             </div>
             <div class="color-presets-grid" id="color-presets-grid"></div>
-            
+
             <div class="color-controls">
                 <span>Personalizado:</span>
                 <input type="color" id="custom-color" value="#ffffff">
@@ -1074,11 +1085,11 @@
         </div>
 
         <div id="custom-confirm" class="confirm-modal">
-            <h3 id="confirm-title">¿Eliminar?</h3>
-            <p id="confirm-msg">Esta acción no se puede deshacer.</p>
+            <h3 id="confirm-title">Delete?</h3>
+            <p id="confirm-msg">This action cannot be undone.</p>
             <div class="confirm-buttons">
-                <button id="confirm-yes" class="confirm-btn-yes">Sí</button>
-                <button id="confirm-no" class="confirm-btn-no">Cancelar</button>
+                <button id="confirm-yes" class="confirm-btn-yes">Yes</button>
+                <button id="confirm-no" class="confirm-btn-no">Cancel</button>
             </div>
         </div>
     </div>
@@ -1291,7 +1302,7 @@
 
         organizedOptions.querySelectorAll('li').forEach(option => {
             option.addEventListener('click', (e) => {
-                e.stopPropagation(); 
+                e.stopPropagation();
                 settingsMenu.style.display = 'none';
                 const action = option.dataset.action;
                 startDoubleConfirmation(action);
@@ -1314,7 +1325,7 @@
                 e.stopPropagation();
                 const bgValue = option.dataset.bg;
                 document.body.style.background = bgValue;
-                document.body.style.backgroundAttachment = 'fixed'; 
+                document.body.style.backgroundAttachment = 'fixed';
                 localStorage.setItem('selectedBackground', bgValue);
                 settingsMenu.style.display = 'none';
             });
@@ -1357,7 +1368,8 @@
                 if (id === activeBoardId) tab.classList.add('active');
                 tab.textContent = `Board ${id}`;
 
-                if (boardsList.length > 1) {
+                // El Board 1 NO puede borrarse y no debe renderizar el botón de cierre
+                if (id !== 1) {
                     const closeBtn = document.createElement('button');
                     closeBtn.classList.add('close-board-btn');
                     closeBtn.textContent = '×';
@@ -1389,7 +1401,7 @@
             loadLineBoxes();
             renderBoards();
             closeColorPicker();
-            
+
             contentArea.scrollTop = 0;
             contentArea.scrollLeft = 0;
         }
@@ -1411,40 +1423,49 @@
 
         function askDeleteBoard(id, tabElement) {
             initConfirmBackdrop();
-
             customConfirm.classList.remove('pulse-danger');
 
-            document.getElementById('confirm-title').textContent = `¿Eliminar Board ${id}?`;
-            document.getElementById('confirm-msg').textContent = 'Todos los recuadros guardados en este espacio desaparecerán para siempre.';
+            // Primer paso de confirmación
+            document.getElementById('confirm-title').textContent = `Delete Board ${id}?`;
+            document.getElementById('confirm-msg').textContent = 'All the boxes saved in this space will disappear forever.';
             confirmYes.classList.add('danger');
-            confirmYes.textContent = 'Eliminar';
+            confirmYes.textContent = 'Delete';
 
             confirmBackdrop.classList.add('active');
             customConfirm.classList.add('active');
 
+            // Lógica de Doble Confirmación implementada secuencialmente
             onConfirmAction = () => {
-                const width = tabElement.offsetWidth;
-                tabElement.style.setProperty('--tab-width', `${width}px`);
-                tabElement.classList.add('animation-exit');
+                customConfirm.classList.add('pulse-danger');
+                document.getElementById('confirm-title').textContent = 'Are you absolutely sure?';
+                document.getElementById('confirm-msg').textContent = 'Please confirm';
+                confirmYes.textContent = 'Yes, Delete';
 
-                tabElement.addEventListener('animationend', () => {
-                    boardsList = boardsList.filter(b => b !== id);
-                    localStorage.setItem('boardsList', JSON.stringify(boardsList));
+                // Segundo paso definitivo
+                onConfirmAction = () => {
+                    const width = tabElement.offsetWidth;
+                    tabElement.style.setProperty('--tab-width', `${width}px`);
+                    tabElement.classList.add('animation-exit');
 
-                    localStorage.removeItem(`boxes_b${id}`);
-                    localStorage.removeItem(`lineBoxes_b${id}`);
+                    tabElement.addEventListener('animationend', () => {
+                        boardsList = boardsList.filter(b => b !== id);
+                        localStorage.setItem('boardsList', JSON.stringify(boardsList));
 
-                    if (activeBoardId === id) {
-                        activeBoardId = boardsList[0];
-                        localStorage.setItem('activeBoardId', activeBoardId);
-                    }
+                        localStorage.removeItem(`boxes_b${id}`);
+                        localStorage.removeItem(`lineBoxes_b${id}`);
 
-                    workspace.innerHTML = '';
-                    loadBoxes();
-                    loadLineBoxes();
-                    renderBoards();
-                }, { once: true });
-                closeConfirmModal();
+                        if (activeBoardId === id) {
+                            activeBoardId = boardsList[0];
+                            localStorage.setItem('activeBoardId', activeBoardId);
+                        }
+
+                        workspace.innerHTML = '';
+                        loadBoxes();
+                        loadLineBoxes();
+                        renderBoards();
+                    }, { once: true });
+                    closeConfirmModal();
+                };
             };
         }
 
@@ -1454,10 +1475,10 @@
 
             customConfirm.classList.add('pulse-danger');
 
-            document.getElementById('confirm-title').textContent = `¿Eliminar este ${typeName}?`;
-            document.getElementById('confirm-msg').textContent = 'Esta acción quitará el recuadro de tu espacio de trabajo de forma inmediata.';
+            document.getElementById('confirm-title').textContent = `Delete ${typeName}?`;
+            document.getElementById('confirm-msg').textContent = 'This action will remove the box from your workspace immediately.';
             confirmYes.classList.add('danger');
-            confirmYes.textContent = 'Eliminar';
+            confirmYes.textContent = 'Delete';
 
             confirmBackdrop.classList.add('active');
             customConfirm.classList.add('active');
@@ -1472,7 +1493,7 @@
         // FLUJO DE CONFIRMACIÓN DOBLE
         function startDoubleConfirmation(type) {
             initConfirmBackdrop();
-            customConfirm.classList.remove('pulse-danger'); 
+            customConfirm.classList.remove('pulse-danger');
             confirmYes.classList.remove('danger');
             confirmYes.textContent = 'Yes';
 
@@ -1518,7 +1539,7 @@
         function closeConfirmModal() {
             if (confirmBackdrop) confirmBackdrop.classList.remove('active');
             customConfirm.classList.remove('active');
-            customConfirm.classList.remove('pulse-danger'); 
+            customConfirm.classList.remove('pulse-danger');
             onConfirmAction = null;
         }
 
@@ -1663,9 +1684,9 @@
                     copySound.currentTime = 0;
                     copySound.play().catch(e => console.log("Audio play prevented"));
                 }
-                
+
                 box.classList.remove('glow');
-                void box.offsetWidth; 
+                void box.offsetWidth;
                 box.classList.add('glow');
             });
 
@@ -1690,7 +1711,7 @@
             deleteBtn.classList.add('delete-btn');
             deleteBtn.textContent = '-';
             deleteBtn.addEventListener('click', () => {
-                askDeleteElement(box, 'recuadro', saveBoxes);
+                askDeleteElement(box, 'box', saveBoxes);
             });
 
             buttonsDiv.appendChild(copyBtn);
@@ -1727,7 +1748,7 @@
             const textarea = document.createElement('textarea');
             textarea.placeholder = 'Texto...';
             textarea.value = data.text || '';
-            textarea.setAttribute('value', data.text || ''); 
+            textarea.setAttribute('value', data.text || '');
 
             textarea.addEventListener('mousedown', (e) => e.stopPropagation());
             textarea.addEventListener('touchstart', (e) => e.stopPropagation());
@@ -1806,7 +1827,7 @@
 
                     if (newLeft < 10) newLeft = 10;
                     if (newTop < 10) newTop = 10;
-                    if (newLeft > 2650) newLeft = 2650; 
+                    if (newLeft > 2650) newLeft = 2650;
                     if (newTop > 2850) newTop = 2850;
 
                     element.style.left = `${newLeft}px`;
@@ -1821,7 +1842,7 @@
                 const stopDrag = () => {
                     document.removeEventListener('mousemove', onMouseMove);
                     document.removeEventListener('touchmove', onTouchMove);
-                    
+
                     if (element.classList.contains('box')) {
                         saveBoxes();
                     } else {

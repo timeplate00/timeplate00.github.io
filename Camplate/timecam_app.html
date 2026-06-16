@@ -639,18 +639,18 @@
             <h2 id="modal-panel-title">Editar Parámetro</h2>
 
             <div class="input-group">
-                <label for="modal-input">Etiqueta / Nombre</label>
+                <label for="modal-input">Label / Name</label>
                 <input type="text" id="modal-input" placeholder="Ej. Copiar correo...">
             </div>
 
             <div class="input-group">
-                <label for="modal-description">Contenido de Portapapeles</label>
+                <label for="modal-description">Content</label>
                 <textarea id="modal-description"
                     placeholder="Escribe o pega el texto que se copiará al detectar este número..."></textarea>
             </div>
 
             <div class="modal-actions">
-                <button id="save-title" class="btn-panel">Guardar Cambios</button>
+                <button id="save-title" class="btn-panel">Save changes</button>
             </div>
         </div>
     </div>
@@ -1091,7 +1091,7 @@
                 e.stopPropagation();
                 currentTitleElement = title;
 
-                panelTitle.textContent = `Configurar Key ${number}`;
+                panelTitle.textContent = `Set up Key #${number}`;
                 modalInput.value = title.textContent;
                 modalDescription.value = keyData[number]?.description || "";
 

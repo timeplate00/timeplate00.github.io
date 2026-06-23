@@ -72,6 +72,11 @@
             width: 65px;
             height: auto;
             user-select: none;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        #logo:hover {
+            transform: scale(1.08) rotate(2deg);
         }
 
         /* CONTAINER OF SECTIONS */
@@ -892,6 +897,7 @@
                         row.dataset.timerEnd = newTimerEnd;
                         loadCell.textContent = newLoadNumber;
 
+                        // Remover parpadeo previo si el nuevo tiempo es a futuro
                         row.classList.remove('blinking');
                         if (newTimerEnd <= Date.now()) {
                             row.classList.add('blinking');
@@ -899,7 +905,7 @@
 
                         const section = tableBody.closest('.section');
                         saveSectionData(section);
-                    }, timerEnd, loadNumber);
+                    }, row.dataset.timerEnd, loadCell.textContent);
                 });
 
                 timerDisplay.appendChild(timerSpan);
@@ -1036,7 +1042,7 @@
                 document.getElementById('loadNumber').value = existingLoadNumber;
 
                 if (existingTime) {
-                    const date = new Date(existingTime);
+                    const date = new Date(parseInt(existingTime));
                     document.getElementById('timerDate').value = date.toISOString().split('T')[0];
                     document.getElementById('timerTime').value = date.toTimeString().substring(0, 5);
                 } else {

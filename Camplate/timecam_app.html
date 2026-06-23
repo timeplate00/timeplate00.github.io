@@ -105,7 +105,7 @@
             left: 8px;
             background: rgba(0, 0, 0, 0.6);
             padding: 6px 10px;
-            border-radius: 6px;
+            border-radius: 50px;
             font-size: 1rem;
             backdrop-filter: blur(4px);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -143,7 +143,7 @@
 
         .key {
             background-color: #222;
-            border-radius: 12px;
+            border-radius: 50px;
             color: #aaa;
             font-weight: bold;
             font-size: 1.1rem;
@@ -587,7 +587,6 @@
                         <span class="status-dot"></span>
                         <span class="status-text">SYSTEM READY</span>
                     </div>
-                    <!-- Botón de configuración posicionado en el lado derecho -->
                     <button id="settings-btn" title="Configuración de sonido">⚙️</button>
                 </div>
             </div>
@@ -657,9 +656,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
 
-    <!-- Elemento de audio base actualizado a 3.mp3 -->
     <audio id="sound" src="3.mp3" preload="auto"></audio>
 
     <script>
@@ -688,6 +685,16 @@
         let currentDetectedNumber = null;
         let detectionTimestamp = 0;
         const GREEN_DURATION = 1000;
+
+        // Estructura de conexiones nativas de la mano para prescindir de drawing_utils
+        const HAND_CONNECTIONS = [
+            [0, 1], [1, 2], [2, 3], [3, 4],
+            [0, 5], [5, 6], [6, 7], [7, 8],
+            [5, 9], [9, 10], [10, 11], [11, 12],
+            [9, 13], [13, 14], [14, 15], [15, 16],
+            [13, 17], [17, 18], [18, 19], [19, 20],
+            [0, 17]
+        ];
 
         // ==========================================================================
         // CREACIÓN DINÁMICA DEL MENU DE CONFIGURACIÓN (PASPLATE STYLE)
@@ -1019,32 +1026,46 @@
 
             let numeroFrameActual = gestoCero ? 0 : totalDedos;
 
+            // ANIMACIÓN ELIMINADA: Las líneas son 100% sólidas e instantáneas sin desfase temporal (lineDashOffset)
             let lineColor = 'rgba(0, 0, 0, 1)';
             const now = Date.now();
 
-            canvasCtx.setLineDash([]);
-            canvasCtx.lineDashOffset = 0;
+            canvasCtx.setLineDash([]); // Línea continua sólida garantizada
 
             if (numeroFrameActual === currentDetectedNumber && detectionTimestamp > 0) {
                 const tiempoTranscurrido = now - detectionTimestamp;
 
                 if (tiempoTranscurrido < GREEN_DURATION) {
-                    lineColor = '#00ffcc';
-                    canvasCtx.setLineDash([12, 8]);
-                    canvasCtx.lineDashOffset = -(tiempoTranscurrido * 0.05);
+                    lineColor = '#00ffcc'; // Color verde fijo inmediato al detectar
                 }
             }
 
+            // Renderizado manual adaptado para soportar los cambios exactos de diseño
             results.multiHandLandmarks.forEach((landmarks) => {
-                if (typeof drawConnectors !== 'undefined' && typeof HAND_CONNECTIONS !== 'undefined') {
-                    drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, { color: lineColor, lineWidth: 6 });
-                }
-                if (typeof drawLandmarks !== 'undefined') {
-                    canvasCtx.save();
-                    canvasCtx.setLineDash([]);
-                    drawLandmarks(canvasCtx, landmarks, { color: '#ffffff', lineWidth: 1 });
-                    canvasCtx.restore();
-                }
+                // 1. Dibujar los conectores de la mano
+                canvasCtx.lineWidth = 6;
+                canvasCtx.strokeStyle = lineColor;
+                canvasCtx.lineCap = "round";
+                canvasCtx.lineJoin = "round";
+
+                HAND_CONNECTIONS.forEach(([startIdx, endIdx]) => {
+                    const startPoint = landmarks[startIdx];
+                    const endPoint = landmarks[endIdx];
+                    if (startPoint && endPoint) {
+                        canvasCtx.beginPath();
+                        canvasCtx.moveTo(startPoint.x * canvasElement.width, startPoint.y * canvasElement.height);
+                        canvasCtx.lineTo(endPoint.x * canvasElement.width, endPoint.y * canvasElement.height);
+                        canvasCtx.stroke();
+                    }
+                });
+
+                // 2. Modificar los círculos interconectores: Círculos grises y transparentes
+                canvasCtx.fillStyle = 'rgba(128, 128, 128, 0.6)'; // Gris translúcido profesional
+                landmarks.forEach((landmark) => {
+                    canvasCtx.beginPath();
+                    canvasCtx.arc(landmark.x * canvasElement.width, landmark.y * canvasElement.height, 4.5, 0, 2 * Math.PI);
+                    canvasCtx.fill();
+                });
             });
 
             if (gestoCero) {

@@ -6,17 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Timeplate - Tool 2</title>
     <link rel="icon" type="image/png" href="/logo_v5.png">
-
     <style>
-        /* ==========================================================================
-           ESTILOS GENERALES (cam_styles.css)
-           ========================================================================== */
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
             background-color: black;
             color: white;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .container {
@@ -34,9 +34,6 @@
             gap: 20px;
         }
 
-        /* ==========================================================================
-           ANIMACIÓN DE ENTRADA AL INICIO (Optimizada para visibilidad total)
-           ========================================================================== */
         @keyframes elementEntrance {
             from {
                 opacity: 0;
@@ -65,11 +62,14 @@
 
         .keypad {
             animation: elementEntrance 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            display: grid;
+            grid-template-columns: repeat(3, 200px);
+            grid-auto-rows: 90px;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
         }
 
-        /* ==========================================================================
-           COMPONENTES INTERNOS (Totalmente Visibles)
-           ========================================================================== */
         .camera-box {
             background-color: #111;
             border: 1px solid #333;
@@ -131,16 +131,6 @@
             transform: scale(1.08);
         }
 
-        /* Keypad styles */
-        .keypad {
-            display: grid;
-            grid-template-columns: repeat(3, 200px);
-            grid-auto-rows: 90px;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
         .key {
             background-color: #222;
             border-radius: 50px;
@@ -182,7 +172,6 @@
             white-space: nowrap;
         }
 
-        /* Animación de parpadeo / resaltado temporal */
         @keyframes keyFlash {
             0% {
                 box-shadow: 0 0 0 rgba(0, 255, 204, 0);
@@ -218,9 +207,6 @@
             animation: keyFlash 1.8s ease-in-out forwards;
         }
 
-        /* ==========================================================================
-           VENTANA DE EDICIÓN PROFESIONAL (ESTILO PANEL CONTEXTUAL)
-           ========================================================================== */
         .modal {
             display: none;
             position: fixed;
@@ -355,9 +341,6 @@
             box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
         }
 
-        /* --------------------------------------------------
-           HEADER ESTILO INDUSTRIAL
-        -------------------------------------------------- */
         #header {
             width: 100%;
             background: linear-gradient(180deg, #0f1115, #0a0c0f);
@@ -408,7 +391,6 @@
             display: block;
             user-select: none;
             pointer-events: none;
-            filter: drop-shadow(0 0 0px transparent);
             transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), filter 0.25s ease;
         }
 
@@ -427,7 +409,6 @@
             border: none;
         }
 
-        /* Contenedor derecho del header */
         .header-actions {
             display: flex;
             align-items: center;
@@ -475,9 +456,6 @@
             box-shadow: 0 0 15px rgba(0, 255, 204, 0.4), inset 0 0 8px rgba(0, 255, 204, 0.2);
         }
 
-        /* ==========================================================================
-           BOTÓN Y MINI MENÚ DE CONFIGURACIÓN (EXTRAÍDO DE PASPLATE_APP)
-           ========================================================================== */
         #settings-btn {
             font-size: 22px;
             background-color: transparent;
@@ -575,23 +553,17 @@
     <div id="main-container">
         <div id="header">
             <div class="header-inner">
-                <div id="branding">
-                    <a href="../tools.html" id="logo-link">
-                        <img src="/logo_v4.png" alt="Logo de Timeplate" id="logo">
-                    </a>
+                <div id="branding"><a href="../tools.html" id="logo-link"><img src="/logo_v4.png" alt="Logo"
+                            id="logo"></a>
                     <h1>Camplate</h1>
                 </div>
-
                 <div class="header-actions">
-                    <div class="system-status">
-                        <span class="status-dot"></span>
-                        <span class="status-text">SYSTEM READY</span>
-                    </div>
+                    <div class="system-status"><span class="status-dot"></span><span class="status-text">SYSTEM
+                            READY</span></div>
                     <button id="settings-btn" title="Configuración de sonido">⚙️</button>
                 </div>
             </div>
         </div>
-
         <main class="main-content">
             <div class="camera-box">
                 <p id="camera-text">CAMERA</p>
@@ -599,12 +571,8 @@
                 <canvas id="output-canvas"></canvas>
                 <div id="finger-count">Status: Off</div>
             </div>
-
-            <button class="play-btn" id="start-camera">
-                <span class="btn-icon">▶</span>
-                <span class="btn-label"></span>
-            </button>
-
+            <button class="play-btn" id="start-camera"><span class="btn-icon">▶</span><span
+                    class="btn-label"></span></button>
             <div class="keypad">
                 <div class="key" data-key="1"><span class="key-number">1</span><span class="key-title">Name 1</span>
                 </div>
@@ -636,520 +604,124 @@
         <div class="modal-content">
             <span id="close-modal" class="close-btn">&times;</span>
             <h2 id="modal-panel-title">Editar Parámetro</h2>
-
             <div class="input-group">
                 <label for="modal-input">Label / Name</label>
                 <input type="text" id="modal-input" placeholder="Ej. Copiar correo...">
             </div>
-
             <div class="input-group">
                 <label for="modal-description">Content</label>
                 <textarea id="modal-description"
                     placeholder="Escribe o pega el texto que se copiará al detectar este número..."></textarea>
             </div>
-
-            <div class="modal-actions">
-                <button id="save-title" class="btn-panel">Save changes</button>
-            </div>
+            <div class="modal-actions"><button id="save-title" class="btn-panel">Save changes</button></div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
-
     <audio id="sound" src="3.mp3" preload="auto"></audio>
 
     <script>
-        const video = document.getElementById('camera-video');
-        const cameraText = document.getElementById('camera-text');
-        const startBtn = document.getElementById('start-camera');
-        const canvasElement = document.getElementById('output-canvas');
-        const canvasCtx = canvasElement.getContext('2d');
-        const fingerCountElement = document.getElementById('finger-count');
-        const copySound = document.getElementById('sound');
-        const settingsBtn = document.getElementById('settings-btn');
-
-        let streamActivo = null;
-        let cameraInstance = null;
-        let hands = null;
-
-        let keyData = {};
-        let isMuted = false;
-        let defaultSound = '3.mp3'; // Variable base actualizada
-
-        let lastCopiedKey = null;
-        let lastCopyTime = 0;
-        const COPY_COOLDOWN = 2000;
-        const COPY_DELAY = 500;
-
-        let currentDetectedNumber = null;
-        let detectionTimestamp = 0;
-        const GREEN_DURATION = 1000;
-
-        // Estructura de conexiones nativas de la mano para prescindir de drawing_utils
-        const HAND_CONNECTIONS = [
-            [0, 1], [1, 2], [2, 3], [3, 4],
-            [0, 5], [5, 6], [6, 7], [7, 8],
-            [5, 9], [9, 10], [10, 11], [11, 12],
-            [9, 13], [13, 14], [14, 15], [15, 16],
-            [13, 17], [17, 18], [18, 19], [19, 20],
-            [0, 17]
-        ];
-
         // ==========================================================================
-        // CREACIÓN DINÁMICA DEL MENU DE CONFIGURACIÓN (PASPLATE STYLE)
+        // SCRIPT ULTRAESTRICTO DE ANTI-INSPECCIÓN (Fase 1 de Seguridad)
         // ==========================================================================
+        (function () {
+            // 1. Bloqueo de click derecho y selección de elementos
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('keydown', e => {
+                if (e.keyCode === 123 ||
+                    (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) ||
+                    (e.ctrlKey && e.keyCode === 85)) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            // 2. Anti-Debugger dinámico (Congela la consola si intentan inspeccionar forzadamente)
+            setInterval(function () {
+                const antes = new Date().getTime();
+                debugger;
+                const despues = new Date().getTime();
+                if (despues - antes > 100) {
+                    document.body.innerHTML = "<h1>Acceso denegado: Entorno no seguro detectado.</h1>";
+                }
+            }, 100);
+
+            // 3. Limpieza de memoria de consola
+            setInterval(() => { console.clear(); }, 1);
+        })();
+
+        // Lógica interna de la App
+        const video = document.getElementById('camera-video'), cameraText = document.getElementById('camera-text'), startBtn = document.getElementById('start-camera'), canvasElement = document.getElementById('output-canvas'), canvasCtx = canvasElement.getContext('2d'), fingerCountElement = document.getElementById('finger-count'), copySound = document.getElementById('sound'), settingsBtn = document.getElementById('settings-btn');
+        let streamActivo = null, cameraInstance = null, hands = null, keyData = {}, isMuted = false, defaultSound = '3.mp3', lastCopiedKey = null, lastCopyTime = 0;
+        const COPY_COOLDOWN = 2000, COPY_DELAY = 500;
+        let currentDetectedNumber = null, detectionTimestamp = 0; const GREEN_DURATION = 1000;
+        const HAND_CONNECTIONS = [[0, 1], [1, 2], [2, 3], [3, 4], [0, 5], [5, 6], [6, 7], [7, 8], [5, 9], [9, 10], [10, 11], [11, 12], [9, 13], [13, 14], [14, 15], [15, 16], [13, 17], [17, 18], [18, 19], [19, 20], [0, 17]];
+
         const settingsMenu = document.createElement('div');
         settingsMenu.id = 'settings-menu';
-        settingsMenu.innerHTML = `
-            <ul>
-                <li id="toggle-mute">🔊 Mute</li>
-                <li id="volume-control">
-                    🔈 Volume
-                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
-                </li>
-                <li id="sound-control">
-                    🎵 Sound
-                    <input type="file" id="sound-upload" accept="audio/*">
-                    <button id="remove-sound" style="background: #ff3b30; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-size: 11px; margin-top: 5px; width: 100%; font-weight: bold;">Delete sound</button>
-                </li>
-            </ul>
-        `;
-        settingsMenu.style.display = 'none';
-        document.body.appendChild(settingsMenu);
+        settingsMenu.innerHTML = `<ul><li id="toggle-mute">🔊 Mute</li><li id="volume-control">🔈 Volume<input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1"></li><li id="sound-control">🎵 Sound<input type="file" id="sound-upload" accept="audio/*"><button id="remove-sound" style="background: #ff3b30; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-size: 11px; margin-top: 5px; width: 100%; font-weight: bold;">Delete sound</button></li></ul>`;
+        settingsMenu.style.display = 'none'; document.body.appendChild(settingsMenu);
 
-        // Desplegar / Ocultar Menú Contextual
-        settingsBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            settingsMenu.style.display = settingsMenu.style.display === 'block' ? 'none' : 'block';
-            const rect = settingsBtn.getBoundingClientRect();
-            settingsMenu.style.top = (rect.bottom + window.scrollY) + 'px';
-            settingsMenu.style.left = (rect.left - 160 + window.scrollX) + 'px';
-        });
-
-        document.addEventListener('click', () => {
-            settingsMenu.style.display = 'none';
-        });
+        settingsBtn.addEventListener('click', (e) => { e.stopPropagation(); settingsMenu.style.display = settingsMenu.style.display === 'block' ? 'none' : 'block'; const rect = settingsBtn.getBoundingClientRect(); settingsMenu.style.top = (rect.bottom + window.scrollY) + 'px'; settingsMenu.style.left = (rect.left - 160 + window.scrollX) + 'px'; });
+        document.addEventListener('click', () => { settingsMenu.style.display = 'none'; });
         settingsMenu.addEventListener('click', (e) => e.stopPropagation());
 
-        // Mute / Unmute
-        const toggleMuteOption = document.getElementById('toggle-mute');
-        const volumeSlider = document.getElementById('volume-slider');
+        const toggleMuteOption = document.getElementById('toggle-mute'), volumeSlider = document.getElementById('volume-slider');
+        toggleMuteOption.addEventListener('click', () => { isMuted = !isMuted; if (isMuted) { copySound.volume = 0; volumeSlider.value = 0; } else { copySound.volume = 1; volumeSlider.value = 1; } toggleMuteOption.textContent = isMuted ? '🔇 <Unmute>' : '🔊 Mute'; localStorage.setItem('camplateVolume', copySound.volume); });
+        volumeSlider.addEventListener('input', () => { const volume = volumeSlider.value; copySound.volume = volume; if (volume == 0) { isMuted = true; toggleMuteOption.textContent = '🔇 <Unmute>'; } else { isMuted = false; toggleMuteOption.textContent = '🔊 Mute'; } localStorage.setItem('camplateVolume', volume); });
 
-        toggleMuteOption.addEventListener('click', () => {
-            isMuted = !isMuted;
-            if (isMuted) {
-                copySound.volume = 0;
-                volumeSlider.value = 0;
-            } else {
-                copySound.volume = 1;
-                volumeSlider.value = 1;
-            }
-            toggleMuteOption.textContent = isMuted ? '🔇 <Unmute>' : '🔊 Mute';
-            localStorage.setItem('camplateVolume', copySound.volume);
-        });
+        const soundUpload = document.getElementById('sound-upload'), removeSoundBtn = document.getElementById('remove-sound'), MAX_SIZE = 4 * 1024 * 1024;
+        soundUpload.addEventListener('change', (e) => { const file = e.target.files[0]; if (!file) return; if (file.size > MAX_SIZE) { alert('El archivo supera el tamaño permitido de 4MB'); soundUpload.value = ''; return; } const reader = new FileReader(); reader.onload = function (event) { const base64Sound = event.target.result; copySound.src = base64Sound; localStorage.setItem('camplateCustomSound', base64Sound); }; reader.readAsDataURL(file); });
+        removeSoundBtn.addEventListener('click', () => { localStorage.removeItem('camplateCustomSound'); copySound.src = defaultSound; soundUpload.value = ''; alert('Sonido restablecido al predeterminado'); });
 
-        // Control de Deslizador de Volumen
-        volumeSlider.addEventListener('input', () => {
-            const volume = volumeSlider.value;
-            copySound.volume = volume;
-            if (volume == 0) {
-                isMuted = true;
-                toggleMuteOption.textContent = '🔇 <Unmute>';
-            } else {
-                isMuted = false;
-                toggleMuteOption.textContent = '🔊 Mute';
-            }
-            localStorage.setItem('camplateVolume', volume);
-        });
-
-        // Cargar Audio Personalizado (Límite 4MB)
-        const soundUpload = document.getElementById('sound-upload');
-        const removeSoundBtn = document.getElementById('remove-sound');
-        const MAX_SIZE = 4 * 1024 * 1024;
-
-        soundUpload.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            if (file.size > MAX_SIZE) {
-                alert('El archivo supera el tamaño permitido de 4MB');
-                soundUpload.value = '';
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function (event) {
-                const base64Sound = event.target.result;
-                copySound.src = base64Sound;
-                localStorage.setItem('camplateCustomSound', base64Sound);
-            };
-            reader.readAsDataURL(file);
-        });
-
-        removeSoundBtn.addEventListener('click', () => {
-            localStorage.removeItem('camplateCustomSound');
-            copySound.src = defaultSound;
-            soundUpload.value = '';
-            alert('Sonido restablecido al predeterminado');
-        });
-
-        // Inicializar volumen y sonidos guardados al cargar la app
-        function inicializarAudioSettings() {
-            const savedCustomSound = localStorage.getItem('camplateCustomSound');
-            if (savedCustomSound) {
-                copySound.src = savedCustomSound;
-            }
-
-            const savedVolume = localStorage.getItem('camplateVolume');
-            if (savedVolume !== null) {
-                copySound.volume = savedVolume;
-                volumeSlider.value = savedVolume;
-                if (savedVolume == 0) {
-                    isMuted = true;
-                    toggleMuteOption.textContent = '🔇 <Unmute>';
-                }
-            }
-        }
-
-        // ==========================================================================
-        // LÓGICA DE DETECCIÓN Y HERRAMIENTAS DE CÁMARA
-        // ==========================================================================
-        function distancia(p1, p2) {
-            const dx = p1.x - p2.x;
-            const dy = p1.y - p2.y;
-            return Math.sqrt(dx * dx + dy * dy);
-        }
-
-        function contarDedosMano(landmarks, handLabel) {
-            let dedos = 0;
-            const thumbTip = landmarks[4];
-            const thumbIP = landmarks[3];
-
-            if (handLabel) {
-                if (handLabel === 'Right') {
-                    if (thumbTip.x < thumbIP.x) dedos++;
-                } else if (handLabel === 'Left') {
-                    if (thumbTip.x > thumbIP.x) dedos++;
-                }
-            } else {
-                const wristX = landmarks[0].x;
-                if (thumbTip.x < wristX && thumbTip.x < thumbIP.x) {
-                    dedos++;
-                } else if (thumbTip.x > wristX && thumbTip.x > thumbIP.x) {
-                    dedos++;
-                }
-            }
-
-            if (landmarks[8].y < landmarks[6].y) dedos++;
-            if (landmarks[12].y < landmarks[10].y) dedos++;
-            if (landmarks[16].y < landmarks[14].y) dedos++;
-            if (landmarks[20].y < landmarks[18].y) dedos++;
-
-            return dedos;
-        }
-
-        function guardarConfiguracion() {
-            localStorage.setItem("timeplateKeyData", JSON.stringify(keyData));
-        }
-
-        function cargarConfiguracion() {
-            const data = localStorage.getItem("timeplateKeyData");
-            if (data) {
-                keyData = JSON.parse(data);
-
-                Object.keys(keyData).forEach(num => {
-                    const keyElem = document.querySelector(`.key[data-key="${num}"] .key-title`);
-                    if (keyElem) keyElem.textContent = keyData[num].title || `Name ${num}`;
-                });
-            }
-        }
+        function inicializarAudioSettings() { const savedCustomSound = localStorage.getItem('camplateCustomSound'); if (savedCustomSound) copySound.src = savedCustomSound; const savedVolume = localStorage.getItem('camplateVolume'); if (savedVolume !== null) { copySound.volume = savedVolume; volumeSlider.value = savedVolume; if (savedVolume == 0) { isMuted = true; toggleMuteOption.textContent = '🔇 <Unmute>'; } } }
+        function distancia(p1, p2) { return Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2); }
+        function contarDedosMano(landmarks, handLabel) { let dedos = 0; const thumbTip = landmarks[4], thumbIP = landmarks[3]; if (handLabel) { if (handLabel === 'Right' && thumbTip.x < thumbIP.x) dedos++; else if (handLabel === 'Left' && thumbTip.x > thumbIP.x) dedos++; } else { const wristX = landmarks[0].x; if ((thumbTip.x < wristX && thumbTip.x < thumbIP.x) || (thumbTip.x > wristX && thumbTip.x > thumbIP.x)) dedos++; } if (landmarks[8].y < landmarks[6].y) dedos++; if (landmarks[12].y < landmarks[10].y) dedos++; if (landmarks[16].y < landmarks[14].y) dedos++; if (landmarks[20].y < landmarks[18].y) dedos++; return dedos; }
+        function guardarConfiguracion() { localStorage.setItem("timeplateKeyData", JSON.stringify(keyData)); }
+        function cargarConfiguracion() { const data = localStorage.getItem("timeplateKeyData"); if (data) { keyData = JSON.parse(data); Object.keys(keyData).forEach(num => { const keyElem = document.querySelector(`.key[data-key="${num}"] .key-title`); if (keyElem) keyElem.textContent = keyData[num].title || `Name ${num}`; }); } }
 
         function copiarDescripcionKey(numeroKey) {
-            const now = Date.now();
-
-            if (numeroKey !== currentDetectedNumber) {
-                currentDetectedNumber = numeroKey;
-                detectionTimestamp = now;
-            }
-
-            if (numeroKey === lastCopiedKey && (now - lastCopyTime) < COPY_COOLDOWN) {
-                return;
-            }
-
-            const keyElem = document.querySelector(`.key[data-key="${numeroKey}"]`);
-            if (!keyElem) return;
-
+            const now = Date.now(); if (numeroKey !== currentDetectedNumber) { currentDetectedNumber = numeroKey; detectionTimestamp = now; }
+            if (numeroKey === lastCopiedKey && (now - lastCopyTime) < COPY_COOLDOWN) return;
+            const keyElem = document.querySelector(`.key[data-key="${numeroKey}"]`); if (!keyElem) return;
             const descripcion = keyData[numeroKey]?.description || "";
-
             setTimeout(() => {
-                document.querySelectorAll('.key').forEach(k => k.classList.remove('active'));
-                keyElem.classList.add('active');
-
+                document.querySelectorAll('.key').forEach(k => k.classList.remove('active')); keyElem.classList.add('active');
                 if (descripcion.trim() !== "") {
-                    navigator.clipboard.writeText(descripcion)
-                        .then(() => {
-                            console.log(`Descripción del key ${numeroKey} copiada:`, descripcion);
-                            lastCopiedKey = numeroKey;
-                            lastCopyTime = Date.now();
-
-                            // Reproducir el sonido si no está en mute
-                            if (copySound && !isMuted) {
-                                copySound.currentTime = 0;
-                                const playPromise = copySound.play();
-                                if (playPromise !== undefined) {
-                                    playPromise.catch(err => console.warn("Audio bloqueado:", err));
-                                }
-                            }
-                        })
-                        .catch(err => console.error("Error al copiar:", err));
-                } else {
-                    lastCopiedKey = numeroKey;
-                    lastCopyTime = Date.now();
-                }
-
+                    navigator.clipboard.writeText(descripcion).then(() => {
+                        lastCopiedKey = numeroKey; lastCopyTime = Date.now();
+                        if (copySound && !isMuted) { copySound.currentTime = 0; copySound.play().catch(err => console.warn(err)); }
+                    }).catch(err => console.error(err));
+                } else { lastCopiedKey = numeroKey; lastCopyTime = Date.now(); }
                 setTimeout(() => keyElem.classList.remove('active'), 2000);
             }, COPY_DELAY);
         }
 
-        startBtn.addEventListener('click', async () => {
-            // Desbloqueo inicial del contexto de audio por interacción
-            if (copySound) {
-                copySound.play().then(() => {
-                    copySound.pause();
-                    copySound.currentTime = 0;
-                }).catch(e => console.log("Pre-carga lista"));
-            }
-
-            if (!streamActivo) {
-                try {
-                    streamActivo = await navigator.mediaDevices.getUserMedia({ video: true });
-                    video.srcObject = streamActivo;
-                    cameraText.style.display = 'none';
-                    video.style.display = 'block';
-
-                    startBtn.classList.add("active");
-                    iniciarDeteccion();
-                } catch (error) {
-                    alert("No se pudo acceder a la cámara: " + error.message);
-                }
-            } else {
-                if (cameraInstance) {
-                    cameraInstance.stop();
-                }
-                streamActivo.getTracks().forEach(track => track.stop());
-                streamActivo = null;
-
-                video.style.display = 'none';
-                cameraText.style.display = 'block';
-
-                startBtn.classList.remove("active");
-                fingerCountElement.textContent = "Status: Off";
-
-                currentDetectedNumber = null;
-                detectionTimestamp = 0;
-            }
-        });
-
-        function iniciarDeteccion() {
-            if (!hands) {
-                hands = new Hands({
-                    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
-                });
-
-                hands.setOptions({
-                    maxNumHands: 2,
-                    modelComplexity: 1,
-                    minDetectionConfidence: 0.7,
-                    minTrackingConfidence: 0.7
-                });
-
-                hands.onResults(onResults);
-            }
-
-            if (!cameraInstance) {
-                cameraInstance = new Camera(video, {
-                    onFrame: async () => {
-                        await hands.send({ image: video });
-                    },
-                    width: 600,
-                    height: 250
-                });
-            }
-            cameraInstance.start();
-        }
+        startBtn.addEventListener('click', async () => { if (copySound) { copySound.play().then(() => { copySound.pause(); copySound.currentTime = 0; }).catch(e => { }); } if (!streamActivo) { try { streamActivo = await navigator.mediaDevices.getUserMedia({ video: true }); video.srcObject = streamActivo; cameraText.style.display = 'none'; video.style.display = 'block'; startBtn.classList.add("active"); iniciarDeteccion(); } catch (error) { alert("Error de cámara: " + error.message); } } else { if (cameraInstance) cameraInstance.stop(); streamActivo.getTracks().forEach(track => track.stop()); streamActivo = null; video.style.display = 'none'; cameraText.style.display = 'block'; startBtn.classList.remove("active"); fingerCountElement.textContent = "Status: Off"; currentDetectedNumber = null; detectionTimestamp = 0; } });
+        function iniciarDeteccion() { if (!hands) { hands = new Hands({ locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}` }); hands.setOptions({ maxNumHands: 2, modelComplexity: 1, minDetectionConfidence: 0.7, minTrackingConfidence: 0.7 }); hands.onResults(onResults); } if (!cameraInstance) { cameraInstance = new Camera(video, { onFrame: async () => { await hands.send({ image: video }); }, width: 600, height: 250 }); } cameraInstance.start(); }
 
         function onResults(results) {
-            if (video.videoWidth && video.videoHeight) {
-                canvasElement.width = video.videoWidth;
-                canvasElement.height = video.videoHeight;
-            }
-
-            canvasCtx.save();
-            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-
-            if (results.image) {
-                canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
-            }
-
-            const handsDetected = results.multiHandLandmarks && results.multiHandLandmarks.length > 0;
-
-            if (!handsDetected) {
-                fingerCountElement.textContent = "NO DETECTION";
-                document.querySelectorAll('.key').forEach(k => k.classList.remove('active'));
-
-                currentDetectedNumber = null;
-                detectionTimestamp = 0;
-
-                canvasCtx.restore();
-                return;
-            }
-
-            let totalDedos = 0;
-            let gestoCero = false;
-
-            results.multiHandLandmarks.forEach((landmarks, idx) => {
-                let handLabel = null;
-                if (results.multiHandedness && results.multiHandedness[idx]) {
-                    const classification = results.multiHandedness[idx];
-                    handLabel = classification.label || (classification.classification && classification.classification[0] && classification.classification[0].label) || null;
-                }
-
-                const dedosEstaMano = contarDedosMano(landmarks, handLabel);
-                totalDedos += dedosEstaMano;
-
-                const dist = distancia(landmarks[4], landmarks[8]);
-                if (dist < 0.05) {
-                    gestoCero = true;
-                }
-            });
-
-            let numeroFrameActual = gestoCero ? 0 : totalDedos;
-
-            // ANIMACIÓN ELIMINADA: Las líneas son 100% sólidas e instantáneas sin desfase temporal (lineDashOffset)
-            let lineColor = 'rgba(0, 0, 0, 1)';
-            const now = Date.now();
-
-            canvasCtx.setLineDash([]); // Línea continua sólida garantizada
-
-            if (numeroFrameActual === currentDetectedNumber && detectionTimestamp > 0) {
-                const tiempoTranscurrido = now - detectionTimestamp;
-
-                if (tiempoTranscurrido < GREEN_DURATION) {
-                    lineColor = '#00ffcc'; // Color verde fijo inmediato al detectar
-                }
-            }
-
-            // Renderizado manual adaptado para soportar los cambios exactos de diseño
-            results.multiHandLandmarks.forEach((landmarks) => {
-                // 1. Dibujar los conectores de la mano
-                canvasCtx.lineWidth = 6;
-                canvasCtx.strokeStyle = lineColor;
-                canvasCtx.lineCap = "round";
-                canvasCtx.lineJoin = "round";
-
-                HAND_CONNECTIONS.forEach(([startIdx, endIdx]) => {
-                    const startPoint = landmarks[startIdx];
-                    const endPoint = landmarks[endIdx];
-                    if (startPoint && endPoint) {
-                        canvasCtx.beginPath();
-                        canvasCtx.moveTo(startPoint.x * canvasElement.width, startPoint.y * canvasElement.height);
-                        canvasCtx.lineTo(endPoint.x * canvasElement.width, endPoint.y * canvasElement.height);
-                        canvasCtx.stroke();
-                    }
-                });
-
-                // 2. Modificar los círculos interconectores: Círculos grises y transparentes
-                canvasCtx.fillStyle = 'rgba(128, 128, 128, 0.6)'; // Gris translúcido profesional
-                landmarks.forEach((landmark) => {
-                    canvasCtx.beginPath();
-                    canvasCtx.arc(landmark.x * canvasElement.width, landmark.y * canvasElement.height, 4.5, 0, 2 * Math.PI);
-                    canvasCtx.fill();
-                });
-            });
-
-            if (gestoCero) {
-                fingerCountElement.textContent = "Fingers: 0 ✅";
-                copiarDescripcionKey(0);
-            } else {
-                fingerCountElement.textContent = `Fingers: ${totalDedos}`;
-                if (totalDedos > 0 && totalDedos <= 10) {
-                    copiarDescripcionKey(totalDedos);
-                } else if (totalDedos > 10 || totalDedos === 0) {
-                    currentDetectedNumber = null;
-                    detectionTimestamp = 0;
-                }
-            }
-
-            canvasCtx.restore();
+            if (video.videoWidth && video.videoHeight) { canvasElement.width = video.videoWidth; canvasElement.height = video.videoHeight; }
+            canvasCtx.save(); canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+            if (results.image) canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+            if (!results.multiHandLandmarks || results.multiHandLandmarks.length === 0) { fingerCountElement.textContent = "NO DETECTION"; document.querySelectorAll('.key').forEach(k => k.classList.remove('active')); currentDetectedNumber = null; detectionTimestamp = 0; canvasCtx.restore(); return; }
+            let totalDedos = 0, gestoCero = false;
+            results.multiHandLandmarks.forEach((landmarks, idx) => { let handLabel = null; if (results.multiHandedness && results.multiHandedness[idx]) { const classification = results.multiHandedness[idx]; handLabel = classification.label || (classification.classification && classification.classification[0] && classification.classification[0].label) || null; } const dedosEstaMano = contarDedosMano(landmarks, handLabel); totalDedos += dedosEstaMano; if (distancia(landmarks[4], landmarks[8]) < 0.05) gestoCero = true; });
+            let numeroFrameActual = gestoCero ? 0 : totalDedos, lineColor = 'rgba(0, 0, 0, 1)'; const now = Date.now();
+            canvasCtx.setLineDash([]); if (numeroFrameActual === currentDetectedNumber && detectionTimestamp > 0 && (now - detectionTimestamp) < GREEN_DURATION) lineColor = '#00ffcc';
+            results.multiHandLandmarks.forEach((landmarks) => { canvasCtx.lineWidth = 6; canvasCtx.strokeStyle = lineColor; canvasCtx.lineCap = "round"; canvasCtx.lineJoin = "round"; HAND_CONNECTIONS.forEach(([startIdx, endIdx]) => { const startPoint = landmarks[startIdx], endPoint = landmarks[endIdx]; if (startPoint && endPoint) { canvasCtx.beginPath(); canvasCtx.moveTo(startPoint.x * canvasElement.width, startPoint.y * canvasElement.height); canvasCtx.lineTo(endPoint.x * canvasElement.width, endPoint.y * canvasElement.height); canvasCtx.stroke(); } }); canvasCtx.fillStyle = 'rgba(128, 128, 128, 0.6)'; landmarks.forEach((landmark) => { canvasCtx.beginPath(); canvasCtx.arc(landmark.x * canvasElement.width, landmark.y * canvasElement.height, 4.5, 0, 2 * Math.PI); canvasCtx.fill(); }); });
+            if (gestoCero) { fingerCountElement.textContent = "Fingers: 0 ✅"; copiarDescripcionKey(0); } else { fingerCountElement.textContent = `Fingers: ${totalDedos}`; if (totalDedos > 0 && totalDedos <= 10) copiarDescripcionKey(totalDedos); else { currentDetectedNumber = null; detectionTimestamp = 0; } } canvasCtx.restore();
         }
 
-        // --- Ventana modal ---
-        const modal = document.getElementById('modal');
-        const closeModalBtn = document.getElementById('close-modal');
-        const modalInput = document.getElementById('modal-input');
-        const modalDescription = document.getElementById('modal-description');
-        const panelTitle = document.getElementById('modal-panel-title');
-        const saveBtn = document.getElementById('save-title');
-
+        const modal = document.getElementById('modal'), closeModalBtn = document.getElementById('close-modal'), modalInput = document.getElementById('modal-input'), modalDescription = document.getElementById('modal-description'), panelTitle = document.getElementById('modal-panel-title'), saveBtn = document.getElementById('save-title');
         let currentTitleElement = null;
-
-        document.querySelectorAll('.key').forEach(key => {
-            const number = key.getAttribute('data-key');
-            const titleText = key.querySelector('.key-title')?.textContent || "";
-            keyData[number] = {
-                title: titleText,
-                description: ""
-            };
-        });
-
-        document.querySelectorAll('.key').forEach(key => {
-            const title = key.querySelector('.key-title');
-            const number = key.getAttribute('data-key');
-            if (!title) return;
-
-            title.addEventListener('click', (e) => {
-                e.stopPropagation();
-                currentTitleElement = title;
-
-                panelTitle.textContent = `Set up Key #${number}`;
-                modalInput.value = title.textContent;
-                modalDescription.value = keyData[number]?.description || "";
-
-                modal.style.display = 'block';
-                modalInput.focus();
-            });
-        });
-
-        closeModalBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-
-        saveBtn.addEventListener('click', () => {
-            if (currentTitleElement && modalInput.value.trim() !== '') {
-                const parentKey = currentTitleElement.closest('.key');
-                const keyNumber = parentKey.getAttribute('data-key');
-
-                currentTitleElement.textContent = modalInput.value.trim();
-                keyData[keyNumber] = {
-                    title: modalInput.value.trim(),
-                    description: modalDescription.value.trim()
-                };
-
-                guardarConfiguracion();
-            }
-            modal.style.display = 'none';
-        });
-
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-
-        // Ejecutar cargas iniciales al iniciar el DOM
-        inicializarAudioSettings();
-        cargarConfiguracion();
+        document.querySelectorAll('.key').forEach(key => { const number = key.getAttribute('data-key'), titleText = key.querySelector('.key-title')?.textContent || ""; keyData[number] = { title: titleText, description: "" }; });
+        document.querySelectorAll('.key').forEach(key => { const title = key.querySelector('.key-title'), number = key.getAttribute('data-key'); if (!title) return; title.addEventListener('click', (e) => { e.stopPropagation(); currentTitleElement = title; panelTitle.textContent = `Set up Key #${number}`; modalInput.value = title.textContent; modalDescription.value = keyData[number]?.description || ""; modal.style.display = 'block'; modalInput.focus(); }); });
+        closeModalBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+        saveBtn.addEventListener('click', () => { if (currentTitleElement && modalInput.value.trim() !== '') { const parentKey = currentTitleElement.closest('.key'), keyNumber = parentKey.getAttribute('data-key'); currentTitleElement.textContent = modalInput.value.trim(); keyData[keyNumber] = { title: modalInput.value.trim(), description: modalDescription.value.trim() }; guardarConfiguracion(); } modal.style.display = 'none'; });
+        window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+        inicializarAudioSettings(); cargarConfiguracion();
     </script>
 </body>
 

@@ -11,10 +11,8 @@
 
     <style>
         /* ==========================
-   APPLE MODERN CLEAN STYLE
-   NUEVO ESTILO #1
-========================== */
-
+           APPLE MODERN CLEAN STYLE
+        ========================== */
         * {
             box-sizing: border-box;
         }
@@ -26,9 +24,13 @@
             background-color: #f2f2f2;
             color: #1c1c1e;
             overflow-x: hidden;
+            /* Evita la selección accidental de textos debido a los bloqueos */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
-        /* MAIN CONTAINER */
         #main-container {
             width: 100%;
             min-height: 100vh;
@@ -37,7 +39,6 @@
             flex-direction: column;
         }
 
-        /* HEADER */
         #header {
             display: flex;
             justify-content: space-between;
@@ -53,7 +54,6 @@
             margin-bottom: 15px;
         }
 
-        /* LOGO + TITLE */
         #branding {
             display: flex;
             align-items: center;
@@ -79,7 +79,6 @@
             transform: scale(1.08) rotate(2deg);
         }
 
-        /* CONTAINER OF SECTIONS */
         .container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -91,7 +90,6 @@
             align-items: start;
         }
 
-        /* RESPONSIVE BREAKPOINTS */
         @media (max-width: 1024px) {
             .container {
                 grid-template-columns: repeat(2, 1fr);
@@ -110,7 +108,6 @@
             }
         }
 
-        /* EACH SECTION WITH ENTRANCE ANIMATION - SE QUITA MAX-HEIGHT */
         .section {
             background-color: #ffffff;
             border-radius: 16px;
@@ -118,10 +115,8 @@
             overflow: hidden;
             transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease;
             height: auto;
-            /* Permite el crecimiento natural hacia abajo */
             display: flex;
             flex-direction: column;
-
             opacity: 0;
             transform: translateY(20px);
             animation: slideUpFade 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
@@ -144,7 +139,6 @@
             box-shadow: 0 6px 22px rgba(0, 0, 0, 0.08);
         }
 
-        /* SECTION HEADER */
         .header {
             display: flex;
             justify-content: space-between;
@@ -173,7 +167,6 @@
             outline: none;
         }
 
-        /* REJILLA DE BOTONES 2X2 */
         .header-buttons {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -209,10 +202,8 @@
             color: #0071e3;
         }
 
-        /* TABLE WRAPPER MODIFICADO PARA EXTENDERSE SIN SCROLL INTERNO */
         .table-wrapper {
             overflow-y: visible;
-            /* Se quita el scroll interno */
             flex-grow: 1;
             padding: 6px 12px 12px 12px;
         }
@@ -232,12 +223,10 @@
             color: #86868b;
             position: sticky;
             top: 68px;
-            /* Ajustado para que el sticky dependa del header principal al hacer scroll general */
             background-color: #ffffff;
             z-index: 1;
         }
 
-        /* ANIMATED ROWS */
         .load-table tr {
             transition: opacity 0.25s ease, transform 0.25s ease;
         }
@@ -274,7 +263,6 @@
             border-bottom-right-radius: 10px;
         }
 
-        /* FILA SEPARADORA ESPECIAL */
         .load-table tr.separator-row td {
             background: transparent !important;
             padding: 14px 4px;
@@ -300,7 +288,6 @@
             font-size: 11px;
         }
 
-        /* LOAD NUMBER & COPY ANIMATION */
         .load-number {
             cursor: pointer;
             color: #0071e3;
@@ -317,7 +304,6 @@
             animation: flashCopy 0.6s ease-out;
         }
 
-        /* TIMER */
         .timer-display {
             display: flex;
             align-items: center;
@@ -340,7 +326,6 @@
             border-color: #aeaeaf;
         }
 
-        /* DELETE BUTTON CON CONFIRMACIÓN INLINE */
         .delete-btn {
             background: transparent;
             border: none;
@@ -371,7 +356,6 @@
             background-color: #e03228;
         }
 
-        /* MODALES */
         .modal {
             display: none;
             position: fixed;
@@ -575,7 +559,6 @@
             font-weight: 600;
         }
 
-        /* KEYFRAMES */
         @keyframes slideUpFade {
             to {
                 opacity: 1;
@@ -630,20 +613,16 @@
 </head>
 
 <body>
-
     <div id="main-container">
-
         <div id="header">
             <div id="branding">
-                <a href="../tools.html" id="logo-link">
-                    <img src="/logo_v4.png" alt="Logo de Timeplate" id="logo">
-                </a>
+                <a href="../tools.html" id="logo-link"><img src="/logo_v4.png" alt="Logo" id="logo"></a>
                 <h1>Reminder</h1>
             </div>
         </div>
 
         <div class="container">
-            <div class="section">
+            <div class="section" data-section-id="0">
                 <div class="header">
                     <input type="text" class="section-title" placeholder="Insert text...">
                     <div class="header-buttons">
@@ -663,13 +642,12 @@
                                 <th>Delete</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
 
-            <div class="section">
+            <div class="section" data-section-id="1">
                 <div class="header">
                     <input type="text" class="section-title" placeholder="Insert text...">
                     <div class="header-buttons">
@@ -689,13 +667,12 @@
                                 <th>Delete</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
 
-            <div class="section">
+            <div class="section" data-section-id="2">
                 <div class="header">
                     <input type="text" class="section-title" placeholder="Insert text...">
                     <div class="header-buttons">
@@ -715,587 +692,544 @@
                                 <th>Delete</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="modal" id="timerModal">
-            <div class="modal-content">
-                <span class="close-modal">&times;</span>
-                <h3>Set Timer</h3>
-                <div class="form-group">
-                    <label for="loadNumber">Load Number:</label>
-                    <input type="text" id="loadNumber" placeholder="Enter load number" required>
-                </div>
-                <div class="form-group">
-                    <label for="timerDate">Date:</label>
-                    <input type="date" id="timerDate" required>
-                </div>
-                <div class="form-group">
-                    <label for="timerTime">Time:</label>
-                    <input type="time" id="timerTime" required>
-                </div>
-                <button id="confirmTimer" class="ok-btn">OK</button>
+    <div class="modal" id="timerModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Set Timer</h3>
+            <div class="form-group">
+                <label for="loadNumber">Load Number:</label>
+                <input type="text" id="loadNumber" placeholder="Enter load number" required>
             </div>
+            <div class="form-group">
+                <label for="timerDate">Date:</label>
+                <input type="date" id="timerDate" required>
+            </div>
+            <div class="form-group">
+                <label for="timerTime">Time:</label>
+                <input type="time" id="timerTime" required>
+            </div>
+            <button id="confirmTimer" class="ok-btn">OK</button>
         </div>
+    </div>
 
-        <div class="modal" id="cameraModal">
-            <div class="modal-content">
-                <span class="close-modal">&times;</span>
-                <h3>Smart List Scanner</h3>
-
-                <div class="clipboard-dropzone" id="ocrDropzone" tabindex="0">
-                    <i class="fas fa-paste"></i>
-                    <span>Click here and press <b>Ctrl + V</b> to paste screenshot</span>
-                </div>
-
-                <div class="ocr-loading" id="ocrLoading">
-                    <i class="fas fa-circle-notch"></i> Analyzing image with AI Model...
-                </div>
-
-                <div class="ocr-preview-title" id="ocrPreviewTitle" style="display:none;">Detected Tasks Preview:</div>
-                <div class="ocr-preview-container" id="ocrPreviewContainer"></div>
-
-                <div id="ocrTimeBlock" style="display: none;">
-                    <div class="form-inline-group">
-                        <div class="form-group">
-                            <label for="batchDate">Default Date:</label>
-                            <input type="date" id="batchDate" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="batchTime">Default Time:</label>
-                            <input type="time" id="batchTime" required>
-                        </div>
+    <div class="modal" id="cameraModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Smart List Scanner</h3>
+            <div class="clipboard-dropzone" id="ocrDropzone" tabindex="0">
+                <i class="fas fa-paste"></i>
+                <span>Click here and press <b>Ctrl + V</b> to paste screenshot</span>
+            </div>
+            <div class="ocr-loading" id="ocrLoading">
+                <i class="fas fa-circle-notch"></i> Analyzing image with AI Model...
+            </div>
+            <div class="ocr-preview-title" id="ocrPreviewTitle" style="display:none;">Detected Tasks Preview:</div>
+            <div class="ocr-preview-container" id="ocrPreviewContainer"></div>
+            <div id="ocrTimeBlock" style="display: none;">
+                <div class="form-inline-group">
+                    <div class="form-group">
+                        <label for="batchDate">Default Date:</label>
+                        <input type="date" id="batchDate" required>
                     </div>
-                    <button id="acceptOcrList" class="ok-btn">Accept & Import List</button>
+                    <div class="form-group">
+                        <label for="batchTime">Default Time:</label>
+                        <input type="time" id="batchTime" required>
+                    </div>
                 </div>
+                <button id="acceptOcrList" class="ok-btn">Accept & Import List</button>
             </div>
         </div>
+    </div>
 
-        <script>
-            let activeTableBodyForOcr = null;
-            let detectedLoadsList = [];
+    <script>
+        // Protección 1: Bloqueo de Clic Derecho y Combinaciones para abrir Inspector
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.onkeydown = function (e) {
+            if (e.keyCode == 123 ||
+                (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0))) ||
+                (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
+                return false;
+            }
+        };
 
-            document.addEventListener('DOMContentLoaded', function () {
-                initializeSections();
+        // Protección 2: Anti-Debugger (Inutiliza la consola si de algún modo la abren)
+        setInterval(function () {
+            (function () { return false; constructor('debugger')(); })();
+        }, 150);
+    </script>
 
-                document.querySelectorAll('.section').forEach(section => {
-                    setupSection(section);
+    <script>
+        let activeOcrTableBody = null;
+        let detectedLoads = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeSections();
+            document.querySelectorAll('.section').forEach(section => setupSection(section));
+            setInterval(checkTimers, 1000);
+            setupOcrFeature();
+        });
+
+        function setupSection(section) {
+            const header = section.querySelector('.header');
+            const colorPickerBtn = header.querySelector('.color-picker-btn');
+            const colorPicker = header.querySelector('.color-picker');
+            const addRowBtn = header.querySelector('.add-row-btn');
+            const separatorBtn = header.querySelector('.separator-btn');
+            const cameraBtn = header.querySelector('.camera-btn');
+            const tableBody = section.querySelector('tbody');
+            const titleInput = header.querySelector('.section-title');
+
+            const sectionId = section.dataset.sectionId;
+            const savedData = JSON.parse(localStorage.getItem(`section-${sectionId}`)) || {};
+
+            if (savedData.title) titleInput.value = savedData.title;
+            if (savedData.headerColor) header.style.backgroundColor = savedData.headerColor;
+
+            if (savedData.rows) {
+                savedData.rows.forEach(rowData => {
+                    if (rowData.isSeparator) {
+                        addSeparatorRow(tableBody, true);
+                    } else {
+                        addLoadRow(tableBody, rowData.loadNumber, rowData.timerEnd, rowData.isBlinking, true);
+                    }
                 });
+            }
 
-                setInterval(checkTimers, 1000);
-                setupOcrEngine();
+            colorPickerBtn.addEventListener('click', () => colorPicker.click());
+            colorPicker.addEventListener('input', () => {
+                header.style.backgroundColor = colorPicker.value;
+                saveSectionData(section);
             });
 
-            function setupSection(section) {
-                const header = section.querySelector('.header');
-                const colorPickerBtn = header.querySelector('.color-picker-btn');
-                const colorPicker = header.querySelector('.color-picker');
-                const addRowBtn = header.querySelector('.add-row-btn');
-                const separatorBtn = header.querySelector('.separator-btn');
-                const cameraBtn = header.querySelector('.camera-btn');
-                const tableBody = section.querySelector('tbody');
-                const sectionTitle = header.querySelector('.section-title');
-
-                const sectionId = Array.from(document.querySelectorAll('.section')).indexOf(section);
-                const savedData = JSON.parse(localStorage.getItem(`section-${sectionId}`)) || {};
-
-                if (savedData.title) {
-                    sectionTitle.value = savedData.title;
-                }
-
-                if (savedData.headerColor) {
-                    header.style.backgroundColor = savedData.headerColor;
-                }
-
-                if (savedData.rows) {
-                    savedData.rows.forEach(rowData => {
-                        if (rowData.isSeparator) {
-                            addSeparatorRow(tableBody, true);
-                        } else {
-                            addTableRow(tableBody, rowData.loadNumber, rowData.timerEnd, rowData.isBlinking, true);
-                        }
-                    });
-                }
-
-                colorPickerBtn.addEventListener('click', () => {
-                    colorPicker.click();
-                });
-
-                colorPicker.addEventListener('input', () => {
-                    header.style.backgroundColor = colorPicker.value;
+            addRowBtn.addEventListener('click', () => {
+                openTimerModal((loadNumber, date, time) => {
+                    const timerEnd = new Date(`${date}T${time}`).getTime();
+                    addLoadRow(tableBody, loadNumber, timerEnd, false, false);
                     saveSectionData(section);
                 });
+            });
 
-                addRowBtn.addEventListener('click', () => {
-                    openTimerModal((loadNumber, date, time) => {
-                        const timerEnd = new Date(`${date}T${time}`).getTime();
-                        addTableRow(tableBody, loadNumber, timerEnd, false, false);
-                        saveSectionData(section);
-                    });
+            separatorBtn.addEventListener('click', () => {
+                addSeparatorRow(tableBody, false);
+                saveSectionData(section);
+            });
+
+            cameraBtn.addEventListener('click', () => {
+                activeOcrTableBody = tableBody;
+                openCameraModal();
+            });
+
+            titleInput.addEventListener('change', () => saveSectionData(section));
+        }
+
+        function addLoadRow(tableBody, loadNumber, timerEnd, isBlinking = false, skipAnimation = false) {
+            const row = document.createElement('tr');
+            row.dataset.timerEnd = timerEnd;
+
+            if (isBlinking) row.classList.add('blinking');
+            if (!skipAnimation) row.classList.add('row-enter');
+
+            const loadCell = document.createElement('td');
+            loadCell.className = 'load-number';
+            loadCell.textContent = loadNumber;
+
+            loadCell.addEventListener('click', () => {
+                navigator.clipboard.writeText(loadNumber).then(() => {
+                    loadCell.classList.remove('copied-flash');
+                    void loadCell.offsetWidth;
+                    loadCell.classList.add('copied-flash');
                 });
+            });
 
-                separatorBtn.addEventListener('click', () => {
-                    addSeparatorRow(tableBody, false);
-                    saveSectionData(section);
-                });
+            const timerCell = document.createElement('td');
+            const timerContainer = document.createElement('div');
+            timerContainer.className = 'timer-display';
 
-                cameraBtn.addEventListener('click', () => {
-                    activeTableBodyForOcr = tableBody;
-                    openCameraModal();
-                });
+            const countdownSpan = document.createElement('span');
+            countdownSpan.className = 'countdown';
+            updateDisplayTime(countdownSpan, timerEnd);
 
-                sectionTitle.addEventListener('change', () => {
-                    saveSectionData(section);
-                });
-            }
+            const editBtn = document.createElement('button');
+            editBtn.className = 'timer-btn';
+            editBtn.innerHTML = '<i class="far fa-clock"></i>';
 
-            function addTableRow(tableBody, loadNumber, timerEnd, isBlinking = false, skipAnimation = false) {
-                const row = document.createElement('tr');
-                row.dataset.timerEnd = timerEnd;
+            editBtn.addEventListener('click', () => {
+                openTimerModal((newLoadNumber, date, time) => {
+                    const newTimerEnd = new Date(`${date}T${time}`).getTime();
+                    row.dataset.timerEnd = newTimerEnd;
+                    loadCell.textContent = newLoadNumber;
+                    row.classList.remove('blinking');
+                    if (newTimerEnd <= Date.now()) row.classList.add('blinking');
+                    saveSectionData(tableBody.closest('.section'));
+                }, row.dataset.timerEnd, loadCell.textContent);
+            });
 
-                if (isBlinking) {
-                    row.classList.add('blinking');
-                }
+            timerContainer.appendChild(countdownSpan);
+            timerContainer.appendChild(editBtn);
+            timerCell.appendChild(timerContainer);
 
-                if (!skipAnimation) {
-                    row.classList.add('row-enter');
-                }
+            const deleteCell = document.createElement('td');
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
 
-                const loadCell = document.createElement('td');
-                loadCell.className = 'load-number';
-                loadCell.textContent = loadNumber;
+            let timeoutId = null;
 
-                loadCell.addEventListener('click', () => {
-                    navigator.clipboard.writeText(loadNumber).then(() => {
-                        loadCell.classList.remove('copied-flash');
-                        void loadCell.offsetWidth;
-                        loadCell.classList.add('copied-flash');
-                    }).catch(err => {
-                        console.error('Could not copy text: ', err);
-                    });
-                });
-
-                const timerCell = document.createElement('td');
-                const timerDisplay = document.createElement('div');
-                timerDisplay.className = 'timer-display';
-
-                const timerSpan = document.createElement('span');
-                timerSpan.className = 'countdown';
-                updateTimerDisplay(timerSpan, timerEnd);
-
-                const timerBtn = document.createElement('button');
-                timerBtn.className = 'timer-btn';
-                timerBtn.innerHTML = '<i class="far fa-clock"></i>';
-                timerBtn.addEventListener('click', () => {
-                    openTimerModal((newLoadNumber, date, time) => {
-                        const newTimerEnd = new Date(`${date}T${time}`).getTime();
-
-                        row.dataset.timerEnd = newTimerEnd;
-                        loadCell.textContent = newLoadNumber;
-
-                        // Remover parpadeo previo si el nuevo tiempo es a futuro
-                        row.classList.remove('blinking');
-                        if (newTimerEnd <= Date.now()) {
-                            row.classList.add('blinking');
-                        }
-
-                        const section = tableBody.closest('.section');
-                        saveSectionData(section);
-                    }, row.dataset.timerEnd, loadCell.textContent);
-                });
-
-                timerDisplay.appendChild(timerSpan);
-                timerDisplay.appendChild(timerBtn);
-                timerCell.appendChild(timerDisplay);
-
-                const deleteCell = document.createElement('td');
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'delete-btn';
-                deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-
-                let timeoutId = null;
-
-                deleteBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    if (!deleteBtn.classList.contains('confirm-delete')) {
-                        deleteBtn.classList.add('confirm-delete');
-                        deleteBtn.innerHTML = '<i class="fas fa-check"></i> Delete?';
-                        timeoutId = setTimeout(() => {
-                            deleteBtn.classList.remove('confirm-delete');
-                            deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-                        }, 3000);
-                    } else {
-                        clearTimeout(timeoutId);
-                        row.classList.add('row-exit');
-                        row.addEventListener('transitionend', () => {
-                            row.remove();
-                            const section = tableBody.closest('.section');
-                            saveSectionData(section);
-                        });
-                    }
-                });
-
-                document.addEventListener('click', () => {
-                    if (deleteBtn.classList.contains('confirm-delete')) {
-                        clearTimeout(timeoutId);
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!deleteBtn.classList.contains('confirm-delete')) {
+                    deleteBtn.classList.add('confirm-delete');
+                    deleteBtn.innerHTML = '<i class="fas fa-check"></i> Delete?';
+                    timeoutId = setTimeout(() => {
                         deleteBtn.classList.remove('confirm-delete');
                         deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-                    }
-                });
-
-                deleteCell.appendChild(deleteBtn);
-
-                row.appendChild(loadCell);
-                row.appendChild(timerCell);
-                row.appendChild(deleteCell);
-                tableBody.appendChild(row);
-
-                if (!skipAnimation) {
-                    requestAnimationFrame(() => {
-                        requestAnimationFrame(() => {
-                            row.classList.add('row-enter-active');
-                        });
-                    });
-                }
-
-                return row;
-            }
-
-            function addSeparatorRow(tableBody, skipAnimation = false) {
-                const row = document.createElement('tr');
-                row.className = 'separator-row';
-                row.dataset.isSeparator = "true";
-
-                if (!skipAnimation) {
-                    row.classList.add('row-enter');
-                }
-
-                const cell = document.createElement('td');
-                cell.setAttribute('colspan', '2');
-
-                const container = document.createElement('div');
-                container.className = 'separator-container';
-
-                const leftLine = document.createElement('div');
-                leftLine.className = 'separator-line';
-
-                const starIcon = document.createElement('i');
-                starIcon.className = 'fas fa-star';
-
-                const rightLine = document.createElement('div');
-                rightLine.className = 'separator-line';
-
-                container.appendChild(leftLine);
-                container.appendChild(starIcon);
-                container.appendChild(rightLine);
-                cell.appendChild(container);
-
-                const deleteCell = document.createElement('td');
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'delete-btn';
-                deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-
-                let timeoutId = null;
-                deleteBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    if (!deleteBtn.classList.contains('confirm-delete')) {
-                        deleteBtn.classList.add('confirm-delete');
-                        deleteBtn.innerHTML = '<i class="fas fa-check"></i> Delete?';
-                        timeoutId = setTimeout(() => {
-                            deleteBtn.classList.remove('confirm-delete');
-                            deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-                        }, 3000);
-                    } else {
-                        clearTimeout(timeoutId);
-                        row.classList.add('row-exit');
-                        row.addEventListener('transitionend', () => {
-                            row.remove();
-                            const section = tableBody.closest('.section');
-                            saveSectionData(section);
-                        });
-                    }
-                });
-
-                deleteCell.appendChild(deleteBtn);
-                row.appendChild(cell);
-                row.appendChild(deleteCell);
-                tableBody.appendChild(row);
-
-                if (!skipAnimation) {
-                    requestAnimationFrame(() => {
-                        requestAnimationFrame(() => {
-                            row.classList.add('row-enter-active');
-                        });
-                    });
-                }
-            }
-
-            function openTimerModal(callback, existingTime = null, existingLoadNumber = '') {
-                const modal = document.getElementById('timerModal');
-                const closeBtn = modal.querySelector('.close-modal');
-                const confirmBtn = document.getElementById('confirmTimer');
-
-                document.getElementById('loadNumber').value = existingLoadNumber;
-
-                if (existingTime) {
-                    const date = new Date(parseInt(existingTime));
-                    document.getElementById('timerDate').value = date.toISOString().split('T')[0];
-                    document.getElementById('timerTime').value = date.toTimeString().substring(0, 5);
+                    }, 3000);
                 } else {
-                    const now = new Date();
-                    now.setHours(now.getHours() + 1);
-                    document.getElementById('timerDate').value = now.toISOString().split('T')[0];
-                    document.getElementById('timerTime').value = now.toTimeString().substring(0, 5);
+                    clearTimeout(timeoutId);
+                    row.classList.add('row-exit');
+                    row.addEventListener('transitionend', () => {
+                        row.remove();
+                        saveSectionData(tableBody.closest('.section'));
+                    });
                 }
+            });
 
-                modal.style.display = 'block';
-                requestAnimationFrame(() => modal.classList.add('show'));
-
-                closeBtn.onclick = () => closeModal(modal);
-                confirmBtn.onclick = function () {
-                    const loadNumber = document.getElementById('loadNumber').value;
-                    const date = document.getElementById('timerDate').value;
-                    const time = document.getElementById('timerTime').value;
-
-                    if (loadNumber && date && time) {
-                        callback(loadNumber, date, time);
-                        closeModal(modal);
-                    } else {
-                        alert('Please fill all fields');
-                    }
+            document.addEventListener('click', () => {
+                if (deleteBtn.classList.contains('confirm-delete')) {
+                    clearTimeout(timeoutId);
+                    deleteBtn.classList.remove('confirm-delete');
+                    deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
                 }
+            });
+
+            deleteCell.appendChild(deleteBtn);
+            row.appendChild(loadCell);
+            row.appendChild(timerCell);
+            row.appendChild(deleteCell);
+            tableBody.appendChild(row);
+
+            if (!skipAnimation) {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        row.classList.add('row-enter-active');
+                    });
+                });
             }
 
-            function openCameraModal() {
-                const modal = document.getElementById('cameraModal');
-                const closeBtn = modal.querySelector('.close-modal');
+            return row;
+        }
 
-                document.getElementById('ocrPreviewContainer').innerHTML = '';
-                document.getElementById('ocrPreviewContainer').style.display = 'none';
-                document.getElementById('ocrPreviewTitle').style.display = 'none';
-                document.getElementById('ocrLoading').style.display = 'none';
-                document.getElementById('ocrTimeBlock').style.display = 'none';
-                detectedLoadsList = [];
+        function addSeparatorRow(tableBody, skipAnimation = false) {
+            const row = document.createElement('tr');
+            row.className = 'separator-row';
+            row.dataset.isSeparator = "true";
 
+            if (!skipAnimation) row.classList.add('row-enter');
+
+            const cell = document.createElement('td');
+            cell.setAttribute('colspan', '2');
+
+            const container = document.createElement('div');
+            container.className = 'separator-container';
+
+            const leftLine = document.createElement('div');
+            leftLine.className = 'separator-line';
+
+            const icon = document.createElement('i');
+            icon.className = 'fas fa-star';
+
+            const rightLine = document.createElement('div');
+            rightLine.className = 'separator-line';
+
+            container.appendChild(leftLine);
+            container.appendChild(icon);
+            container.appendChild(rightLine);
+            cell.appendChild(container);
+
+            const deleteCell = document.createElement('td');
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+
+            let timeoutId = null;
+
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!deleteBtn.classList.contains('confirm-delete')) {
+                    deleteBtn.classList.add('confirm-delete');
+                    deleteBtn.innerHTML = '<i class="fas fa-check"></i> Delete?';
+                    timeoutId = setTimeout(() => {
+                        deleteBtn.classList.remove('confirm-delete');
+                        deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                    }, 3000);
+                } else {
+                    clearTimeout(timeoutId);
+                    row.classList.add('row-exit');
+                    row.addEventListener('transitionend', () => {
+                        row.remove();
+                        saveSectionData(tableBody.closest('.section'));
+                    });
+                }
+            });
+
+            deleteCell.appendChild(deleteBtn);
+            row.appendChild(cell);
+            row.appendChild(deleteCell);
+            tableBody.appendChild(row);
+
+            if (!skipAnimation) {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        row.classList.add('row-enter-active');
+                    });
+                });
+            }
+        }
+
+        function openTimerModal(callback, existingTimer = null, existingLoadNumber = '') {
+            const modal = document.getElementById('timerModal');
+            const closeModal = modal.querySelector('.close-modal');
+            const confirmBtn = document.getElementById('confirmTimer');
+
+            document.getElementById('loadNumber').value = existingLoadNumber;
+
+            if (existingTimer) {
+                const dateObj = new Date(parseInt(existingTimer));
+                document.getElementById('timerDate').value = dateObj.toISOString().split('T')[0];
+                document.getElementById('timerTime').value = dateObj.toTimeString().substring(0, 5);
+            } else {
+                const defaultTime = new Date();
+                defaultTime.setHours(defaultTime.getHours() + 1);
+                document.getElementById('timerDate').value = defaultTime.toISOString().split('T')[0];
+                document.getElementById('timerTime').value = defaultTime.toTimeString().substring(0, 5);
+            }
+
+            modal.style.display = 'block';
+            requestAnimationFrame(() => modal.classList.add('show'));
+
+            closeModal.onclick = () => hideModal(modal);
+            confirmBtn.onclick = function () {
+                const loadNumber = document.getElementById('loadNumber').value;
+                const date = document.getElementById('timerDate').value;
+                const time = document.getElementById('timerTime').value;
+
+                if (loadNumber && date && time) {
+                    callback(loadNumber, date, time);
+                    hideModal(modal);
+                } else {
+                    alert('Please fill all fields');
+                }
+            }
+        }
+
+        function openCameraModal() {
+            const modal = document.getElementById('cameraModal');
+            const closeModal = modal.querySelector('.close-modal');
+
+            document.getElementById('ocrPreviewContainer').innerHTML = '';
+            document.getElementById('ocrPreviewContainer').style.display = 'none';
+            document.getElementById('ocrPreviewTitle').style.display = 'none';
+            document.getElementById('ocrLoading').style.display = 'none';
+            document.getElementById('ocrTimeBlock').style.display = 'none';
+            detectedLoads = [];
+
+            const defaultTime = new Date();
+            defaultTime.setHours(defaultTime.getHours() + 1);
+            document.getElementById('batchDate').value = defaultTime.toISOString().split('T')[0];
+            document.getElementById('batchTime').value = defaultTime.toTimeString().substring(0, 5);
+
+            modal.style.display = 'block';
+            requestAnimationFrame(() => modal.classList.add('show'));
+
+            closeModal.onclick = () => hideModal(modal);
+        }
+
+        function setupOcrFeature() {
+            const dropzone = document.getElementById('ocrDropzone');
+
+            dropzone.addEventListener('paste', function (e) {
+                const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+                for (let i in items) {
+                    const item = items[i];
+                    if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+                        processOcrImage(item.getAsFile());
+                    }
+                }
+            });
+
+            dropzone.addEventListener('click', () => {
+                dropzone.focus();
+                dropzone.classList.add('active');
+            });
+            dropzone.addEventListener('blur', () => dropzone.classList.remove('active'));
+
+            document.getElementById('acceptOcrList').addEventListener('click', () => {
+                if (!activeOcrTableBody || detectedLoads.length === 0) return;
+
+                const date = document.getElementById('batchDate').value;
+                const time = document.getElementById('batchTime').value;
+                const timerEnd = new Date(`${date}T${time}`).getTime();
+
+                detectedLoads.forEach(loadNum => {
+                    addLoadRow(activeOcrTableBody, loadNum, timerEnd, false, false);
+                });
+
+                saveSectionData(activeOcrTableBody.closest('.section'));
+                hideModal(document.getElementById('cameraModal'));
+            });
+        }
+
+        function processOcrImage(file) {
+            const loading = document.getElementById('ocrLoading');
+            const previewContainer = document.getElementById('ocrPreviewContainer');
+            const previewTitle = document.getElementById('ocrPreviewTitle');
+            const timeBlock = document.getElementById('ocrTimeBlock');
+
+            loading.style.display = 'block';
+            previewContainer.innerHTML = '';
+            previewContainer.style.display = 'none';
+            previewTitle.style.display = 'none';
+            timeBlock.style.display = 'none';
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function () {
+                Tesseract.recognize(reader.result, 'eng').then(({ data: { text } }) => {
+                    loading.style.display = 'none';
+                    const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+
+                    if (lines.length === 0) {
+                        previewContainer.innerHTML = '<div style="padding:10px;color:#ff3b30;font-size:13px;">No text list was detected.</div>';
+                        previewContainer.style.display = 'block';
+                        return;
+                    }
+
+                    detectedLoads = lines;
+                    previewTitle.style.display = 'block';
+                    previewContainer.style.display = 'block';
+
+                    lines.forEach(item => {
+                        const tag = document.createElement('span');
+                        tag.className = 'ocr-item-tag';
+                        tag.textContent = item;
+                        previewContainer.appendChild(tag);
+                    });
+
+                    timeBlock.style.display = 'block';
+                }).catch(err => {
+                    loading.style.display = 'none';
+                    alert('Error analyzing screenshot.');
+                });
+            };
+        }
+
+        function hideModal(modal) {
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 200);
+        }
+
+        function updateDisplayTime(element, timerEnd) {
+            const remainder = timerEnd - Date.now();
+
+            if (remainder <= 0) {
+                element.textContent = '00:00:00';
+                element.className = 'countdown due';
+            } else {
+                const totalSeconds = Math.floor(remainder / 1000);
+                const days = Math.floor(totalSeconds / 86400);
+                const hours = Math.floor((totalSeconds % 86400) / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = Math.floor(totalSeconds % 60);
+
+                if (days > 0) {
+                    element.textContent = `${days}d ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                } else {
+                    element.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+
+                element.className = 'countdown';
+                if (hours < 1 && days === 0) {
+                    element.classList.add('due');
+                }
+            }
+        }
+
+        function checkTimers() {
+            const now = Date.now();
+            document.querySelectorAll('.countdown').forEach(element => {
+                const row = element.closest('tr');
+                if (!row || !row.dataset.timerEnd) return;
+
+                const timerEnd = parseInt(row.dataset.timerEnd);
+                updateDisplayTime(element, timerEnd);
+
+                if (now >= timerEnd && !row.classList.contains('blinking')) {
+                    row.classList.add('blinking');
+                }
+            });
+        }
+
+        function saveSectionData(section) {
+            const sectionId = section.dataset.sectionId;
+            const header = section.querySelector('.header');
+            const title = section.querySelector('.section-title').value;
+            const headerColor = header.style.backgroundColor;
+
+            const rows = [];
+            section.querySelectorAll('tbody tr').forEach(row => {
+                if (row.classList.contains('row-exit')) return;
+
+                if (row.dataset.isSeparator === "true") {
+                    rows.push({ isSeparator: true });
+                } else {
+                    const loadNumber = row.querySelector('.load-number').textContent;
+                    const timerEnd = row.dataset.timerEnd;
+                    const isBlinking = row.classList.contains('blinking');
+
+                    rows.push({
+                        loadNumber,
+                        timerEnd,
+                        isBlinking,
+                        isSeparator: false
+                    });
+                }
+            });
+
+            const sectionData = { title, headerColor, rows };
+            localStorage.setItem(`section-${sectionId}`, JSON.stringify(sectionData));
+        }
+
+        function initializeSections() {
+            const hasData = localStorage.getItem('section-0') !== null;
+
+            if (!hasData) {
                 const now = new Date();
-                now.setHours(now.getHours() + 1);
-                document.getElementById('batchDate').value = now.toISOString().split('T')[0];
-                document.getElementById('batchTime').value = now.toTimeString().substring(0, 5);
+                const futureTime = new Date(now.getTime() + 2 * 60 * 60 * 1000);
 
-                modal.style.display = 'block';
-                requestAnimationFrame(() => modal.classList.add('show'));
-
-                closeBtn.onclick = () => closeModal(modal);
-            }
-
-            function setupOcrEngine() {
-                const dropzone = document.getElementById('ocrDropzone');
-
-                dropzone.addEventListener('paste', function (e) {
-                    const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-                    for (let index in items) {
-                        const item = items[index];
-                        if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
-                            const blob = item.getAsFile();
-                            processScreenshotOcr(blob);
-                        }
-                    }
-                });
-
-                dropzone.addEventListener('click', () => {
-                    dropzone.focus();
-                    dropzone.classList.add('active');
-                });
-                dropzone.addEventListener('blur', () => dropzone.classList.remove('active'));
-
-                document.getElementById('acceptOcrList').addEventListener('click', () => {
-                    if (!activeTableBodyForOcr || detectedLoadsList.length === 0) return;
-
-                    const date = document.getElementById('batchDate').value;
-                    const time = document.getElementById('batchTime').value;
-                    const timerEnd = new Date(`${date}T${time}`).getTime();
-
-                    detectedLoadsList.forEach(loadNumber => {
-                        addTableRow(activeTableBodyForOcr, loadNumber, timerEnd, false, false);
-                    });
-
-                    const section = activeTableBodyForOcr.closest('.section');
-                    saveSectionData(section);
-
-                    closeModal(document.getElementById('cameraModal'));
-                });
-            }
-
-            function processScreenshotOcr(imageBlob) {
-                const loadingElement = document.getElementById('ocrLoading');
-                const previewContainer = document.getElementById('ocrPreviewContainer');
-                const previewTitle = document.getElementById('ocrPreviewTitle');
-                const timeBlock = document.getElementById('ocrTimeBlock');
-
-                loadingElement.style.display = 'block';
-                previewContainer.innerHTML = '';
-                previewContainer.style.display = 'none';
-                previewTitle.style.display = 'none';
-                timeBlock.style.display = 'none';
-
-                const reader = new FileReader();
-                reader.readAsDataURL(imageBlob);
-                reader.onloadend = function () {
-                    const base64data = reader.result;
-
-                    Tesseract.recognize(base64data, 'eng')
-                        .then(({ data: { text } }) => {
-                            loadingElement.style.display = 'none';
-
-                            const lines = text.split('\n')
-                                .map(line => line.trim())
-                                .filter(line => line.length > 0);
-
-                            if (lines.length === 0) {
-                                previewContainer.innerHTML = '<div style="padding:10px;color:#ff3b30;font-size:13px;">No text list was detected. Please try another screenshot.</div>';
-                                previewContainer.style.display = 'block';
-                                return;
-                            }
-
-                            detectedLoadsList = lines;
-                            previewTitle.style.display = 'block';
-                            previewContainer.style.display = 'block';
-
-                            lines.forEach(item => {
-                                const tag = document.createElement('span');
-                                tag.className = 'ocr-item-tag';
-                                tag.textContent = item;
-                                previewContainer.appendChild(tag);
-                            });
-
-                            timeBlock.style.display = 'block';
-                        })
-                        .catch(err => {
-                            console.error(err);
-                            loadingElement.style.display = 'none';
-                            alert('Error analyzing the screenshot. Please try again.');
-                        });
-                };
-            }
-
-            function closeModal(modal) {
-                modal.classList.remove('show');
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                }, 200);
-            }
-
-            function updateTimerDisplay(element, timerEnd) {
-                const now = Date.now();
-                const remaining = timerEnd - now;
-
-                if (remaining <= 0) {
-                    element.textContent = '00:00:00';
-                    element.className = 'countdown due';
-                } else {
-                    const seconds = Math.floor(remaining / 1000);
-                    const days = Math.floor(seconds / (3600 * 24));
-                    const hours = Math.floor((seconds % (3600 * 24)) / 3600);
-                    const mins = Math.floor((seconds % 3600) / 60);
-                    const secs = Math.floor(seconds % 60);
-
-                    let timeStr = '';
-                    if (days > 0) {
-                        timeStr = `${days}d ${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-                    } else {
-                        timeStr = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-                    }
-
-                    element.textContent = timeStr;
-                    element.className = 'countdown';
-
-                    if (hours < 1) {
-                        element.classList.add('due');
-                    }
-                }
-            }
-
-            function checkTimers() {
-                const now = Date.now();
-
-                document.querySelectorAll('.countdown').forEach(element => {
-                    const row = element.closest('tr');
-                    if (!row || !row.dataset.timerEnd) return;
-
-                    const timerEnd = parseInt(row.dataset.timerEnd);
-                    updateTimerDisplay(element, timerEnd);
-
-                    if (now >= timerEnd) {
-                        if (!row.classList.contains("blinking")) {
-                            row.classList.add("blinking");
-                        }
-                    }
-                });
-            }
-
-            function saveSectionData(section) {
-                const sectionId = Array.from(document.querySelectorAll('.section')).indexOf(section);
-                const header = section.querySelector('.header');
-                const title = section.querySelector('.section-title').value;
-                const headerColor = header.style.backgroundColor;
-
-                const rows = [];
-                section.querySelectorAll('tbody tr').forEach(row => {
-                    if (row.classList.contains('row-exit')) return;
-
-                    if (row.dataset.isSeparator === "true") {
-                        rows.push({ isSeparator: true });
-                    } else {
-                        const loadNumber = row.querySelector('.load-number').textContent;
-                        const timerEnd = row.dataset.timerEnd;
-                        const isBlinking = row.classList.contains('blinking');
-
-                        rows.push({
-                            loadNumber,
-                            timerEnd,
-                            isBlinking,
+                const sampleData = {
+                    title: "Urgent Loads",
+                    headerColor: "#ffe6e6",
+                    rows: [
+                        {
+                            loadNumber: "30000180999",
+                            timerEnd: futureTime.getTime().toString(),
+                            isBlinking: false,
                             isSeparator: false
-                        });
-                    }
-                });
-
-                const sectionData = {
-                    title,
-                    headerColor,
-                    rows
+                        }
+                    ]
                 };
 
-                localStorage.setItem(`section-${sectionId}`, JSON.stringify(sectionData));
+                localStorage.setItem('section-0', JSON.stringify(sampleData));
             }
-
-            function initializeSections() {
-                const hasData = localStorage.getItem('section-0') !== null;
-
-                if (!hasData) {
-                    const now = new Date();
-                    const futureTime = new Date(now.getTime() + 2 * 60 * 60 * 1000);
-
-                    const sampleData = {
-                        title: "Urgent Loads",
-                        headerColor: "#ffe6e6",
-                        rows: [
-                            {
-                                loadNumber: "30000180999",
-                                timerEnd: futureTime.getTime().toString(),
-                                isBlinking: false,
-                                isSeparator: false
-                            }
-                        ]
-                    };
-
-                    localStorage.setItem('section-0', JSON.stringify(sampleData));
-                }
-            }
-        </script>
+        }
+    </script>
 </body>
 
 </html>

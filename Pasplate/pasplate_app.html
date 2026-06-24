@@ -6,47 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Timeplate - Tool 1</title>
     <link rel="icon" type="image/png" href="/logo_v5.png">
-
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@600&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <style>
-        /* ==========================================================================
-           Estilos Generales y Reseteo (Fondo Corregido para Scroll Absoluto)
-           ========================================================================== */
         body {
             margin: 0;
             font-family: 'Poppins', Arial, sans-serif;
             background-color: #0a2239;
             background-attachment: fixed;
-            /* Mantiene el fondo anclado mientras haces scroll */
             min-height: 100vh;
             overflow: hidden;
-            /* Evita scrolls dobles extraños en el body */
         }
 
-        /* Estilización de las barras de desplazamiento (Scrollbars Modernas) */
         ::-webkit-scrollbar {
             width: 10px;
             height: 10px;
         }
 
         ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, .2);
         }
 
         ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, .2);
             border-radius: 5px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(166, 255, 0, 0.6);
-            box-shadow: 0 0 8px rgba(166, 255, 0, 0.4);
+            background: rgba(166, 255, 0, .6);
+            box-shadow: 0 0 8px rgba(166, 255, 0, .4);
         }
 
-        /* Contenedor Principal de la App */
         #main-container {
             width: 100%;
             height: 100vh;
@@ -55,45 +46,38 @@
             position: relative;
         }
 
-        /* Contenedor Intermedio: Agrupa Sidebar + Contenido del Workspace */
         #app-body {
             display: flex;
             flex-direction: row;
             flex-grow: 1;
             width: 100%;
             height: calc(100vh - 60px);
-            /* Descuenta el tamaño del header */
             overflow: hidden;
         }
 
-        /* Área de contenido del scroll (Barra de boards + lienzo) */
         #content-area {
             display: flex;
             flex-direction: column;
             flex-grow: 1;
             overflow: auto;
-            /* Aquí es donde ocurre la navegación del lienzo */
             position: relative;
         }
 
-        /* ==========================================================================
-           Header (Fijo y Responsivo)
-           ========================================================================== */
         #header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(88, 89, 92, 0.65);
+            background: rgba(88, 89, 92, .65);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             padding: 12px 24px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .2);
             position: sticky;
             top: 0;
             z-index: 100;
-            transition: all 0.3s ease;
+            transition: all .3s ease;
             flex-shrink: 0;
-            height: 80px;
+            height: 60px;
             box-sizing: border-box;
         }
 
@@ -109,10 +93,10 @@
             margin: 0;
             font-size: 24px;
             font-weight: 700;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, .9);
             font-family: 'Montserrat', sans-serif;
             position: relative;
-            letter-spacing: 0.5px;
+            letter-spacing: .5px;
         }
 
         #branding h1::after {
@@ -124,14 +108,14 @@
             height: 3px;
             background: #a6ff00;
             border-radius: 2px;
-            box-shadow: 0 0 8px rgba(166, 255, 0, 0.6);
+            box-shadow: 0 0 8px rgba(166, 255, 0, .6);
         }
 
         #logo-link {
             display: flex;
             align-items: center;
             text-decoration: none;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform .3s cubic-bezier(.175, .885, .32, 1.275);
         }
 
         #logo-link:hover {
@@ -151,15 +135,12 @@
             gap: 10px;
         }
 
-        /* ==========================================================================
-           Sidebar Vertical Colapsable Avanzado
-           ========================================================================== */
         #sidebar {
             width: 70px;
-            background: rgba(20, 35, 55, 0.6);
+            background: rgba(20, 35, 55, .6);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            border-right: 1px solid rgba(255, 255, 255, .08);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -167,15 +148,13 @@
             gap: 20px;
             flex-shrink: 0;
             z-index: 98;
-            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.15);
-            transition: width 0.35s cubic-bezier(0.25, 1, 0.5, 1), padding 0.35s ease, border-color 0.35s ease;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, .15);
+            transition: width .35s cubic-bezier(.25, 1, .5, 1), padding .35s ease, border-color .35s ease;
             overflow: hidden;
-            /* Evita desbordamiento al colapsar */
         }
 
-        /* Estado colapsado del Sidebar */
         #sidebar.collapsed {
-            width: 0px;
+            width: 0;
             padding-left: 0;
             padding-right: 0;
             border-right-color: transparent;
@@ -184,12 +163,12 @@
         .sidebar-section-title {
             font-size: 10px;
             text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, .4);
             letter-spacing: 1px;
             margin-bottom: -10px;
-            font-weight: bold;
+            font-weight: 700;
             user-select: none;
-            transition: opacity 0.2s ease;
+            transition: opacity .2s ease;
         }
 
         #sidebar.collapsed .sidebar-section-title,
@@ -198,11 +177,10 @@
             pointer-events: none;
         }
 
-        /* Botón de control del colapso (Ubicado en el cabezal o flotante) */
         #toggle-sidebar-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, .1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .15);
             width: 32px;
             height: 32px;
             border-radius: 8px;
@@ -211,25 +189,22 @@
             align-items: center;
             justify-content: center;
             font-size: 12px;
-            transition: all 0.2s ease;
+            transition: all .2s ease;
         }
 
         #toggle-sidebar-btn:hover {
             background: #a6ff00;
-            color: #000000;
-            box-shadow: 0 0 10px rgba(166, 255, 0, 0.5);
+            color: #000;
+            box-shadow: 0 0 10px rgba(166, 255, 0, .5);
             border-color: transparent;
         }
 
-        /* ==========================================================================
-           Barra de Boards (Tabs)
-           ========================================================================== */
         #boards-bar {
             display: flex;
             align-items: center;
-            background: rgba(20, 35, 55, 0.4);
+            background: rgba(20, 35, 55, .4);
             padding: 6px 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
             gap: 8px;
             user-select: none;
             position: sticky;
@@ -241,20 +216,20 @@
         }
 
         #add-board-btn {
-            background: #ffffff;
-            color: #000000;
+            background: #fff;
+            color: #000;
             border: none;
             width: 32px;
             height: 32px;
             border-radius: 8px;
             font-size: 18px;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all .2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
             flex-shrink: 0;
         }
 
@@ -285,23 +260,23 @@
         .board-tab {
             display: inline-flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, .1);
+            color: rgba(255, 255, 255, .7);
             padding: 6px 14px;
             border-radius: 8px;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all .25s cubic-bezier(.4, 0, .2, 1);
             border: 1px solid transparent;
             gap: 8px;
-            animation: tabEntrance 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            animation: tabEntrance .3s cubic-bezier(.34, 1.56, .64, 1) forwards;
         }
 
         @keyframes tabEntrance {
             from {
                 opacity: 0;
-                transform: scale(0.8) translateY(-5px);
+                transform: scale(.8) translateY(-5px);
             }
 
             to {
@@ -311,7 +286,7 @@
         }
 
         .board-tab.animation-exit {
-            animation: tabExit 0.25s ease forwards !important;
+            animation: tabExit .25s ease forwards !important;
         }
 
         @keyframes tabExit {
@@ -326,7 +301,7 @@
 
             to {
                 opacity: 0;
-                transform: scale(0.8);
+                transform: scale(.8);
                 width: 0;
                 padding-left: 0;
                 padding-right: 0;
@@ -336,14 +311,14 @@
         }
 
         .board-tab:hover {
-            background: rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, .18);
             color: #fff;
         }
 
         .board-tab.active {
             background: #a6ff00;
-            color: #000000;
-            box-shadow: 0 0 12px rgba(166, 255, 0, 0.4);
+            color: #000;
+            box-shadow: 0 0 12px rgba(166, 255, 0, .4);
         }
 
         .board-tab .close-board-btn {
@@ -358,20 +333,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.2s;
+            transition: background .2s;
         }
 
         .board-tab .close-board-btn:hover {
-            background: rgba(0, 0, 0, 0.15);
+            background: rgba(0, 0, 0, .15);
         }
 
         .board-tab.active .close-board-btn:hover {
-            background: rgba(0, 0, 0, 0.1);
+            background: rgba(0, 0, 0, .1);
         }
 
-        /* ==========================================================================
-           Botones de Acción (Animaciones Micro-interacciones)
-           ========================================================================== */
         #add-box-btn,
         #add-line-box-btn,
         #settings-btn {
@@ -381,14 +353,14 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: all .25s cubic-bezier(.4, 0, .2, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .2);
         }
 
         #add-box-btn {
             font-size: 22px;
-            background-color: #ffffff;
-            color: #000000;
+            background-color: #fff;
+            color: #000;
             border-radius: 12px;
             width: 46px;
             height: 46px;
@@ -397,13 +369,13 @@
         #add-box-btn:hover {
             background-color: #e5e5e5;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, .2);
         }
 
         #add-line-box-btn {
             font-size: 20px;
-            background-color: #000000;
-            color: #ffffff;
+            background-color: #000;
+            color: #fff;
             border-radius: 10px;
             width: 38px;
             height: 38px;
@@ -412,60 +384,49 @@
         #add-line-box-btn:hover {
             background-color: #1a1a1a;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .4);
         }
 
         #settings-btn {
-            font-size: 30px;
+            font-size: 22px;
             background-color: transparent;
-            color: #ffffff;
+            color: #fff;
             border-radius: 50%;
             width: 42px;
             height: 42px;
-            margin-right: 20px;
             box-shadow: none;
         }
 
         #settings-btn:hover {
-            background-color: rgba(255, 255, 255, 0.15);
+            background-color: rgba(255, 255, 255, .15);
             transform: rotate(45deg);
         }
 
-        #add-box-btn:active,
-        #add-line-box-btn:active {
-            transform: translateY(1px);
-        }
-
-        /* ==========================================================================
-           Workspace (Lienzo infinito con límite definido y limpio)
-           ========================================================================== */
         #workspace {
             position: relative;
             width: 3000px;
-            /* Límite de navegación aceptable X */
             height: 3000px;
-            /* Límite de navegación aceptable Y */
             padding: 40px;
             box-sizing: border-box;
+        }
+
+        .box,
+        .line-box {
+            animation: boxEntrance .3s cubic-bezier(.34, 1.56, .64, 1) forwards;
+            will-change: transform, top, left;
+            transition: box-shadow .25s ease, background-color .3s ease;
         }
 
         @keyframes boxEntrance {
             from {
                 opacity: 0;
-                transform: scale(0.9) translateY(10px);
+                transform: scale(.9) translateY(10px);
             }
 
             to {
                 opacity: 1;
                 transform: scale(1) translateY(0);
             }
-        }
-
-        .box,
-        .line-box {
-            animation: boxEntrance 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-            will-change: transform, top, left;
-            transition: box-shadow 0.25s ease, background-color 0.3s ease;
         }
 
         .box {
@@ -475,15 +436,15 @@
             display: flex;
             flex-direction: column;
             padding: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .35);
             position: absolute;
             cursor: grab;
             background-color: #a1a1a1;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, .1);
         }
 
         .box:hover:not(.locked) {
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, .5);
         }
 
         .box:active:not(.locked) {
@@ -499,20 +460,19 @@
             display: flex;
             flex-direction: column;
             padding: 10px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, .25);
             position: absolute;
             cursor: grab;
-            background-color: #ffffff;
-            border: 1px solid #000000;
+            background-color: #fff;
+            border: 1px solid #000;
         }
 
-        /* Textareas */
         .box textarea,
         .line-box textarea {
             width: 100%;
             box-sizing: border-box;
             font-family: Arial, sans-serif;
-            transition: background-color 0.25s ease, border-color 0.25s ease;
+            transition: background-color .25s ease, border-color .25s ease;
         }
 
         .box textarea {
@@ -523,13 +483,13 @@
             padding: 8px;
             background-color: #e9e7e7;
             font-size: 15px;
-            font-weight: bold;
+            font-weight: 700;
             border: 1px solid transparent;
         }
 
         .box textarea:focus {
             outline: none;
-            background-color: #ffffff;
+            background-color: #fff;
             border-color: #a6ff00;
         }
 
@@ -548,7 +508,6 @@
             outline: none;
         }
 
-        /* Botoneras internas */
         .box-buttons {
             display: flex;
             justify-content: space-between;
@@ -568,7 +527,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
+            transition: all .2s ease;
         }
 
         .box button:hover,
@@ -579,21 +538,21 @@
 
         .box button:active,
         .line-box button:active {
-            transform: scale(0.95);
+            transform: scale(.95);
         }
 
         .box .copy-btn {
             flex-grow: 1;
             padding: 8px;
-            background-color: black;
-            color: white;
+            background-color: #000;
+            color: #fff;
             cursor: copy;
             font-size: 15px;
         }
 
         .box .delete-btn {
             background-color: #ff3b30;
-            color: white;
+            color: #fff;
             cursor: pointer;
         }
 
@@ -609,8 +568,8 @@
         .box .lock-btn.active,
         .line-box .lock-btn.active {
             background-color: #e0a847;
-            color: white;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+            color: #fff;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, .2);
         }
 
         .line-box-buttons {
@@ -627,7 +586,7 @@
 
         .line-box .delete-btn {
             background-color: #f77067;
-            color: white;
+            color: #fff;
         }
 
         .line-box .lock-btn {
@@ -635,20 +594,16 @@
             color: #333;
         }
 
-        /* ==========================================================================
-           Modales y Menús Flotantes (UI Premium)
-           ========================================================================== */
         #settings-menu {
             position: fixed;
-            /* Fixed para evitar que se desplace con el lienzo */
             background: #080e1f;
-            color: white;
+            color: #fff;
             border-radius: 14px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .5);
             padding: 12px;
             z-index: 1000;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            animation: menuFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            border: 1px solid rgba(255, 255, 255, .08);
+            animation: menuFadeIn .2s cubic-bezier(0.4, 0, .2, 1) forwards;
             transform-origin: top left;
             width: 200px;
         }
@@ -656,7 +611,7 @@
         @keyframes menuFadeIn {
             from {
                 opacity: 0;
-                transform: scale(0.95) translateY(-5px);
+                transform: scale(.95) translateY(-5px);
             }
 
             to {
@@ -675,7 +630,7 @@
             padding: 10px 14px;
             cursor: pointer;
             border-radius: 8px;
-            transition: background 0.2s ease, transform 0.1s ease;
+            transition: background .2s ease, transform .1s ease;
             font-size: 14px;
             display: flex;
             align-items: center;
@@ -686,30 +641,30 @@
             background: #2d4263;
         }
 
-        #volume-control:hover,
-        #sound-control:hover,
+        #background-settings:hover,
         #organized-control:hover,
-        #background-settings:hover {
+        #sound-control:hover,
+        #volume-control:hover {
             background: transparent !important;
         }
 
-        #volume-control,
-        #sound-control,
+        #background-settings,
         #organized-control,
-        #background-settings {
+        #sound-control,
+        #volume-control {
             cursor: pointer;
         }
 
-        #volume-control,
+        #organized-control,
         #sound-control,
-        #organized-control {
+        #volume-control {
             cursor: default !important;
             flex-direction: column;
             align-items: flex-start !important;
             gap: 6px;
         }
 
-        #volume-control input[type="range"] {
+        #volume-control input[type=range] {
             width: 100%;
             accent-color: #a6ff00;
         }
@@ -732,33 +687,29 @@
             cursor: pointer !important;
             border-radius: 6px !important;
             background: transparent !important;
-            transition: background 0.2s ease !important;
-            color: rgba(255, 255, 255, 0.85);
+            transition: background .2s ease !important;
+            color: rgba(255, 255, 255, .85);
         }
 
         #background-options li:hover,
         #organized-options li:hover {
             background: #2d4263 !important;
-            color: #ffffff !important;
+            color: #fff !important;
         }
 
-        /* ==========================================================================
-           SELECTOR DE COLOR CONTEXTUAL OPTIMIZADO (Presets + Flotante)
-           ========================================================================== */
         .color-picker {
             position: absolute;
-            /* Cambiado a absolute para flotar relativo a la posición del LineBox en el lienzo */
             z-index: 1005;
-            background: #ffffff;
+            background: #fff;
             border-radius: 14px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .3);
             padding: 14px;
             width: 210px;
             opacity: 0;
             pointer-events: none;
-            transform: scale(0.95);
-            transition: opacity 0.15s ease, transform 0.15s ease;
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            transform: scale(.95);
+            transition: opacity .15s ease, transform .15s ease;
+            border: 1px solid rgba(0, 0, 0, .1);
         }
 
         .color-picker.active {
@@ -795,7 +746,6 @@
             color: #4a5568;
         }
 
-        /* Cuadrícula de Presets Estables */
         .color-presets-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -808,13 +758,13 @@
             height: 28px;
             border-radius: 50%;
             cursor: pointer;
-            border: 1px solid rgba(0, 0, 0, 0.12);
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            border: 1px solid rgba(0, 0, 0, .12);
+            transition: transform .15s ease, box-shadow .15s ease;
         }
 
         .color-preset-circle:hover {
             transform: scale(1.12);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .15);
         }
 
         .color-controls {
@@ -848,7 +798,6 @@
             border: 1px solid #cbd5e0;
         }
 
-        /* Backdrop invisible para cerrar el picker al hacer clic fuera */
         .color-picker-backdrop {
             position: fixed;
             top: 0;
@@ -864,23 +813,22 @@
             display: block;
         }
 
-        /* Modal de Confirmación Custom (Premium) */
         .confirm-modal {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
+            transform: translate(-50%, -50%) scale(.9);
             z-index: 2000;
             background: #080e1f;
             color: #fff;
             border-radius: 16px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .6);
             padding: 24px;
             width: 340px;
             opacity: 0;
             pointer-events: none;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all .25s cubic-bezier(0.4, 0, .2, 1);
+            border: 1px solid rgba(255, 255, 255, .1);
             text-align: center;
         }
 
@@ -890,21 +838,20 @@
             transform: translate(-50%, -50%) scale(1);
         }
 
-        /* Animación de parpadeo suave/destello rojo de advertencia */
         @keyframes alertPulse {
             0% {
-                border-color: rgba(255, 255, 255, 0.1);
-                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+                border-color: rgba(255, 255, 255, .1);
+                box-shadow: 0 20px 50px rgba(0, 0, 0, .6);
             }
 
             50% {
                 border-color: #ff3b30;
-                box-shadow: 0 0 25px rgba(255, 59, 48, 0.6), 0 20px 50px rgba(0, 0, 0, 0.6);
+                box-shadow: 0 0 25px rgba(255, 59, 48, .6), 0 20px 50px rgba(0, 0, 0, .6);
             }
 
             100% {
-                border-color: rgba(255, 255, 255, 0.1);
-                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+                border-color: rgba(255, 255, 255, .1);
+                box-shadow: 0 20px 50px rgba(0, 0, 0, .6);
             }
         }
 
@@ -922,7 +869,7 @@
         .confirm-modal p {
             margin: 0 0 20px 0;
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, .7);
         }
 
         .confirm-buttons {
@@ -938,23 +885,23 @@
             font-weight: 600;
             cursor: pointer;
             font-size: 13px;
-            transition: all 0.2s;
+            transition: all .2s;
             min-width: 80px;
         }
 
         .confirm-btn-yes {
             background: #a6ff00;
-            color: black;
+            color: #000;
         }
 
         .confirm-btn-yes.danger {
             background: #ff3b30;
-            color: white;
+            color: #fff;
         }
 
         .confirm-btn-no {
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
+            background: rgba(255, 255, 255, .15);
+            color: #fff;
         }
 
         .confirm-buttons button:hover {
@@ -962,37 +909,31 @@
             transform: scale(1.03);
         }
 
-        /* ==========================================================================
-           Animaciones Especiales y Estados de Bloqueo
-           ========================================================================== */
         @keyframes neonGlow {
             0% {
-                box-shadow: 0 0 0px rgba(166, 255, 0, 0);
+                box-shadow: 0 0 0 rgba(166, 255, 0, 0);
             }
 
             50% {
-                box-shadow: 0 0 25px rgba(166, 255, 0, 0.9);
+                box-shadow: 0 0 25px rgba(166, 255, 0, .9);
                 border-color: #a6ff00;
             }
 
             100% {
-                box-shadow: 0 0 0px rgba(166, 255, 0, 0);
+                box-shadow: 0 0 0 rgba(166, 255, 0, 0);
             }
         }
 
         .box.glow {
-            animation: neonGlow 0.6s ease-out !important;
+            animation: neonGlow .6s ease-out !important;
         }
 
         .locked {
             cursor: default !important;
-            opacity: 0.85;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            opacity: .85;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, .2);
         }
 
-        /* ==========================================================================
-           Adaptabilidad Responsiva (Móviles / Tablets)
-           ========================================================================== */
         @media (max-width: 600px) {
             #header {
                 padding: 10px 16px;
@@ -1013,7 +954,7 @@
             }
 
             #sidebar.collapsed {
-                width: 0px;
+                width: 0;
             }
 
             #add-box-btn {
@@ -1053,916 +994,706 @@
                 <button id="settings-btn">⚙️</button>
             </div>
         </div>
-
         <div id="app-body">
             <div id="sidebar">
                 <span class="sidebar-section-title">Add</span>
                 <button id="add-box-btn" title="Agregar Recuadro">+</button>
                 <button id="add-line-box-btn" title="Agregar LineBox">+</button>
             </div>
-
             <div id="content-area">
                 <div id="boards-bar">
                     <button id="add-board-btn">+</button>
                     <div id="boards-container"></div>
                 </div>
-
                 <div id="workspace"></div>
             </div>
         </div>
-
         <div id="color-picker" class="color-picker">
             <div class="color-picker-header">
                 <h3>Colores</h3>
                 <button id="close-color-picker">×</button>
             </div>
             <div class="color-presets-grid" id="color-presets-grid"></div>
-
             <div class="color-controls">
                 <span>Personalizado:</span>
                 <input type="color" id="custom-color" value="#ffffff">
                 <div class="color-preview" id="color-preview"></div>
             </div>
         </div>
-
         <div id="custom-confirm" class="confirm-modal">
-            <h3 id="confirm-title">Delete?</h3>
-            <p id="confirm-msg">This action cannot be undone.</p>
+            <h3 id="confirm-title">¿Eliminar?</h3>
+            <p id="confirm-msg">Esta acción no se puede deshacer.</p>
             <div class="confirm-buttons">
-                <button id="confirm-yes" class="confirm-btn-yes">Yes</button>
-                <button id="confirm-no" class="confirm-btn-no">Cancel</button>
+                <button id="confirm-yes" class="confirm-btn-yes">Sí</button>
+                <button id="confirm-no" class="confirm-btn-no">Cancelar</button>
             </div>
         </div>
     </div>
 
     <script>
-        const workspace = document.getElementById('workspace');
-        const contentArea = document.getElementById('content-area');
-        const sidebar = document.getElementById('sidebar');
-        const toggleSidebarBtn = document.getElementById('toggle-sidebar-btn');
-        const addBoxBtn = document.getElementById('add-box-btn');
-        const addLineBoxBtn = document.getElementById('add-line-box-btn');
-        const colorPicker = document.getElementById('color-picker');
-        const colorPresetsGrid = document.getElementById('color-presets-grid');
-        const customColorInput = document.getElementById('custom-color');
-        const colorPreview = document.getElementById('color-preview');
-        const closeColorPickerBtn = document.getElementById('close-color-picker');
+        (function () {
+            // Bloqueo de Clic Derecho e Inspección de Interfaz Superficial
+            document.addEventListener("contextmenu", function (event) {
+                event.preventDefault();
+            });
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "F12" ||
+                    (event.ctrlKey && event.shiftKey && (event.key === "I" || event.key === "J" || event.key === "C")) ||
+                    (event.ctrlKey && event.key === "u") ||
+                    (event.metaKey && event.altKey && event.key === "i")) {
+                    event.preventDefault();
+                }
+            });
 
-        // Elementos de Boards
-        const boardsContainer = document.getElementById('boards-container');
-        const addBoardBtn = document.getElementById('add-board-btn');
+            // Elementos del DOM del Espacio de Trabajo
+            const workspace = document.getElementById("workspace");
+            const contentArea = document.getElementById("content-area");
+            const sidebar = document.getElementById("sidebar");
+            const toggleSidebarBtn = document.getElementById("toggle-sidebar-btn");
+            const addBoxBtn = document.getElementById("add-box-btn");
+            const addLineBoxBtn = document.getElementById("add-line-box-btn");
+            const colorPicker = document.getElementById("color-picker");
+            const colorPresetsGrid = document.getElementById("color-presets-grid");
+            const customColorInput = document.getElementById("custom-color");
+            const colorPreview = document.getElementById("color-preview");
+            const closeColorPickerBtn = document.getElementById("close-color-picker");
+            const boardsContainer = document.getElementById("boards-container");
+            const addBoardBtn = document.getElementById("add-board-btn");
+            const customConfirmModal = document.getElementById("custom-confirm");
+            const confirmYesBtn = document.getElementById("confirm-yes");
+            const confirmNoBtn = document.getElementById("confirm-no");
 
-        // Modal Custom
-        const customConfirm = document.getElementById('custom-confirm');
-        const confirmYes = document.getElementById('confirm-yes');
-        const confirmNo = document.getElementById('confirm-no');
+            // Variables de Estado
+            let activeLineBox = null;
+            let isMuted = false;
+            let activeBoardId = 1;
+            let boardsList = [1];
 
-        let currentBoxForColor = null;
-        let isMuted = false;
+            // Gestión de Menú Lateral (Sidebar)
+            toggleSidebarBtn.addEventListener("click", () => {
+                const isCollapsed = sidebar.classList.toggle("collapsed");
+                toggleSidebarBtn.textContent = isCollapsed ? "▶" : "◀";
+                localStorage.setItem("sidebarCollapsed", isCollapsed);
+            });
 
-        // Estado de los Boards
-        let activeBoardId = 1;
-        let boardsList = [1]; // Inicia con el Board 1
-
-        // ============================
-        // LÓGICA DE APERTURA/CIERRE DEL SIDEBAR
-        // ============================
-        toggleSidebarBtn.addEventListener('click', () => {
-            const isCollapsed = sidebar.classList.toggle('collapsed');
-            toggleSidebarBtn.textContent = isCollapsed ? '▶' : '◀';
-            localStorage.setItem('sidebarCollapsed', isCollapsed);
-        });
-
-        function initializeSidebarState() {
-            const wasCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-            if (wasCollapsed) {
-                sidebar.classList.add('collapsed');
-                toggleSidebarBtn.textContent = '▶';
-            } else {
-                sidebar.classList.remove('collapsed');
-                toggleSidebarBtn.textContent = '◀';
+            function initSidebarState() {
+                const isCollapsed = localStorage.getItem("sidebarCollapsed") === "true";
+                if (isCollapsed) {
+                    sidebar.classList.add("collapsed");
+                    toggleSidebarBtn.textContent = "▶";
+                } else {
+                    sidebar.classList.remove("collapsed");
+                    toggleSidebarBtn.textContent = "◀";
+                }
             }
-        }
 
-        // ============================
-        // AUDIO BASE
-        // ============================
-        let defaultSound = 'audio_1.mp3';
-        let copySound = new Audio(defaultSound);
+            // Configuración del Sistema de Audio y Menú de Ajustes
+            let defaultSoundPath = "audio_1.mp3";
+            let audioFeedback = new Audio(defaultSoundPath);
 
-        // ============================
-        // LOAD CUSTOM SOUND
-        // ============================
-        const savedCustomSound = localStorage.getItem('customSound');
-        if (savedCustomSound) {
-            copySound.src = savedCustomSound;
-        }
+            const savedCustomSound = localStorage.getItem("customSound");
+            if (savedCustomSound) audioFeedback.src = savedCustomSound;
 
-        // Obtener el botón de Configuración
-        const settingsBtn = document.getElementById('settings-btn');
+            const settingsBtn = document.getElementById("settings-btn");
+            const settingsMenu = document.createElement("div");
 
-        // ============================
-        // SETTINGS MENU
-        // ============================
-        const settingsMenu = document.createElement('div');
-        settingsMenu.id = 'settings-menu';
-        settingsMenu.innerHTML = `
-        <ul>
-            <li id="toggle-mute">🔊 Mute</li>
-            <li id="volume-control">
-                🔈 Volume
-                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
-            </li>
-            <li id="sound-control">
-                🎵 Sound
-                <input type="file" id="sound-upload" accept="audio/*">
-                <button id="remove-sound" style="background: #f77067; color: white; border: none; padding: 5px; border-radius: 5px; cursor: pointer; font-size: 12px; margin-top: 5px;">Delete sound    </button>
-            </li>
-            <li id="organized-control">
-                <span id="organized-trigger" style="cursor:pointer; display:block; width:100%;">+ Boxes Organized</span>
-                <ul id="organized-options" style="display:none;">
-                    <li data-action="template">- Template boxes</li>
-                    <li data-action="color">- Color boxes</li>
-                    <li data-action="empty">- Empty boxes</li>
+            settingsMenu.id = "settings-menu";
+            settingsMenu.innerHTML = `<ul>
+                <li id="toggle-mute">🔊 Mute</li>
+                <li id="volume-control">🔈 Volume <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1"></li>
+                <li id="sound-control">🎵 Sound <input type="file" id="sound-upload" accept="audio/*"> <button id="remove-sound" style="background: #f77067; color: white; border: none; padding: 5px; border-radius: 5px; cursor: pointer; font-size: 12px; margin-top: 5px;">Delete sound</button></li>
+                <li id="organized-control"><span id="organized-trigger" style="cursor:pointer; display:block; width:100%;">+ Boxes Organized</span>
+                    <ul id="organized-options" style="display:none;"><li data-action="template">- Template boxes</li><li data-action="color">- Color boxes</li><li data-action="empty">- Empty boxes</li></ul>
+                </li>
+                <li id="background-settings">+ Background</li>
+                <ul id="background-options" style="display:none; margin-left:15px;">
+                    <li data-bg="#0a2239">- Blue</li><li data-bg="#121212">- Gray</li><li data-bg="#0f3d3e">- Green</li><li data-bg="linear-gradient(135deg, #1a1f36, #2d4263)">- Elegant</li>
                 </ul>
-            </li>
-            <li id="background-settings">+ Background</li>
-            <ul id="background-options" style="display:none; margin-left:15px;">
-                <li data-bg="#0a2239">- Blue</li>
-                <li data-bg="#121212">- Gray</li>
-                <li data-bg="#0f3d3e">- Green</li>
-                <li data-bg="linear-gradient(135deg, #1a1f36, #2d4263)">- Elegant</li>
-            </ul>
-        </ul>
-        `;
-        settingsMenu.style.display = 'none';
-        document.body.appendChild(settingsMenu);
+            </ul>`;
+            settingsMenu.style.display = "none";
+            document.body.appendChild(settingsMenu);
 
-        // ============================
-        // TOGGLE MENU
-        // ============================
-        settingsBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            settingsMenu.style.display = settingsMenu.style.display === 'block' ? 'none' : 'block';
-            const rect = settingsBtn.getBoundingClientRect();
-            settingsMenu.style.top = (rect.bottom) + 'px';
-            settingsMenu.style.left = (rect.left - 160) + 'px';
-        });
-
-        document.addEventListener('click', () => {
-            settingsMenu.style.display = 'none';
-        });
-        settingsMenu.addEventListener('click', (e) => e.stopPropagation());
-
-        // ============================ 
-        // MUTE
-        // ============================
-        const toggleMuteOption = document.getElementById('toggle-mute');
-        const volumeSlider = document.getElementById('volume-slider');
-
-        toggleMuteOption.addEventListener('click', () => {
-            isMuted = !isMuted;
-            if (isMuted) {
-                copySound.volume = 0;
-                volumeSlider.value = 0;
-            } else {
-                copySound.volume = 1;
-                volumeSlider.value = 1;
-            }
-            toggleMuteOption.textContent = isMuted ? '🔇 <Unmute>' : '🔊 Mute';
-            localStorage.setItem('soundVolume', copySound.volume);
-        });
-
-        // ============================
-        // VOLUME CONTROL
-        // ============================
-        const savedVolume = localStorage.getItem('soundVolume');
-        if (savedVolume !== null) {
-            copySound.volume = savedVolume;
-            volumeSlider.value = savedVolume;
-            if (savedVolume == 0) {
-                isMuted = true;
-                toggleMuteOption.textContent = '🔇 <Unmute>';
-            }
-        }
-
-        volumeSlider.addEventListener('input', () => {
-            const volume = volumeSlider.value;
-            copySound.volume = volume;
-            if (volume == 0) {
-                isMuted = true;
-                toggleMuteOption.textContent = '🔇 <Unmute>';
-            } else {
-                isMuted = false;
-                toggleMuteOption.textContent = '🔊 Mute';
-            }
-            localStorage.setItem('soundVolume', volume);
-        });
-
-        // ============================
-        // SOUND UPLOAD (VALIDACIÓN 4MB)
-        // ============================
-        const soundUpload = document.getElementById('sound-upload');
-        const removeSoundBtn = document.getElementById('remove-sound');
-        const MAX_SIZE = 4 * 1024 * 1024; // 4MB
-
-        soundUpload.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            if (file.size > MAX_SIZE) {
-                alert('El archivo supera el tamaño permitido de 4MB');
-                soundUpload.value = '';
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function (event) {
-                const base64Sound = event.target.result;
-                copySound.src = base64Sound;
-                localStorage.setItem('customSound', base64Sound);
-            };
-            reader.readAsDataURL(file);
-        });
-
-        removeSoundBtn.addEventListener('click', () => {
-            localStorage.removeItem('customSound');
-            copySound.src = defaultSound;
-        });
-
-        // ============================
-        // SUBMENÚ BOXES ORGANIZED
-        // ============================
-        const organizedTrigger = document.getElementById('organized-trigger');
-        const organizedOptions = document.getElementById('organized-options');
-
-        organizedTrigger.addEventListener('click', (e) => {
-            e.stopPropagation();
-            organizedOptions.style.display = organizedOptions.style.display === 'block' ? 'none' : 'block';
-        });
-
-        organizedOptions.querySelectorAll('li').forEach(option => {
-            option.addEventListener('click', (e) => {
-                e.stopPropagation();
-                settingsMenu.style.display = 'none';
-                const action = option.dataset.action;
-                startDoubleConfirmation(action);
+            settingsBtn.addEventListener("click", event => {
+                event.stopPropagation();
+                settingsMenu.style.display = settingsMenu.style.display === "block" ? "none" : "block";
+                const rect = settingsBtn.getBoundingClientRect();
+                settingsMenu.style.top = rect.bottom + "px";
+                settingsMenu.style.left = (rect.left - 160) + "px";
             });
-        });
 
-        // ============================
-        // BACKGROUND (CORREGIDO PARA ADAPTARSE AL BODY)
-        // ============================
-        const backgroundSettings = document.getElementById('background-settings');
-        const backgroundOptions = document.getElementById('background-options');
+            document.addEventListener("click", () => { settingsMenu.style.display = "none"; });
+            settingsMenu.addEventListener("click", event => event.stopPropagation());
 
-        backgroundSettings.addEventListener('click', (e) => {
-            e.stopPropagation();
-            backgroundOptions.style.display = backgroundOptions.style.display === 'block' ? 'none' : 'block';
-        });
+            const toggleMuteItem = document.getElementById("toggle-mute");
+            const volumeSlider = document.getElementById("volume-slider");
 
-        backgroundOptions.querySelectorAll('li').forEach(option => {
-            option.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const bgValue = option.dataset.bg;
-                document.body.style.background = bgValue;
-                document.body.style.backgroundAttachment = 'fixed';
-                localStorage.setItem('selectedBackground', bgValue);
-                settingsMenu.style.display = 'none';
+            toggleMuteItem.addEventListener("click", () => {
+                isMuted = !isMuted;
+                if (isMuted) { audioFeedback.volume = 0; volumeSlider.value = 0; }
+                else { audioFeedback.volume = 1; volumeSlider.value = 1; }
+                toggleMuteItem.textContent = isMuted ? "🔇 <Unmute>" : "🔊 Mute";
+                localStorage.setItem("soundVolume", audioFeedback.volume);
             });
-        });
 
-        // ============================
-        // MIGRACIÓN DE DATOS
-        // ============================
-        function runDataMigration() {
-            const oldBoxes = localStorage.getItem('boxes');
-            const oldLineBoxes = localStorage.getItem('lineBoxes');
-
-            if (oldBoxes && !localStorage.getItem('boxes_b1')) {
-                localStorage.setItem('boxes_b1', oldBoxes);
-                localStorage.removeItem('boxes');
+            const savedVolume = localStorage.getItem("soundVolume");
+            if (savedVolume !== null) {
+                audioFeedback.volume = savedVolume;
+                volumeSlider.value = savedVolume;
+                if (savedVolume == 0) { isMuted = true; toggleMuteItem.textContent = "🔇 <Unmute>"; }
             }
-            if (oldLineBoxes && !localStorage.getItem('lineBoxes_b1')) {
-                localStorage.setItem('lineBoxes_b1', oldLineBoxes);
-                localStorage.removeItem('lineBoxes');
+
+            volumeSlider.addEventListener("input", () => {
+                const vol = volumeSlider.value;
+                audioFeedback.volume = vol;
+                if (vol == 0) { isMuted = true; toggleMuteItem.textContent = "🔇 <Unmute>"; }
+                else { isMuted = false; toggleMuteItem.textContent = "🔊 Mute"; }
+                localStorage.setItem("soundVolume", vol);
+            });
+
+            const soundUploadInput = document.getElementById("sound-upload");
+            const removeSoundBtn = document.getElementById("remove-sound");
+
+            soundUploadInput.addEventListener("change", event => {
+                const file = event.target.files[0];
+                if (!file) return;
+                if (file.size > 4194304) {
+                    alert("El archivo supera el tamaño permitido de 4MB");
+                    soundUploadInput.value = "";
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function (evt) {
+                    audioFeedback.src = evt.target.result;
+                    localStorage.setItem("customSound", evt.target.result);
+                };
+                reader.readAsDataURL(file);
+            });
+
+            removeSoundBtn.addEventListener("click", () => {
+                localStorage.removeItem("customSound");
+                audioFeedback.src = defaultSoundPath;
+            });
+
+            const organizedTrigger = document.getElementById("organized-trigger");
+            const organizedOptions = document.getElementById("organized-options");
+            organizedTrigger.addEventListener("click", event => {
+                event.stopPropagation();
+                organizedOptions.style.display = organizedOptions.style.display === "block" ? "none" : "block";
+            });
+
+            organizedOptions.querySelectorAll("li").forEach(li => {
+                li.addEventListener("click", event => {
+                    event.stopPropagation();
+                    settingsMenu.style.display = "none";
+                    triggerOrganizeWorkflow(li.dataset.action);
+                });
+            });
+
+            const bgSettingsTrigger = document.getElementById("background-settings");
+            const bgOptionsList = document.getElementById("background-options");
+            bgSettingsTrigger.addEventListener("click", event => {
+                event.stopPropagation();
+                bgOptionsList.style.display = bgOptionsList.style.display === "block" ? "none" : "block";
+            });
+
+            bgOptionsList.querySelectorAll("li").forEach(li => {
+                li.addEventListener("click", event => {
+                    event.stopPropagation();
+                    const bgValue = li.dataset.bg;
+                    document.body.style.background = bgValue;
+                    document.body.style.backgroundAttachment = "fixed";
+                    localStorage.setItem("selectedBackground", bgValue);
+                    settingsMenu.style.display = "none";
+                });
+            });
+
+            // Gestión de Espacios de Trabajo (Boards) y Persistencia
+            function migrateLegacyData() {
+                const boxesLegacy = localStorage.getItem("boxes");
+                const lineBoxesLegacy = localStorage.getItem("lineBoxes");
+                if (boxesLegacy && !localStorage.getItem("boxes_b1")) {
+                    localStorage.setItem("boxes_b1", boxesLegacy);
+                    localStorage.removeItem("boxes");
+                }
+                if (lineBoxesLegacy && !localStorage.getItem("lineBoxes_b1")) {
+                    localStorage.setItem("lineBoxes_b1", lineBoxesLegacy);
+                    localStorage.removeItem("lineBoxes");
+                }
             }
-        }
 
-        // ============================
-        // LÓGICA DE BOARDS (GESTIÓN)
-        // ============================
-        function getLowestAvailableId() {
-            for (let i = 1; i <= 3; i++) {
-                if (!boardsList.includes(i)) return i;
+            function getNextAvailableBoardId() {
+                for (let i = 1; i <= 3; i++) {
+                    if (!boardsList.includes(i)) return i;
+                }
+                return null;
             }
-            return null;
-        }
 
-        function renderBoards() {
-            boardsContainer.innerHTML = '';
-            boardsList.sort((a, b) => a - b);
-
-            boardsList.forEach(id => {
-                const tab = document.createElement('div');
-                tab.classList.add('board-tab');
-                if (id === activeBoardId) tab.classList.add('active');
-                tab.textContent = `Board ${id}`;
-
-                // El Board 1 NO puede borrarse y no debe renderizar el botón de cierre
-                if (id !== 1) {
-                    const closeBtn = document.createElement('button');
-                    closeBtn.classList.add('close-board-btn');
-                    closeBtn.textContent = '×';
-                    closeBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        askDeleteBoard(id, tab);
+            function renderBoardsTabs() {
+                boardsContainer.innerHTML = "";
+                boardsList.sort((a, b) => a - b);
+                boardsList.forEach(id => {
+                    const tab = document.createElement("div");
+                    tab.classList.add("board-tab");
+                    if (id === activeBoardId) tab.classList.add("active");
+                    tab.textContent = `Board ${id}`;
+                    if (id !== 1) {
+                        const closeBtn = document.createElement("button");
+                        closeBtn.classList.add("close-board-btn");
+                        closeBtn.textContent = "×";
+                        closeBtn.addEventListener("click", event => {
+                            event.stopPropagation();
+                            deleteBoardWorkflow(id, tab);
+                        });
+                        tab.appendChild(closeBtn);
+                    }
+                    tab.addEventListener("click", () => {
+                        if (activeBoardId !== id) switchActiveBoard(id);
                     });
-                    tab.appendChild(closeBtn);
+                    boardsContainer.appendChild(tab);
+                });
+                addBoardBtn.disabled = boardsList.length >= 3;
+            }
+
+            function switchActiveBoard(id) {
+                activeBoardId = id;
+                localStorage.setItem("activeBoardId", activeBoardId);
+                workspace.innerHTML = "";
+                loadBoxes();
+                loadLineBoxes();
+                renderBoardsTabs();
+                initColorPresetsGrid();
+                contentArea.scrollTop = 0;
+                contentArea.scrollLeft = 0;
+            }
+
+            addBoardBtn.addEventListener("click", () => {
+                if (boardsList.length >= 3) return;
+                const nextId = getNextAvailableBoardId();
+                if (nextId) {
+                    boardsList.push(nextId);
+                    localStorage.setItem("boardsList", JSON.stringify(boardsList));
+                    switchActiveBoard(nextId);
+                }
+            });
+
+            // Sistema Único de Modales de Confirmación
+            let currentConfirmCallback = null;
+            let backdropLayer = null;
+
+            function deleteBoardWorkflow(id, tabElement) {
+                setupModalBackdrop();
+                customConfirmModal.classList.remove("pulse-danger");
+                document.getElementById("confirm-title").textContent = `¿Eliminar Board ${id}?`;
+                document.getElementById("confirm-msg").textContent = "Todos los recuadros guardados en este espacio desaparecerán para siempre.";
+                confirmYesBtn.classList.add("danger");
+                confirmYesBtn.textContent = "Eliminar";
+                backdropLayer.classList.add("active");
+                customConfirmModal.classList.add("active");
+
+                currentConfirmCallback = () => {
+                    customConfirmModal.classList.add("pulse-danger");
+                    document.getElementById("confirm-title").textContent = "¿Estás absolutamente seguro?";
+                    document.getElementById("confirm-msg").textContent = "Confirma una vez más. Esta acción borrará irreversiblemente los datos de este Board.";
+                    confirmYesBtn.textContent = "Sí, borrar todo";
+                    currentConfirmCallback = () => {
+                        const width = tabElement.offsetWidth;
+                        tabElement.style.setProperty("--tab-width", `${width}px`);
+                        tabElement.classList.add("animation-exit");
+                        tabElement.addEventListener("animationend", () => {
+                            boardsList = boardsList.filter(b => b !== id);
+                            localStorage.setItem("boardsList", JSON.stringify(boardsList));
+                            localStorage.removeItem(`boxes_b${id}`);
+                            localStorage.removeItem(`lineBoxes_b${id}`);
+                            if (activeBoardId === id) {
+                                activeBoardId = boardsList[0];
+                                localStorage.setItem("activeBoardId", activeBoardId);
+                            }
+                            workspace.innerHTML = "";
+                            loadBoxes();
+                            loadLineBoxes();
+                            renderBoardsTabs();
+                        }, { once: true });
+                        closeConfirmModal();
+                    };
+                };
+            }
+
+            function deleteBoxWorkflow(element, type, saveCallback) {
+                setupModalBackdrop();
+                customConfirmModal.classList.add("pulse-danger");
+                document.getElementById("confirm-title").textContent = `¿Eliminar este ${type}?`;
+                document.getElementById("confirm-msg").textContent = "Esta acción quitará el recuadro de tu espacio de trabajo de forma inmediata.";
+                confirmYesBtn.classList.add("danger");
+                confirmYesBtn.textContent = "Eliminar";
+                backdropLayer.classList.add("active");
+                customConfirmModal.classList.add("active");
+
+                currentConfirmCallback = () => {
+                    workspace.removeChild(element);
+                    saveCallback();
+                    closeConfirmModal();
+                };
+            }
+
+            function triggerOrganizeWorkflow(action) {
+                setupModalBackdrop();
+                customConfirmModal.classList.remove("pulse-danger");
+                confirmYesBtn.classList.remove("danger");
+                confirmYesBtn.textContent = "Yes";
+                let title = "", desc = "This action will arrange elements automatically.";
+                if (action === "template") title = "Organize template boxes?";
+                if (action === "color") title = "Organize color boxes?";
+                if (action === "empty") title = "Organize empty blank boxes?";
+                document.getElementById("confirm-title").textContent = title;
+                document.getElementById("confirm-msg").textContent = desc;
+                backdropLayer.classList.add("active");
+                customConfirmModal.classList.add("active");
+
+                currentConfirmCallback = () => {
+                    document.getElementById("confirm-title").textContent = "Please confirm you want to organize";
+                    document.getElementById("confirm-msg").textContent = "Are you absolutely sure?";
+                    currentConfirmCallback = () => {
+                        executeLayoutOrganization(action);
+                        closeConfirmModal();
+                    };
+                };
+            }
+
+            function setupModalBackdrop() {
+                if (!backdropLayer) {
+                    backdropLayer = document.createElement("div");
+                    backdropLayer.classList.add("color-picker-backdrop");
+                    document.body.appendChild(backdropLayer);
+                    backdropLayer.addEventListener("click", closeConfirmModal);
+                }
+            }
+
+            confirmYesBtn.addEventListener("click", () => { if (currentConfirmCallback) currentConfirmCallback(); });
+            confirmNoBtn.addEventListener("click", closeConfirmModal);
+
+            function closeConfirmModal() {
+                if (backdropLayer) backdropLayer.classList.remove("active");
+                customConfirmModal.classList.remove("active");
+                customConfirmModal.classList.remove("pulse-danger");
+                currentConfirmCallback = null;
+            }
+
+            function executeLayoutOrganization(action) {
+                let list = [];
+                if (action === "template") {
+                    list = Array.from(workspace.querySelectorAll(".box"));
+                } else if (action === "color") {
+                    list = Array.from(workspace.querySelectorAll(".line-box"));
+                } else if (action === "empty") {
+                    list = Array.from(workspace.querySelectorAll(".box")).filter(b => b.querySelector("textarea").value.trim() === "");
                 }
 
-                tab.addEventListener('click', () => {
-                    if (activeBoardId !== id) {
-                        switchBoard(id);
+                if (list.length === 0) return;
+                const startX = 40, startY = 40, gapX = 30, gapY = 30;
+                const maxW = workspace.clientWidth || window.innerWidth;
+                let currentX = startX, currentY = startY, maxHeightInRow = 0;
+
+                list.forEach(item => {
+                    const rect = item.getBoundingClientRect();
+                    const w = rect.width || (item.classList.contains("box") ? 300 : 260);
+                    const h = rect.height || 120;
+                    if (currentX + w > maxW - 40 && currentX > startX) {
+                        currentX = startX;
+                        currentY += maxHeightInRow + gapY;
+                        maxHeightInRow = 0;
                     }
+                    item.style.left = `${currentX}px`;
+                    item.style.top = `${currentY}px`;
+                    currentX += w + gapX;
+                    if (h > maxHeightInRow) maxHeightInRow = h;
+                });
+                saveBoxes();
+                saveLineBoxes();
+            }
+
+            // Construcción y Comportamiento Dinámico de Cajas (Boxes / LineBoxes)
+            addBoxBtn.addEventListener("click", () => {
+                const sTop = contentArea.scrollTop, sLeft = contentArea.scrollLeft;
+                createBox({ text: "", left: `${sLeft + 50}px`, top: `${sTop + 150}px`, locked: "false" });
+                saveBoxes();
+            });
+
+            addLineBoxBtn.addEventListener("click", () => {
+                const sTop = contentArea.scrollTop, sLeft = contentArea.scrollLeft;
+                createLineBox({ text: "", left: `${sLeft + 50}px`, top: `${sTop + 150}px`, color: "#ffffff", locked: "false" });
+                saveLineBoxes();
+            });
+
+            function createBox(data) {
+                const box = document.createElement("div");
+                box.classList.add("box");
+                box.style.left = data.left;
+                box.style.top = data.top;
+
+                const textarea = document.createElement("textarea");
+                textarea.placeholder = "Texto...";
+                textarea.value = data.text;
+                box.dataset.locked = data.locked || "false";
+
+                textarea.addEventListener("input", () => {
+                    textarea.style.height = "auto";
+                    textarea.style.height = `${textarea.scrollHeight}px`;
+                    saveBoxes();
                 });
 
-                boardsContainer.appendChild(tab);
-            });
+                const buttonsDiv = document.createElement("div");
+                buttonsDiv.classList.add("box-buttons");
 
-            addBoardBtn.disabled = boardsList.length >= 3;
-        }
-
-        function switchBoard(id) {
-            activeBoardId = id;
-            localStorage.setItem('activeBoardId', activeBoardId);
-
-            workspace.innerHTML = '';
-            loadBoxes();
-            loadLineBoxes();
-            renderBoards();
-            closeColorPicker();
-
-            contentArea.scrollTop = 0;
-            contentArea.scrollLeft = 0;
-        }
-
-        addBoardBtn.addEventListener('click', () => {
-            if (boardsList.length >= 3) return;
-
-            const nextId = getLowestAvailableId();
-            if (nextId) {
-                boardsList.push(nextId);
-                localStorage.setItem('boardsList', JSON.stringify(boardsList));
-                switchBoard(nextId);
-            }
-        });
-
-        // MODAL CUSTOM DE GESTIÓN (CONFIRMACIONES)
-        let onConfirmAction = null;
-        let confirmBackdrop = null;
-
-        function askDeleteBoard(id, tabElement) {
-            initConfirmBackdrop();
-            customConfirm.classList.remove('pulse-danger');
-
-            // Primer paso de confirmación
-            document.getElementById('confirm-title').textContent = `Delete Board ${id}?`;
-            document.getElementById('confirm-msg').textContent = 'All the boxes saved in this space will disappear forever.';
-            confirmYes.classList.add('danger');
-            confirmYes.textContent = 'Delete';
-
-            confirmBackdrop.classList.add('active');
-            customConfirm.classList.add('active');
-
-            // Lógica de Doble Confirmación implementada secuencialmente
-            onConfirmAction = () => {
-                customConfirm.classList.add('pulse-danger');
-                document.getElementById('confirm-title').textContent = 'Are you absolutely sure?';
-                document.getElementById('confirm-msg').textContent = 'Please confirm';
-                confirmYes.textContent = 'Yes, Delete';
-
-                // Segundo paso definitivo
-                onConfirmAction = () => {
-                    const width = tabElement.offsetWidth;
-                    tabElement.style.setProperty('--tab-width', `${width}px`);
-                    tabElement.classList.add('animation-exit');
-
-                    tabElement.addEventListener('animationend', () => {
-                        boardsList = boardsList.filter(b => b !== id);
-                        localStorage.setItem('boardsList', JSON.stringify(boardsList));
-
-                        localStorage.removeItem(`boxes_b${id}`);
-                        localStorage.removeItem(`lineBoxes_b${id}`);
-
-                        if (activeBoardId === id) {
-                            activeBoardId = boardsList[0];
-                            localStorage.setItem('activeBoardId', activeBoardId);
-                        }
-
-                        workspace.innerHTML = '';
-                        loadBoxes();
-                        loadLineBoxes();
-                        renderBoards();
-                    }, { once: true });
-                    closeConfirmModal();
-                };
-            };
-        }
-
-        // CONFIRMACIÓN DE BORRADO INDIVIDUAL
-        function askDeleteElement(element, typeName, saveCallback) {
-            initConfirmBackdrop();
-
-            customConfirm.classList.add('pulse-danger');
-
-            document.getElementById('confirm-title').textContent = `Delete ${typeName}?`;
-            document.getElementById('confirm-msg').textContent = 'This action will remove the box from your workspace immediately.';
-            confirmYes.classList.add('danger');
-            confirmYes.textContent = 'Delete';
-
-            confirmBackdrop.classList.add('active');
-            customConfirm.classList.add('active');
-
-            onConfirmAction = () => {
-                workspace.removeChild(element);
-                saveCallback();
-                closeConfirmModal();
-            };
-        }
-
-        // FLUJO DE CONFIRMACIÓN DOBLE
-        function startDoubleConfirmation(type) {
-            initConfirmBackdrop();
-            customConfirm.classList.remove('pulse-danger');
-            confirmYes.classList.remove('danger');
-            confirmYes.textContent = 'Yes';
-
-            let titleA = "";
-            let msgA = "This action will arrange elements automatically.";
-
-            if (type === 'template') titleA = " Organize template boxes?";
-            if (type === 'color') titleA = " Organize color boxes?";
-            if (type === 'empty') titleA = "Organize empty blank boxes?";
-
-            document.getElementById('confirm-title').textContent = titleA;
-            document.getElementById('confirm-msg').textContent = msgA;
-
-            confirmBackdrop.classList.add('active');
-            customConfirm.classList.add('active');
-
-            onConfirmAction = () => {
-                document.getElementById('confirm-title').textContent = "Please confirm you want to organize";
-                document.getElementById('confirm-msg').textContent = "Are you absolutely sure?";
-
-                onConfirmAction = () => {
-                    executeIntelligentOrganization(type);
-                    closeConfirmModal();
-                };
-            };
-        }
-
-        function initConfirmBackdrop() {
-            if (!confirmBackdrop) {
-                confirmBackdrop = document.createElement('div');
-                confirmBackdrop.classList.add('color-picker-backdrop');
-                document.body.appendChild(confirmBackdrop);
-                confirmBackdrop.addEventListener('click', closeConfirmModal);
-            }
-        }
-
-        confirmYes.addEventListener('click', () => {
-            if (onConfirmAction) onConfirmAction();
-        });
-
-        confirmNo.addEventListener('click', closeConfirmModal);
-
-        function closeConfirmModal() {
-            if (confirmBackdrop) confirmBackdrop.classList.remove('active');
-            customConfirm.classList.remove('active');
-            customConfirm.classList.remove('pulse-danger');
-            onConfirmAction = null;
-        }
-
-        // ============================
-        // ALGORITMO INTELIGENTE DE ORGANIZACIÓN
-        // ============================
-        function executeIntelligentOrganization(type) {
-            let targets = [];
-
-            if (type === 'template') {
-                targets = Array.from(workspace.querySelectorAll('.box'));
-            } else if (type === 'color') {
-                targets = Array.from(workspace.querySelectorAll('.line-box'));
-            } else if (type === 'empty') {
-                targets = Array.from(workspace.querySelectorAll('.box')).filter(b => {
-                    return b.querySelector('textarea').value.trim() === "";
+                const copyBtn = document.createElement("button");
+                copyBtn.classList.add("copy-btn");
+                copyBtn.textContent = "+";
+                copyBtn.addEventListener("click", () => {
+                    navigator.clipboard.writeText(textarea.value);
+                    if (!isMuted) {
+                        audioFeedback.currentTime = 0;
+                        audioFeedback.play().catch(err => console.log("Audio feedback error:", err));
+                    }
+                    box.classList.remove("glow");
+                    void box.offsetWidth;
+                    box.classList.add("glow");
                 });
-            }
 
-            if (targets.length === 0) return;
+                const lockBtn = document.createElement("button");
+                lockBtn.classList.add("lock-btn");
+                lockBtn.textContent = "🔒";
+                lockBtn.addEventListener("click", event => {
+                    event.stopPropagation();
+                    const state = box.dataset.locked === "true";
+                    box.dataset.locked = !state;
+                    if (!state) { box.classList.add("locked"); lockBtn.classList.add("active"); }
+                    else { box.classList.remove("locked"); lockBtn.classList.remove("active"); }
+                    saveBoxes();
+                });
 
-            const startX = 40;
-            const startY = 40;
-            const gapX = 30;
-            const gapY = 30;
-            const maxWorkspaceWidth = workspace.clientWidth || window.innerWidth;
+                const deleteBtn = document.createElement("button");
+                deleteBtn.classList.add("delete-btn");
+                deleteBtn.textContent = "-";
+                deleteBtn.addEventListener("click", () => { deleteBoxWorkflow(box, "recuadro", saveBoxes); });
 
-            let currentX = startX;
-            let currentY = startY;
-            let maxHeightInCurrentRow = 0;
+                buttonsDiv.appendChild(copyBtn);
+                buttonsDiv.appendChild(lockBtn);
+                buttonsDiv.appendChild(deleteBtn);
+                box.appendChild(textarea);
+                box.appendChild(buttonsDiv);
+                workspace.appendChild(box);
 
-            targets.forEach((element) => {
-                const rect = element.getBoundingClientRect();
-                const elementWidth = rect.width || (element.classList.contains('box') ? 300 : 260);
-                const elementHeight = rect.height || 120;
-
-                if (currentX + elementWidth > maxWorkspaceWidth - 40 && currentX > startX) {
-                    currentX = startX;
-                    currentY += maxHeightInCurrentRow + gapY;
-                    maxHeightInCurrentRow = 0;
-                }
-
-                element.style.left = `${currentX}px`;
-                element.style.top = `${currentY}px`;
-
-                currentX += elementWidth + gapX;
-
-                if (elementHeight > maxHeightInCurrentRow) {
-                    maxHeightInCurrentRow = elementHeight;
-                }
-            });
-
-            saveBoxes();
-            saveLineBoxes();
-        }
-
-        // ============================
-        // DOM READY
-        // ============================
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedBg = localStorage.getItem('selectedBackground');
-            if (savedBg) {
-                document.body.style.background = savedBg;
-                document.body.style.backgroundAttachment = 'fixed';
-            }
-
-            runDataMigration();
-
-            const savedBoardsList = localStorage.getItem('boardsList');
-            const savedActiveBoardId = localStorage.getItem('activeBoardId');
-
-            if (savedBoardsList) {
-                boardsList = JSON.parse(savedBoardsList);
-            }
-            if (savedActiveBoardId && boardsList.includes(parseInt(savedActiveBoardId))) {
-                activeBoardId = parseInt(savedActiveBoardId);
-            } else {
-                activeBoardId = boardsList[0] || 1;
-            }
-
-            // Inicializar estado del menú lateral
-            initializeSidebarState();
-
-            renderBoards();
-            loadBoxes();
-            loadLineBoxes();
-            generateColorPresets(); // Iniciar paleta fija
-        });
-
-        // ============================
-        // + BUTTONS (SIDEBAR)
-        // ============================
-        addBoxBtn.addEventListener('click', () => {
-            const currentScrollTop = contentArea.scrollTop;
-            const currentScrollLeft = contentArea.scrollLeft;
-            createBox({ text: '', left: `${currentScrollLeft + 50}px`, top: `${currentScrollTop + 150}px`, locked: 'false' });
-            saveBoxes();
-        });
-
-        addLineBoxBtn.addEventListener('click', () => {
-            const currentScrollTop = contentArea.scrollTop;
-            const currentScrollLeft = contentArea.scrollLeft;
-            createLineBox({
-                text: '',
-                left: `${currentScrollLeft + 50}px`,
-                top: `${currentScrollTop + 150}px`,
-                color: '#ffffff',
-                locked: 'false'
-            });
-            saveLineBoxes();
-        });
-
-        // ============================
-        // CREATE BOX
-        // ============================
-        function createBox(data) {
-            const box = document.createElement('div');
-            box.classList.add('box');
-            box.style.left = data.left;
-            box.style.top = data.top;
-
-            const textarea = document.createElement('textarea');
-            textarea.placeholder = 'Texto...';
-            textarea.value = data.text;
-            box.dataset.locked = data.locked || 'false';
-
-            textarea.addEventListener('input', () => {
-                textarea.style.height = 'auto';
+                if (box.dataset.locked === "true") { box.classList.add("locked"); lockBtn.classList.add("active"); }
                 textarea.style.height = `${textarea.scrollHeight}px`;
-                saveBoxes();
-            });
-
-            const buttonsDiv = document.createElement('div');
-            buttonsDiv.classList.add('box-buttons');
-
-            const copyBtn = document.createElement('button');
-            copyBtn.classList.add('copy-btn');
-            copyBtn.textContent = '+';
-            copyBtn.addEventListener('click', () => {
-                navigator.clipboard.writeText(textarea.value);
-                if (!isMuted) {
-                    copySound.currentTime = 0;
-                    copySound.play().catch(e => console.log("Audio play prevented"));
-                }
-
-                box.classList.remove('glow');
-                void box.offsetWidth;
-                box.classList.add('glow');
-            });
-
-            const lockBtn = document.createElement('button');
-            lockBtn.classList.add('lock-btn');
-            lockBtn.textContent = '🔒';
-            lockBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const isLocked = box.dataset.locked === 'true';
-                box.dataset.locked = !isLocked;
-                if (!isLocked) {
-                    box.classList.add('locked');
-                    lockBtn.classList.add('active');
-                } else {
-                    box.classList.remove('locked');
-                    lockBtn.classList.remove('active');
-                }
-                saveBoxes();
-            });
-
-            const deleteBtn = document.createElement('button');
-            deleteBtn.classList.add('delete-btn');
-            deleteBtn.textContent = '-';
-            deleteBtn.addEventListener('click', () => {
-                askDeleteElement(box, 'box', saveBoxes);
-            });
-
-            buttonsDiv.appendChild(copyBtn);
-            buttonsDiv.appendChild(lockBtn);
-            buttonsDiv.appendChild(deleteBtn);
-            box.appendChild(textarea);
-            box.appendChild(buttonsDiv);
-            workspace.appendChild(box);
-
-            if (box.dataset.locked === 'true') {
-                box.classList.add('locked');
-                lockBtn.classList.add('active');
+                attachDragBehavior(box);
             }
 
-            textarea.style.height = `${textarea.scrollHeight}px`;
-            makeDraggable(box);
-        }
+            function createLineBox(data) {
+                const box = document.createElement("div");
+                box.classList.add("line-box");
+                box.style.left = data.left;
+                box.style.top = data.top;
+                box.style.backgroundColor = data.color;
+                box.dataset.locked = data.locked || "false";
+                if (data.locked === "true") box.classList.add("locked");
 
-        // ============================
-        // CREATE LINE BOX
-        // ============================
-        function createLineBox(data) {
-            const box = document.createElement('div');
-            box.classList.add('line-box');
-            box.style.left = data.left;
-            box.style.top = data.top;
-            box.style.backgroundColor = data.color;
-            box.dataset.locked = data.locked || 'false';
+                const textarea = document.createElement("textarea");
+                textarea.placeholder = "Texto...";
+                textarea.value = data.text || "";
+                textarea.setAttribute("value", data.text || "");
 
-            if (data.locked === 'true') {
-                box.classList.add('locked');
-            }
-
-            const textarea = document.createElement('textarea');
-            textarea.placeholder = 'Texto...';
-            textarea.value = data.text || '';
-            textarea.setAttribute('value', data.text || '');
-
-            textarea.addEventListener('mousedown', (e) => e.stopPropagation());
-            textarea.addEventListener('touchstart', (e) => e.stopPropagation());
-
-            textarea.addEventListener('input', () => {
-                textarea.setAttribute('value', textarea.value);
-                saveLineBoxes();
-            });
-
-            const buttonsDiv = document.createElement('div');
-            buttonsDiv.classList.add('line-box-buttons');
-
-            const colorBtn = document.createElement('button');
-            colorBtn.classList.add('color-btn');
-            colorBtn.textContent = '🎨';
-            colorBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                currentBoxForColor = box;
-                showColorPicker(colorBtn); // Enviamos el botón de referencia para el cálculo de posición
-            });
-
-            const lockBtn = document.createElement('button');
-            lockBtn.classList.add('lock-btn');
-            lockBtn.textContent = '🔒';
-            if (data.locked === 'true') {
-                lockBtn.classList.add('active');
-            }
-            lockBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const isLocked = box.dataset.locked === 'true';
-                box.dataset.locked = !isLocked;
-                if (!isLocked) {
-                    box.classList.add('locked');
-                    lockBtn.classList.add('active');
-                } else {
-                    box.classList.remove('locked');
-                    lockBtn.classList.remove('active');
-                }
-                saveLineBoxes();
-            });
-
-            const deleteBtn = document.createElement('button');
-            deleteBtn.classList.add('delete-btn');
-            deleteBtn.textContent = 'X';
-            deleteBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                askDeleteElement(box, 'LineBox', saveLineBoxes);
-            });
-
-            buttonsDiv.appendChild(colorBtn);
-            buttonsDiv.appendChild(lockBtn);
-            buttonsDiv.appendChild(deleteBtn);
-
-            box.appendChild(textarea);
-            box.appendChild(buttonsDiv);
-            workspace.appendChild(box);
-
-            makeDraggable(box);
-        }
-
-        // ============================
-        // DRAG
-        // ============================
-        function makeDraggable(element) {
-            let offsetX, offsetY;
-
-            const startDrag = (clientX, clientY, target) => {
-                if (target.tagName === 'TEXTAREA' || target.tagName === 'BUTTON' || element.classList.contains('locked')) return;
-
-                offsetX = clientX - element.offsetLeft;
-                offsetY = clientY - element.offsetTop;
-
-                const moveAt = (moveX, moveY) => {
-                    let newLeft = moveX - offsetX;
-                    let newTop = moveY - offsetY;
-
-                    if (newLeft < 10) newLeft = 10;
-                    if (newTop < 10) newTop = 10;
-                    if (newLeft > 2650) newLeft = 2650;
-                    if (newTop > 2850) newTop = 2850;
-
-                    element.style.left = `${newLeft}px`;
-                    element.style.top = `${newTop}px`;
-                };
-
-                const onMouseMove = (e) => moveAt(e.clientX, e.clientY);
-                const onTouchMove = (e) => {
-                    if (e.touches.length > 0) moveAt(e.touches[0].clientX, e.touches[0].clientY);
-                };
-
-                const stopDrag = () => {
-                    document.removeEventListener('mousemove', onMouseMove);
-                    document.removeEventListener('touchmove', onTouchMove);
-
-                    if (element.classList.contains('box')) {
-                        saveBoxes();
-                    } else {
-                        saveLineBoxes();
-                    }
-                };
-
-                document.addEventListener('mousemove', onMouseMove);
-                document.addEventListener('touchmove', onTouchMove, { passive: false });
-                document.addEventListener('mouseup', stopDrag, { once: true });
-                document.addEventListener('touchend', stopDrag, { once: true });
-            };
-
-            element.addEventListener('mousedown', (e) => startDrag(e.clientX, e.clientY, e.target));
-            element.addEventListener('touchstart', (e) => {
-                if (e.touches.length > 0) startDrag(e.touches[0].clientX, e.touches[0].clientY, e.target);
-            }, { passive: true });
-        }
-
-        // ============================
-        // OPTIMIZED CONTEXTUAL COLOR PICKER
-        // ============================
-        let pickerBackdrop = null;
-        const presetColors = [
-            '#ffffff', '#f7fafc', '#edf2f7', '#e2e8f0', '#cbd5e0',
-            '#feb2b2', '#fbd38d', '#faf089', '#9ae6b4', '#9decf9',
-            '#fc8181', '#f6ad55', '#f6e05e', '#68d391', '#4fd1c5',
-            '#f56565', '#ed8936', '#ecc94b', '#48bb78', '#38b2ac',
-            '#e53e3e', '#dd6b20', '#d69e2e', '#38a169', '#319795'
-        ];
-
-        function generateColorPresets() {
-            colorPresetsGrid.innerHTML = '';
-            presetColors.forEach(color => {
-                const circle = document.createElement('div');
-                circle.classList.add('color-preset-circle');
-                circle.style.backgroundColor = color;
-                circle.addEventListener('click', () => {
-                    applyColor(color);
-                    closeColorPicker(); // Cierre automático cómodo al seleccionar
+                textarea.addEventListener("mousedown", event => event.stopPropagation());
+                textarea.addEventListener("touchstart", event => event.stopPropagation());
+                textarea.addEventListener("input", () => {
+                    textarea.setAttribute("value", textarea.value);
+                    saveLineBoxes();
                 });
-                colorPresetsGrid.appendChild(circle);
-            });
-        }
 
-        function showColorPicker(triggerButton) {
-            if (!pickerBackdrop) {
-                pickerBackdrop = document.createElement('div');
-                pickerBackdrop.classList.add('color-picker-backdrop');
-                document.body.appendChild(pickerBackdrop);
-                pickerBackdrop.addEventListener('click', closeColorPicker);
+                const buttonsDiv = document.createElement("div");
+                buttonsDiv.classList.add("line-box-buttons");
+
+                const colorBtn = document.createElement("button");
+                colorBtn.classList.add("color-btn");
+                colorBtn.textContent = "🎨";
+                colorBtn.addEventListener("click", event => {
+                    event.stopPropagation();
+                    activeLineBox = box;
+                    openColorPickerLayout(colorBtn);
+                });
+
+                const lockBtn = document.createElement("button");
+                lockBtn.classList.add("lock-btn");
+                lockBtn.textContent = "🔒";
+                if (data.locked === "true") lockBtn.classList.add("active");
+                lockBtn.addEventListener("click", event => {
+                    event.stopPropagation();
+                    const state = box.dataset.locked === "true";
+                    box.dataset.locked = !state;
+                    if (!state) { box.classList.add("locked"); lockBtn.classList.add("active"); }
+                    else { box.classList.remove("locked"); lockBtn.classList.remove("active"); }
+                    saveLineBoxes();
+                });
+
+                const deleteBtn = document.createElement("button");
+                deleteBtn.classList.add("delete-btn");
+                deleteBtn.textContent = "X";
+                deleteBtn.addEventListener("click", event => {
+                    event.stopPropagation();
+                    deleteBoxWorkflow(box, "LineBox", saveLineBoxes);
+                });
+
+                buttonsDiv.appendChild(colorBtn);
+                buttonsDiv.appendChild(lockBtn);
+                buttonsDiv.appendChild(deleteBtn);
+                box.appendChild(textarea);
+                box.appendChild(buttonsDiv);
+                workspace.appendChild(box);
+                attachDragBehavior(box);
             }
 
-            // Conseguir la posición del LineBox en el lienzo infinito
-            const lineBox = triggerButton.closest('.line-box');
-            const posX = parseInt(lineBox.style.left);
-            const posY = parseInt(lineBox.style.top);
+            function attachDragBehavior(element) {
+                let startX, startY;
+                const dragHandler = (clientX, clientY, target) => {
+                    if (target.tagName === "TEXTAREA" || target.tagName === "BUTTON" || element.classList.contains("locked")) return;
+                    startX = clientX - element.offsetLeft;
+                    startY = clientY - element.offsetTop;
 
-            // Posicionar el selector flotante alineado de manera precisa al componente
-            colorPicker.style.left = `${posX}px`;
-            colorPicker.style.top = `${posY + 45}px`;
+                    const onMove = (moveX, moveY) => {
+                        let nx = moveX - startX, ny = moveY - startY;
+                        if (nx < 10) nx = 10; if (ny < 10) ny = 10;
+                        if (nx > 2650) nx = 2650; if (ny > 2850) ny = 2850;
+                        element.style.left = `${nx}px`;
+                        element.style.top = `${ny}px`;
+                    };
+                    const onMouseMove = event => onMove(event.clientX, event.clientY);
+                    const onTouchMove = event => {
+                        if (event.touches.length > 0) onMove(event.touches[0].clientX, event.touches[0].clientY);
+                    };
 
-            pickerBackdrop.classList.add('active');
-            colorPicker.classList.add('active');
-        }
+                    const onRelease = () => {
+                        document.removeEventListener("mousemove", onMouseMove);
+                        document.removeEventListener("touchmove", onTouchMove);
+                        if (element.classList.contains("box")) { saveBoxes(); } else { saveLineBoxes(); }
+                    };
 
-        function closeColorPicker() {
-            if (pickerBackdrop) pickerBackdrop.classList.remove('active');
-            colorPicker.classList.remove('active');
-        }
+                    document.addEventListener("mousemove", onMouseMove);
+                    document.addEventListener("touchmove", onTouchMove, { passive: false });
+                    document.addEventListener("mouseup", onRelease, { once: true });
+                    document.addEventListener("touchend", onRelease, { once: true });
+                };
 
-        closeColorPickerBtn.addEventListener('click', closeColorPicker);
+                element.addEventListener("mousedown", event => dragHandler(event.clientX, event.clientY, event.target));
+                element.addEventListener("touchstart", event => {
+                    if (event.touches.length > 0) dragHandler(event.touches[0].clientX, event.touches[0].clientY, event.target);
+                }, { passive: true });
+            }
 
-        customColorInput.addEventListener('input', () => {
-            applyColor(customColorInput.value);
-        });
+            // Sistema Global de Paletas de Colores (Presets / Custom)
+            let colorPickerBackdrop = null;
+            const customPresets = ["#ffffff", "#f7fafc", "#edf2f7", "#e2e8f0", "#cbd5e0", "#feb2b2", "#fbd38d", "#faf089", "#9ae6b4", "#9decf9", "#fc8181", "#f6ad55", "#f6e05e", "#68d391", "#4fd1c5", "#f56565", "#ed8936", "#ecc94b", "#48bb78", "#38b2ac", "#e53e3e", "#dd6b20", "#d69e2e", "#38a169", "#319795"];
 
-        function applyColor(color) {
-            if (!currentBoxForColor) return;
+            function initColorPresetsGrid() {
+                colorPresetsGrid.innerHTML = "";
+                customPresets.forEach(color => {
+                    const circle = document.createElement("div");
+                    circle.classList.add("color-preset-circle");
+                    circle.style.backgroundColor = color;
+                    circle.addEventListener("click", () => {
+                        updateActiveLineBoxColor(color);
+                        closeColorPickerLayout();
+                    });
+                    colorPresetsGrid.appendChild(circle);
+                });
+            }
 
-            currentBoxForColor.style.backgroundColor = color;
-            currentBoxForColor.querySelector('textarea').style.backgroundColor = color;
-            colorPreview.style.backgroundColor = color;
-            saveLineBoxes();
-        }
+            function openColorPickerLayout(triggerBtn) {
+                if (!colorPickerBackdrop) {
+                    colorPickerBackdrop = document.createElement("div");
+                    colorPickerBackdrop.classList.add("color-picker-backdrop");
+                    document.body.appendChild(colorPickerBackdrop);
+                    colorPickerBackdrop.addEventListener("click", closeColorPickerLayout);
+                }
+                const parentBox = triggerBtn.closest(".line-box");
+                const leftPos = parseInt(parentBox.style.left);
+                const topPos = parseInt(parentBox.style.top);
+                colorPicker.style.left = `${leftPos}px`;
+                colorPicker.style.top = `${topPos + 45}px`;
+                colorPickerBackdrop.classList.add("active");
+                colorPicker.classList.add("active");
+            }
 
-        // ============================
-        // SAVE / LOAD 
-        // ============================
-        function saveBoxes() {
-            const boxes = Array.from(workspace.querySelectorAll('.box')).map(box => ({
-                text: box.querySelector('textarea').value,
-                left: box.style.left,
-                top: box.style.top,
-                locked: box.dataset.locked
-            }));
-            localStorage.setItem(`boxes_b${activeBoardId}`, JSON.stringify(boxes));
-        }
+            function closeColorPickerLayout() {
+                if (colorPickerBackdrop) colorPickerBackdrop.classList.remove("active");
+                colorPicker.classList.remove("active");
+            }
 
-        function loadBoxes() {
-            const savedBoxes = JSON.parse(localStorage.getItem(`boxes_b${activeBoardId}`) || '[]');
-            savedBoxes.forEach(data => createBox(data));
-        }
+            closeColorPickerBtn.addEventListener("click", closeColorPickerLayout);
+            customColorInput.addEventListener("input", () => { updateActiveLineBoxColor(customColorInput.value); });
 
-        function saveLineBoxes() {
-            const lineBoxes = Array.from(workspace.querySelectorAll('.line-box')).map(box => ({
-                text: box.querySelector('textarea').value,
-                left: box.style.left,
-                top: box.style.top,
-                color: box.style.backgroundColor,
-                locked: box.dataset.locked
-            }));
-            localStorage.setItem(`lineBoxes_b${activeBoardId}`, JSON.stringify(lineBoxes));
-        }
+            function updateActiveLineBoxColor(color) {
+                if (!activeLineBox) return;
+                activeLineBox.style.backgroundColor = color;
+                activeLineBox.querySelector("textarea").style.backgroundColor = color;
+                colorPreview.style.backgroundColor = color;
+                saveLineBoxes();
+            }
 
-        function loadLineBoxes() {
-            const savedLineBoxes = JSON.parse(localStorage.getItem(`lineBoxes_b${activeBoardId}`) || '[]');
-            savedLineBoxes.forEach(data => createLineBox(data));
-        }
+            // Funciones de Guardado y Carga Explícitas
+            function saveBoxes() {
+                const boxes = Array.from(workspace.querySelectorAll('.box')).map(box => ({
+                    text: box.querySelector('textarea').value,
+                    left: box.style.left,
+                    top: box.style.top,
+                    locked: box.dataset.locked
+                }));
+                localStorage.setItem(`boxes_b${activeBoardId}`, JSON.stringify(boxes));
+            }
+
+            function loadBoxes() {
+                const savedBoxes = JSON.parse(localStorage.getItem(`boxes_b${activeBoardId}`) || '[]');
+                savedBoxes.forEach(data => createBox(data));
+            }
+
+            function saveLineBoxes() {
+                const lineBoxes = Array.from(workspace.querySelectorAll('.line-box')).map(box => ({
+                    text: box.querySelector('textarea').value,
+                    left: box.style.left,
+                    top: box.style.top,
+                    color: box.style.backgroundColor,
+                    locked: box.dataset.locked
+                }));
+                localStorage.setItem(`lineBoxes_b${activeBoardId}`, JSON.stringify(lineBoxes));
+            }
+
+            function loadLineBoxes() {
+                const savedLineBoxes = JSON.parse(localStorage.getItem(`lineBoxes_b${activeBoardId}`) || '[]');
+                savedLineBoxes.forEach(data => createLineBox(data));
+            }
+
+            // Inicialización de la Aplicación
+            document.addEventListener("DOMContentLoaded", () => {
+                const savedBg = localStorage.getItem("selectedBackground");
+                if (savedBg) {
+                    document.body.style.background = savedBg;
+                    document.body.style.backgroundAttachment = "fixed";
+                }
+                migrateLegacyData();
+
+                const savedBoards = localStorage.getItem("boardsList");
+                const savedActiveBoard = localStorage.getItem("activeBoardId");
+                if (savedBoards) boardsList = JSON.parse(savedBoards);
+                if (savedActiveBoard && boardsList.includes(parseInt(savedActiveBoard))) {
+                    activeBoardId = parseInt(savedActiveBoard);
+                } else {
+                    activeBoardId = boardsList[0] || 1;
+                }
+
+                initSidebarState();
+                renderBoardsTabs();
+                loadBoxes();
+                loadLineBoxes();
+                initColorPresetsGrid();
+            });
+        })();
     </script>
 </body>
 

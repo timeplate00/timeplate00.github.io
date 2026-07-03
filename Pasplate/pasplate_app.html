@@ -273,7 +273,7 @@
             animation: tabEntrance .3s cubic-bezier(.34, 1.56, .64, 1) forwards;
         }
 
-        @keyframes tabEntrance {
+        @pragma tabEntrance {
             from {
                 opacity: 0;
                 transform: scale(.8) translateY(-5px);
@@ -289,7 +289,7 @@
             animation: tabExit .25s ease forwards !important;
         }
 
-        @keyframes tabExit {
+        @pragma tabExit {
             from {
                 opacity: 1;
                 transform: scale(1);
@@ -605,7 +605,7 @@
             border: 1px solid rgba(255, 255, 255, .08);
             animation: menuFadeIn .2s cubic-bezier(0.4, 0, .2, 1) forwards;
             transform-origin: top left;
-            width: 200px;
+            width: 220px;
         }
 
         @keyframes menuFadeIn {
@@ -644,20 +644,23 @@
         #background-settings:hover,
         #organized-control:hover,
         #sound-control:hover,
-        #volume-control:hover {
+        #volume-control:hover,
+        #ie-control:hover {
             background: transparent !important;
         }
 
         #background-settings,
         #organized-control,
         #sound-control,
-        #volume-control {
+        #volume-control,
+        #ie-control {
             cursor: pointer;
         }
 
         #organized-control,
         #sound-control,
-        #volume-control {
+        #volume-control,
+        #ie-control {
             cursor: default !important;
             flex-direction: column;
             align-items: flex-start !important;
@@ -670,7 +673,8 @@
         }
 
         #background-options,
-        #organized-options {
+        #organized-options,
+        #ie-options {
             margin-top: 5px;
             border-left: 2px solid #2d4263;
             padding-left: 8px;
@@ -680,7 +684,8 @@
         }
 
         #background-options li,
-        #organized-options li {
+        #organized-options li,
+        #ie-options li {
             font-size: 13px !important;
             padding: 8px 10px !important;
             display: block !important;
@@ -692,7 +697,8 @@
         }
 
         #background-options li:hover,
-        #organized-options li:hover {
+        #organized-options li:hover,
+        #ie-options li:hover {
             background: #2d4263 !important;
             color: #fff !important;
         }
@@ -876,6 +882,7 @@
             display: flex;
             gap: 10px;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         .confirm-buttons button {
@@ -902,6 +909,11 @@
         .confirm-btn-no {
             background: rgba(255, 255, 255, .15);
             color: #fff;
+        }
+
+        .confirm-btn-extra {
+            background: #fff;
+            color: #000;
         }
 
         .confirm-buttons button:hover {
@@ -1023,7 +1035,7 @@
         <div id="custom-confirm" class="confirm-modal">
             <h3 id="confirm-title">¿Eliminar?</h3>
             <p id="confirm-msg">Esta acción no se puede deshacer.</p>
-            <div class="confirm-buttons">
+            <div class="confirm-buttons" id="confirm-buttons-wrapper">
                 <button id="confirm-yes" class="confirm-btn-yes">Sí</button>
                 <button id="confirm-no" class="confirm-btn-no">Cancelar</button>
             </div>
@@ -1062,12 +1074,21 @@
             const customConfirmModal = document.getElementById("custom-confirm");
             const confirmYesBtn = document.getElementById("confirm-yes");
             const confirmNoBtn = document.getElementById("confirm-no");
+            const confirmButtonsWrapper = document.getElementById("confirm-buttons-wrapper");
 
             // Variables de Estado
             let activeLineBox = null;
             let isMuted = false;
             let activeBoardId = 1;
             let boardsList = [1];
+            let importedDataTemp = null; // Buffer para guardar el JSON cargado antes de presionar Import
+
+            // Crear input oculto dinámico para cargar el JSON de importación
+            const fileImportInput = document.createElement("input");
+            fileImportInput.type = "file";
+            fileImportInput.accept = ".json";
+            fileImportInput.style.display = "none";
+            document.body.appendChild(fileImportInput);
 
             // Gestión de Menú Lateral (Sidebar)
             toggleSidebarBtn.addEventListener("click", () => {
@@ -1104,6 +1125,9 @@
                 <li id="sound-control">🎵 Sound <input type="file" id="sound-upload" accept="audio/*"> <button id="remove-sound" style="background: #f77067; color: white; border: none; padding: 5px; border-radius: 5px; cursor: pointer; font-size: 12px; margin-top: 5px;">Delete sound</button></li>
                 <li id="organized-control"><span id="organized-trigger" style="cursor:pointer; display:block; width:100%;">+ Boxes Organized</span>
                     <ul id="organized-options" style="display:none;"><li data-action="template">- Template boxes</li><li data-action="color">- Color boxes</li><li data-action="empty">- Empty boxes</li></ul>
+                </li>
+                <li id="ie-control"><span id="ie-trigger" style="cursor:pointer; display:block; width:100%;">+ Import & Export box</span>
+                    <ul id="ie-options" style="display:none;"><li data-action="export">- Export</li><li data-action="import">- Import</li></ul>
                 </li>
                 <li id="background-settings">+ Background</li>
                 <ul id="background-options" style="display:none; margin-left:15px;">
@@ -1186,6 +1210,26 @@
                     event.stopPropagation();
                     settingsMenu.style.display = "none";
                     triggerOrganizeWorkflow(li.dataset.action);
+                });
+            });
+
+            // Controladores del nuevo submenú Import & Export
+            const ieTrigger = document.getElementById("ie-trigger");
+            const ieOptions = document.getElementById("ie-options");
+            ieTrigger.addEventListener("click", event => {
+                event.stopPropagation();
+                ieOptions.style.display = ieOptions.style.display === "block" ? "none" : "block";
+            });
+
+            ieOptions.querySelectorAll("li").forEach(li => {
+                li.addEventListener("click", event => {
+                    event.stopPropagation();
+                    settingsMenu.style.display = "none";
+                    if (li.dataset.action === "export") {
+                        triggerExportWorkflow();
+                    } else if (li.dataset.action === "import") {
+                        triggerImportWorkflow();
+                    }
                 });
             });
 
@@ -1276,12 +1320,22 @@
                 }
             });
 
-            // Sistema Único de Modales de Confirmación
+            // Sistema Único de Modales de Confirmación / Flujos Avanzados
             let currentConfirmCallback = null;
             let backdropLayer = null;
 
+            function resetModalButtons() {
+                confirmButtonsWrapper.innerHTML = '';
+                confirmButtonsWrapper.appendChild(confirmYesBtn);
+                confirmButtonsWrapper.appendChild(confirmNoBtn);
+                confirmYesBtn.className = "confirm-btn-yes";
+                confirmNoBtn.className = "confirm-btn-no";
+                confirmNoBtn.textContent = "Cancelar";
+            }
+
             function deleteBoardWorkflow(id, tabElement) {
                 setupModalBackdrop();
+                resetModalButtons();
                 customConfirmModal.classList.remove("pulse-danger");
                 document.getElementById("confirm-title").textContent = `¿Eliminar Board ${id}?`;
                 document.getElementById("confirm-msg").textContent = "Todos los recuadros guardados en este espacio desaparecerán para siempre.";
@@ -1320,6 +1374,7 @@
 
             function deleteBoxWorkflow(element, type, saveCallback) {
                 setupModalBackdrop();
+                resetModalButtons();
                 customConfirmModal.classList.add("pulse-danger");
                 document.getElementById("confirm-title").textContent = `¿Eliminar este ${type}?`;
                 document.getElementById("confirm-msg").textContent = "Esta acción quitará el recuadro de tu espacio de trabajo de forma inmediata.";
@@ -1337,8 +1392,8 @@
 
             function triggerOrganizeWorkflow(action) {
                 setupModalBackdrop();
+                resetModalButtons();
                 customConfirmModal.classList.remove("pulse-danger");
-                confirmYesBtn.classList.remove("danger");
                 confirmYesBtn.textContent = "Yes";
                 let title = "", desc = "This action will arrange elements automatically.";
                 if (action === "template") title = "Organize template boxes?";
@@ -1359,6 +1414,107 @@
                 };
             }
 
+            // FLUJO EXPORT: Estilo Mini Menú "Export?"
+            function triggerExportWorkflow() {
+                setupModalBackdrop();
+                resetModalButtons();
+                customConfirmModal.classList.remove("pulse-danger");
+
+                document.getElementById("confirm-title").textContent = "Export?";
+                document.getElementById("confirm-msg").textContent = "Se descargará la configuración del tablero actual como un archivo JSON.";
+
+                confirmYesBtn.textContent = "Export";
+                confirmNoBtn.textContent = "Cancel";
+
+                backdropLayer.classList.add("active");
+                customConfirmModal.classList.add("active");
+
+                currentConfirmCallback = () => {
+                    executeExportJSON();
+                    closeConfirmModal();
+                };
+            }
+
+            // FLUJO IMPORT: Estilo Mini Menú "Import?" con 3 Botones
+            function triggerImportWorkflow() {
+                setupModalBackdrop();
+                customConfirmModal.classList.remove("pulse-danger");
+                importedDataTemp = null; // Limpiar buffer previo
+
+                document.getElementById("confirm-title").textContent = "Import?";
+                document.getElementById("confirm-msg").textContent = "Carga un archivo de configuración para sobreescribir este tablero.";
+
+                // Re-inyectar dinámicamente estructura de 3 botones solicitada
+                confirmButtonsWrapper.innerHTML = '';
+
+                const addFileBtn = document.createElement("button");
+                addFileBtn.id = "import-add-file";
+                addFileBtn.className = "confirm-btn-extra";
+                addFileBtn.textContent = "Add file";
+
+                const importBtn = document.createElement("button");
+                importBtn.id = "import-execute";
+                importBtn.className = "confirm-btn-yes";
+                importBtn.textContent = "Import";
+                importBtn.disabled = true; // Deshabilitado hasta que haya un archivo cargado
+                importBtn.style.opacity = "0.5";
+                importBtn.style.cursor = "not-allowed";
+
+                const cancelBtn = document.createElement("button");
+                cancelBtn.id = "import-cancel";
+                cancelBtn.className = "confirm-btn-no";
+                cancelBtn.textContent = "Cancel";
+
+                confirmButtonsWrapper.appendChild(addFileBtn);
+                confirmButtonsWrapper.appendChild(importBtn);
+                confirmButtonsWrapper.appendChild(cancelBtn);
+
+                backdropLayer.classList.add("active");
+                customConfirmModal.classList.add("active");
+
+                // Evento para simular click en input de archivo
+                addFileBtn.addEventListener("click", () => {
+                    fileImportInput.click();
+                });
+
+                // Listener para el procesado del archivo JSON
+                fileImportInput.onchange = event => {
+                    const file = event.target.files[0];
+                    if (!file) return;
+
+                    const reader = new FileReader();
+                    reader.onload = function (evt) {
+                        try {
+                            const parsed = JSON.parse(evt.target.result);
+                            if (parsed && (parsed.boxes || parsed.lineBoxes)) {
+                                importedDataTemp = parsed;
+                                document.getElementById("confirm-msg").textContent = `Archivo cargado exitosamente: "${file.name}". Listo para importar.`;
+                                importBtn.disabled = false;
+                                importBtn.style.opacity = "1";
+                                importBtn.style.cursor = "pointer";
+                            } else {
+                                alert("El formato del archivo JSON no es válido para Pasplate.");
+                                fileImportInput.value = "";
+                            }
+                        } catch (err) {
+                            alert("Error al leer el archivo JSON.");
+                            fileImportInput.value = "";
+                        }
+                    };
+                    reader.readAsText(file);
+                };
+
+                // Procesamiento definitivo de la importación
+                importBtn.addEventListener("click", () => {
+                    if (importedDataTemp) {
+                        executeImportJSON(importedDataTemp);
+                        closeConfirmModal();
+                    }
+                });
+
+                cancelBtn.addEventListener("click", closeConfirmModal);
+            }
+
             function setupModalBackdrop() {
                 if (!backdropLayer) {
                     backdropLayer = document.createElement("div");
@@ -1376,6 +1532,49 @@
                 customConfirmModal.classList.remove("active");
                 customConfirmModal.classList.remove("pulse-danger");
                 currentConfirmCallback = null;
+                fileImportInput.value = ""; // Limpiar input file
+                resetModalButtons(); // Devolver modal a estado por defecto
+            }
+
+            // Acciones de Core: Serializar e Inyectar JSON
+            function executeExportJSON() {
+                const currentBoxes = JSON.parse(localStorage.getItem(`boxes_b${activeBoardId}`) || '[]');
+                const currentLineBoxes = JSON.parse(localStorage.getItem(`lineBoxes_b${activeBoardId}`) || '[]');
+
+                const exportPayload = {
+                    version: "1.0",
+                    boardId: activeBoardId,
+                    timestamp: Date.now(),
+                    boxes: currentBoxes,
+                    lineBoxes: currentLineBoxes
+                };
+
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportPayload, null, 2));
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", dataStr);
+                downloadAnchor.setAttribute("download", `pasplate_board_${activeBoardId}_config.json`);
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                downloadAnchor.remove();
+            }
+
+            function executeImportJSON(data) {
+                if (data.boxes) {
+                    localStorage.setItem(`boxes_b${activeBoardId}`, JSON.stringify(data.boxes));
+                } else {
+                    localStorage.setItem(`boxes_b${activeBoardId}`, '[]');
+                }
+
+                if (data.lineBoxes) {
+                    localStorage.setItem(`lineBoxes_b${activeBoardId}`, JSON.stringify(data.lineBoxes));
+                } else {
+                    localStorage.setItem(`lineBoxes_b${activeBoardId}`, '[]');
+                }
+
+                // Recargar el workspace en tiempo real sin recargar página completa
+                workspace.innerHTML = "";
+                loadBoxes();
+                loadLineBoxes();
             }
 
             function executeLayoutOrganization(action) {

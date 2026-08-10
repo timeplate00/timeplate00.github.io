@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -273,7 +274,7 @@
             animation: tabEntrance .3s cubic-bezier(.34, 1.56, .64, 1) forwards;
         }
 
-        @pragma tabEntrance {
+        @keyframes tabEntrance {
             from {
                 opacity: 0;
                 transform: scale(.8) translateY(-5px);
@@ -289,7 +290,7 @@
             animation: tabExit .25s ease forwards !important;
         }
 
-        @pragma tabExit {
+        @keyframes tabExit {
             from {
                 opacity: 1;
                 transform: scale(1);
@@ -471,8 +472,9 @@
         .line-box textarea {
             width: 100%;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
             transition: background-color .25s ease, border-color .25s ease;
+            letter-spacing: -0.2px;
         }
 
         .box textarea {
@@ -483,8 +485,9 @@
             padding: 8px;
             background-color: #e9e7e7;
             font-size: 15px;
-            font-weight: 700;
+            font-weight: 600;
             border: 1px solid transparent;
+            line-height: 1.4;
         }
 
         .box textarea:focus {
@@ -502,6 +505,7 @@
             font-size: 14px;
             padding: 2px 5px;
             font-weight: 500;
+            line-height: 1.3;
         }
 
         .line-box textarea:focus {
@@ -704,11 +708,11 @@
         }
 
         .color-picker {
-            position: absolute;
-            z-index: 1005;
+            position: fixed;
+            z-index: 2005;
             background: #fff;
             border-radius: 14px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .4);
             padding: 14px;
             width: 210px;
             opacity: 0;
@@ -811,7 +815,7 @@
             right: 0;
             bottom: 0;
             background: transparent;
-            z-index: 1004;
+            z-index: 2004;
             display: none;
         }
 
@@ -824,7 +828,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(.9);
-            z-index: 2000;
+            z-index: 3000;
             background: #080e1f;
             color: #fff;
             border-radius: 16px;
@@ -1090,6 +1094,13 @@
             fileImportInput.style.display = "none";
             document.body.appendChild(fileImportInput);
 
+            // Cierre del picker si el usuario hace scroll para no desalinearlo
+            contentArea.addEventListener("scroll", () => {
+                if (colorPicker.classList.contains("active")) {
+                    closeColorPickerLayout();
+                }
+            });
+
             // Gestión de Menú Lateral (Sidebar)
             toggleSidebarBtn.addEventListener("click", () => {
                 const isCollapsed = sidebar.classList.toggle("collapsed");
@@ -1213,7 +1224,7 @@
                 });
             });
 
-            // Controladores del nuevo submenú Import & Export
+            // Controladores del submenú Import & Export
             const ieTrigger = document.getElementById("ie-trigger");
             const ieOptions = document.getElementById("ie-options");
             ieTrigger.addEventListener("click", event => {
@@ -1266,7 +1277,7 @@
             }
 
             function getNextAvailableBoardId() {
-                for (let i = 1; i <= 3; i++) {
+                for (let i = 1; i <= 4; i++) {
                     if (!boardsList.includes(i)) return i;
                 }
                 return null;
@@ -1295,7 +1306,7 @@
                     });
                     boardsContainer.appendChild(tab);
                 });
-                addBoardBtn.disabled = boardsList.length >= 3;
+                addBoardBtn.disabled = boardsList.length >= 4;
             }
 
             function switchActiveBoard(id) {
@@ -1311,7 +1322,7 @@
             }
 
             addBoardBtn.addEventListener("click", () => {
-                if (boardsList.length >= 3) return;
+                if (boardsList.length >= 4) return;
                 const nextId = getNextAvailableBoardId();
                 if (nextId) {
                     boardsList.push(nextId);
@@ -1333,6 +1344,7 @@
                 confirmNoBtn.textContent = "Cancelar";
             }
 
+            // Flujo de doble confirmación para borrar Boards
             function deleteBoardWorkflow(id, tabElement) {
                 setupModalBackdrop();
                 resetModalButtons();
@@ -1345,10 +1357,12 @@
                 customConfirmModal.classList.add("active");
 
                 currentConfirmCallback = () => {
+                    // Segundo mensaje de confirmación
                     customConfirmModal.classList.add("pulse-danger");
                     document.getElementById("confirm-title").textContent = "¿Estás absolutamente seguro?";
                     document.getElementById("confirm-msg").textContent = "Confirma una vez más. Esta acción borrará irreversiblemente los datos de este Board.";
                     confirmYesBtn.textContent = "Sí, borrar todo";
+
                     currentConfirmCallback = () => {
                         const width = tabElement.offsetWidth;
                         tabElement.style.setProperty("--tab-width", `${width}px`);
@@ -1358,10 +1372,12 @@
                             localStorage.setItem("boardsList", JSON.stringify(boardsList));
                             localStorage.removeItem(`boxes_b${id}`);
                             localStorage.removeItem(`lineBoxes_b${id}`);
+
                             if (activeBoardId === id) {
-                                activeBoardId = boardsList[0];
+                                activeBoardId = boardsList[0] || 1;
                                 localStorage.setItem("activeBoardId", activeBoardId);
                             }
+
                             workspace.innerHTML = "";
                             loadBoxes();
                             loadLineBoxes();
@@ -1804,6 +1820,7 @@
                 });
             }
 
+            // Posicionamiento dinámico Viewport-Aware para corregir bug en partes inferiores
             function openColorPickerLayout(triggerBtn) {
                 if (!colorPickerBackdrop) {
                     colorPickerBackdrop = document.createElement("div");
@@ -1811,11 +1828,31 @@
                     document.body.appendChild(colorPickerBackdrop);
                     colorPickerBackdrop.addEventListener("click", closeColorPickerLayout);
                 }
-                const parentBox = triggerBtn.closest(".line-box");
-                const leftPos = parseInt(parentBox.style.left);
-                const topPos = parseInt(parentBox.style.top);
-                colorPicker.style.left = `${leftPos}px`;
-                colorPicker.style.top = `${topPos + 45}px`;
+
+                // Obtener posición exacta del botón en la pantalla visible (viewport)
+                const rect = triggerBtn.getBoundingClientRect();
+                const pickerWidth = 238;  // Ancho aproximado con padding/border
+                const pickerHeight = 220; // Alto aproximado con padding/border
+
+                let left = rect.left;
+                let top = rect.bottom + 8;
+
+                // Auto-flip hacia arriba si sobrepasa el límite inferior de la pantalla
+                if (top + pickerHeight > window.innerHeight) {
+                    top = rect.top - pickerHeight - 8;
+                }
+
+                // Ajustar horizontalmente si sobrepasa el borde derecho
+                if (left + pickerWidth > window.innerWidth) {
+                    left = window.innerWidth - pickerWidth - 10;
+                }
+
+                // Ajustar por si se sale del borde izquierdo
+                if (left < 10) left = 10;
+
+                colorPicker.style.left = `${left}px`;
+                colorPicker.style.top = `${top}px`;
+
                 colorPickerBackdrop.classList.add("active");
                 colorPicker.classList.add("active");
             }

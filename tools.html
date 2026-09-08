@@ -7,35 +7,47 @@
     <link rel="icon" type="image/png" href="logo_v5.png">
     <title>Timeplate - Tools</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
 
         :root {
             /* Modo claro */
-            --main-bg: #f2f2f2;
-            --medium-gray: #d9d9d9;
-            --dark-gray: #3a3a3a;
-            --lime: #c5e86c;
-            --forest: #1b2d0b;
-            --text-main: #1b1b1b;
-            --card-bg: #ffffff;
-            --sidebar-width: 220px;
+            --main-bg: #f4f6f0;
+            --medium-gray: #e2e8d8;
+            --dark-gray: #0e1b03;
+            --lime: #a1d34a;
+            --forest: #0e1b03;
+            --text-main: #1e1e1e;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-border: rgba(14, 27, 3, 0.08);
+            --sidebar-width: 240px;
+            --sidebar-bg: #0e1b03;
+            --accent-glow: rgba(161, 211, 74, 0.25);
         }
 
         body.dark-mode {
             /* Modo oscuro */
-            --main-bg: #1e1e1e;
-            --medium-gray: #2c2c2c;
-            --dark-gray: #121212;
-            --text-main: #e5e5e5;
-            --card-bg: #2a2a2a;
+            --main-bg: #0a1302;
+            --medium-gray: #172808;
+            --dark-gray: #060d01;
+            --text-main: #f0f0f0;
+            --card-bg: rgba(14, 27, 3, 0.65);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --sidebar-bg: #060d01;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        h1,
+        h2,
+        h3,
+        .font-heading {
+            font-family: 'Space Grotesk', sans-serif;
         }
 
         body {
@@ -50,24 +62,38 @@
             min-height: 100vh;
         }
 
-        /* ===== SIDEBAR OPTIMIZADO ===== */
+        /* Ambient Background Glow */
+        .bg-glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ===== SIDEBAR REDISEÑADO ===== */
         .sidebar {
             width: var(--sidebar-width);
-            background-color: var(--dark-gray);
+            background-color: var(--sidebar-bg);
             color: var(--lime);
             display: flex;
             flex-direction: column;
             align-items: center;
-            box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 4px 0 25px rgba(0, 0, 0, 0.3);
             flex-shrink: 0;
             z-index: 10;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .logo {
             width: 100%;
             text-align: center;
-            padding: 30px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 35px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         #logo-link {
@@ -75,94 +101,114 @@
             flex-direction: column;
             align-items: center;
             text-decoration: none;
-            gap: 10px;
+            gap: 12px;
         }
 
         #logo {
-            width: 70px;
+            width: 65px;
             height: auto;
             user-select: none;
             pointer-events: none;
-            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
-            transition: transform 0.3s ease;
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         #logo-link:hover #logo {
-            transform: scale(1.05);
+            transform: scale(1.08) rotate(-3deg);
         }
 
         .logo h1 {
             margin: 0;
-            font-size: 1.4rem;
-            color: var(--lime);
-            letter-spacing: 1px;
+            font-size: 1.5rem;
+            color: #ffffff;
+            letter-spacing: -0.5px;
             font-weight: 700;
         }
 
         .logo span {
-            font-size: 0.8rem;
-            opacity: 0.8;
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
             color: var(--lime);
-            margin-top: 2px;
+            font-weight: 600;
+            opacity: 0.9;
         }
 
         .nav-menu {
             width: 100%;
-            padding: 20px 0;
+            padding: 25px 15px;
         }
 
         .nav-item {
-            padding: 14px 25px;
-            margin: 8px 15px;
-            border-radius: 12px;
+            padding: 14px 20px;
+            margin-bottom: 10px;
+            border-radius: 14px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-weight: 500;
-            color: var(--lime);
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
             display: flex;
             align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
         }
 
         .nav-item:hover {
-            background-color: rgba(197, 232, 108, 0.12);
+            background-color: rgba(161, 211, 74, 0.1);
+            color: var(--lime);
             transform: translateX(4px);
         }
 
         .nav-item.active {
-            background-color: var(--lime);
+            background: linear-gradient(135deg, var(--lime) 0%, #83a04b 100%);
             color: var(--forest);
-            font-weight: 600;
-            box-shadow: 0 4px 10px rgba(197, 232, 108, 0.2);
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(161, 211, 74, 0.3);
         }
 
         /* ===== MAIN CONTENT ===== */
         .main-content {
             flex-grow: 1;
-            padding: 40px;
-            background-color: var(--main-bg);
+            padding: 45px 50px;
+            background-color: transparent;
             min-width: 0;
-            /* Previene desbordamiento en flexboxes */
+            position: relative;
+            z-index: 1;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
+            margin-bottom: 45px;
             border-bottom: 1px solid var(--medium-gray);
-            padding-bottom: 15px;
+            padding-bottom: 20px;
+        }
+
+        body.dark-mode .header {
+            border-bottom-color: rgba(255, 255, 255, 0.08);
         }
 
         .page-title h2 {
             margin: 0;
-            font-size: 2rem;
+            font-size: 2.2rem;
             color: var(--forest);
-            font-weight: 700;
-            letter-spacing: 0.5px;
+            font-weight: 800;
+            letter-spacing: -1px;
         }
 
         body.dark-mode .page-title h2 {
-            color: var(--lime);
+            color: #ffffff;
+        }
+
+        .page-title p {
+            font-size: 0.95rem;
+            color: rgba(0, 0, 0, 0.5);
+            margin-top: 4px;
+        }
+
+        body.dark-mode .page-title p {
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .user-actions {
@@ -171,38 +217,34 @@
             align-items: center;
         }
 
-        /* Botón Modo noche */
+        /* Botón Modo Noche */
         .mode-toggle {
-            background-color: transparent;
-            border: 2px solid var(--forest);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
             color: var(--forest);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            border-radius: 12px;
+            width: 44px;
+            height: 44px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 1.2rem;
             position: relative;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(10px);
         }
 
         .mode-toggle:hover {
-            background-color: var(--forest);
-            color: var(--lime);
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            border-color: var(--lime);
+            box-shadow: 0 6px 16px rgba(161, 211, 74, 0.2);
         }
 
         body.dark-mode .mode-toggle {
-            border-color: var(--lime);
             color: var(--lime);
-        }
-
-        body.dark-mode .mode-toggle:hover {
-            background-color: var(--lime);
-            color: var(--forest);
+            background: rgba(14, 27, 3, 0.8);
         }
 
         .ripple {
@@ -210,7 +252,7 @@
             border-radius: 50%;
             transform: scale(0);
             animation: ripple 0.6s ease-out;
-            background-color: rgba(197, 232, 108, 0.4);
+            background-color: rgba(161, 211, 74, 0.4);
             pointer-events: none;
         }
 
@@ -221,26 +263,41 @@
             }
         }
 
-        /* ===== CARDS GRID CON ANIMACIÓN ANIMADA ===== */
+        /* ===== CARDS GRID ===== */
         .camera-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 32px;
         }
 
         .camera-card {
             background-color: var(--card-bg);
-            border-radius: 16px;
+            border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            border-top: 5px solid var(--lime);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             display: flex;
             flex-direction: column;
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(35px);
             transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
                 box-shadow 0.4s ease,
+                border-color 0.4s ease,
                 opacity 0.4s ease;
+            position: relative;
+        }
+
+        .camera-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(161, 211, 74, 0.08), transparent 40%);
+            pointer-events: none;
         }
 
         .camera-card.show {
@@ -250,16 +307,19 @@
 
         .camera-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: rgba(161, 211, 74, 0.4);
         }
 
         .camera-preview {
-            height: 160px;
-            background-color: var(--medium-gray);
+            height: 190px;
+            background-color: rgba(0, 0, 0, 0.03);
             position: relative;
-            background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.02) 25%, transparent 25%),
-                linear-gradient(-45deg, rgba(0, 0, 0, 0.02) 25%, transparent 25%);
-            background-size: 20px 20px;
+            padding: 16px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .camera-number {
@@ -268,53 +328,71 @@
             left: 15px;
             background-color: var(--forest);
             color: var(--lime);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            padding: 5px 14px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+            letter-spacing: 0.5px;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 14px;
+            transition: transform 0.5s ease;
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
+        }
+
+        .camera-card:hover .card-img {
+            transform: scale(1.05);
         }
 
         .camera-info {
-            padding: 24px;
+            padding: 28px;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
         }
 
         .camera-name {
-            margin: 0 0 6px;
-            font-size: 1.3rem;
+            margin: 0 0 8px;
+            font-size: 1.4rem;
             color: var(--forest);
-            font-weight: 700;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
 
         body.dark-mode .camera-name {
-            color: var(--lime);
+            color: #ffffff;
         }
 
         .camera-status {
             align-self: flex-start;
             padding: 4px 12px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            margin-bottom: 15px;
-            background-color: rgba(131, 160, 75, 0.15);
-            color: #5f7536;
-            font-weight: 600;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            margin-bottom: 16px;
+            background-color: rgba(161, 211, 74, 0.15);
+            color: #435b1d;
+            font-weight: 700;
             letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border: 1px solid rgba(161, 211, 74, 0.3);
         }
 
         body.dark-mode .camera-status {
-            background-color: rgba(197, 232, 108, 0.1);
+            background-color: rgba(161, 211, 74, 0.12);
             color: var(--lime);
         }
 
         .camera-info p {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 20px;
-            opacity: 0.8;
+            font-size: 0.98rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            opacity: 0.75;
             flex-grow: 1;
         }
 
@@ -331,29 +409,33 @@
 
         .action-btn {
             width: 100%;
-            padding: 12px;
-            font-size: 0.95rem;
-            border-radius: 10px;
+            padding: 14px;
+            font-size: 1rem;
+            border-radius: 12px;
             cursor: pointer;
             border: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .view-btn {
-            background-color: var(--forest);
+            background: linear-gradient(135deg, var(--forest) 0%, #1a3306 100%);
             color: var(--lime);
-            box-shadow: 0 4px 6px rgba(27, 45, 11, 0.15);
+            box-shadow: 0 6px 15px rgba(14, 27, 3, 0.2);
         }
 
         .view-btn:hover {
-            background-color: var(--lime);
+            background: linear-gradient(135deg, var(--lime) 0%, #83a04b 100%);
             color: var(--forest);
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(197, 232, 108, 0.3);
+            box-shadow: 0 10px 20px rgba(161, 211, 74, 0.35);
         }
 
-        /* Clon de Transición */
+        /* Transición de Clon de Logo */
         #transition-logo {
             position: fixed;
             pointer-events: none;
@@ -361,11 +443,11 @@
             transition: all 0.6s cubic-bezier(.4, 0, .2, 1);
         }
 
-        /* ===== GLOBAL LOADER FLUIDO ===== */
+        /* ===== GLOBAL LOADER ===== */
         #global-loader {
             position: fixed;
             inset: 0;
-            background: rgba(27, 45, 11, 0.98);
+            background: rgba(14, 27, 3, 0.98);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -421,7 +503,7 @@
         }
 
         /* ===== RESPONSIVE MEDIA QUERIES ===== */
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             .app-container {
                 flex-direction: column;
             }
@@ -431,10 +513,10 @@
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
-                padding: 10px 20px;
+                padding: 12px 25px;
                 position: sticky;
                 top: 0;
-                height: 70px;
+                height: 75px;
             }
 
             .logo {
@@ -446,65 +528,58 @@
 
             #logo-link {
                 flex-direction: row;
-                gap: 8px;
+                gap: 10px;
             }
 
             #logo {
-                width: 38px;
+                width: 40px;
             }
 
             .logo h1 {
-                font-size: 1.2rem;
+                font-size: 1.25rem;
             }
 
             .logo span {
                 display: none;
-                /* Ocultar texto secundario en mobile */
             }
 
             .nav-menu {
                 display: flex;
                 padding: 0;
                 width: auto;
-                margin-top: 0;
             }
 
             .nav-item {
                 padding: 8px 16px;
-                margin: 0 4px;
-                font-size: 0.9rem;
-                border-radius: 8px;
-            }
-
-            .nav-item:hover {
-                transform: translateY(-2px);
+                margin-bottom: 0;
+                font-size: 0.88rem;
+                border-radius: 10px;
             }
 
             .main-content {
-                padding: 25px 20px;
+                padding: 30px 20px;
             }
 
             .header {
-                margin-bottom: 25px;
+                margin-bottom: 30px;
             }
 
             .page-title h2 {
-                font-size: 1.6rem;
+                font-size: 1.8rem;
             }
         }
 
         @media (max-width: 480px) {
             .sidebar {
-                padding: 10px;
+                padding: 10px 15px;
             }
 
             .logo h1 {
                 display: none;
-                /* Solo dejamos el icono en pantallas extra chicas */
             }
 
             .nav-item {
-                padding: 6px 12px;
+                padding: 8px 12px;
                 font-size: 0.85rem;
             }
 
@@ -512,18 +587,12 @@
                 grid-template-columns: 1fr;
             }
         }
-
-        .card-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            /* Esto hace que la imagen llene el espacio sin deformarse */
-            display: block;
-        }
     </style>
 </head>
 
 <body>
+
+    <div class="bg-glow"></div>
 
     <div id="global-loader">
         <div class="loader-dots">
@@ -534,12 +603,15 @@
     </div>
 
     <div class="app-container">
+        <!-- ===== SIDEBAR ===== -->
         <div class="sidebar">
             <div class="logo">
                 <a href="index.html" id="logo-link">
                     <img src="logo_v5.png" alt="Timeplate Logo" id="logo">
-                    <h1>Timeplate</h1>
-                    <span>Work space</span>
+                    <div>
+                        <h1>Timeplate</h1>
+                        <span>Workspace</span>
+                    </div>
                 </a>
             </div>
 
@@ -549,58 +621,76 @@
             </div>
         </div>
 
+        <!-- ===== MAIN CONTENT ===== -->
         <div class="main-content">
             <div class="header">
                 <div class="page-title">
-                    <h2>TOOLS</h2>
+                    <h2>Available Tools</h2>
+                    <p>Select an operation tool to launch</p>
                 </div>
                 <div class="user-actions">
-                    <button class="mode-toggle" id="modeToggle">🌙</button>
+                    <button class="mode-toggle" id="modeToggle" aria-label="Cambiar tema">🌙</button>
                 </div>
             </div>
+
             <div class="camera-grid">
 
+                <!-- TOOL 1 -->
                 <div class="camera-card">
                     <div class="camera-preview">
-                        <span class="camera-number">1</span>
-                        <img src="pasplateshow2.png" alt="Vista previa de Pasplate" class="card-img">
+                        <span class="camera-number">01</span>
+                        <img src="Pasplate_app_tool.png" alt="Vista previa de Pasplate" class="card-img">
                     </div>
                     <div class="camera-info">
                         <h3 class="camera-name">Pasplate</h3>
                         <span class="camera-status">Activated</span>
-                        <p>Choose template in just one click!</p>
+                        <p>Choose template in just one click to speed up your routine tasks.</p>
                         <div class="camera-actions">
-                            <a href="/Pasplate/pasplate_app.html"><button class="action-btn view-btn">Go</button></a>
+                            <a href="/Pasplate/pasplate_app.html">
+                                <button class="action-btn view-btn">
+                                    Launch Tool ➔
+                                </button>
+                            </a>
                         </div>
                     </div>
                 </div>
 
+                <!-- TOOL 2 -->
                 <div class="camera-card">
                     <div class="camera-preview">
-                        <span class="camera-number">2</span>
-                        <img src="hand1_2.png" alt="Vista previa de Camplate" class="card-img">
+                        <span class="camera-number">02</span>
+                        <img src="Camplate_app_tool.png" alt="Vista previa de Camplate" class="card-img">
                     </div>
                     <div class="camera-info">
                         <h3 class="camera-name">Camplate</h3>
                         <span class="camera-status">Activated</span>
-                        <p>Use your hands to select your templates!</p>
+                        <p>Use gesture control to select your templates with hand movements!</p>
                         <div class="camera-actions">
-                            <a href="/Camplate/timecam_app.html"><button class="action-btn view-btn">Go</button></a>
+                            <a href="/Camplate/timecam_app.html">
+                                <button class="action-btn view-btn">
+                                    Launch Tool ➔
+                                </button>
+                            </a>
                         </div>
                     </div>
                 </div>
 
+                <!-- TOOL 3 -->
                 <div class="camera-card">
                     <div class="camera-preview">
-                        <span class="camera-number">3</span>
-                        <img src="reminder2.png" alt="Vista previa de Reminder" class="card-img">
+                        <span class="camera-number">03</span>
+                        <img src="Reminder_app_tool.png" alt="Vista previa de Reminder" class="card-img">
                     </div>
                     <div class="camera-info">
                         <h3 class="camera-name">Reminder</h3>
                         <span class="camera-status">Activated</span>
-                        <p>Save everything you don’t want to forget!</p>
+                        <p>Save notes, essential logs, and everything you don't want to forget.</p>
                         <div class="camera-actions">
-                            <a href="/Reminder/reminder_app.html"><button class="action-btn view-btn">Go</button></a>
+                            <a href="/Reminder/reminder_app.html">
+                                <button class="action-btn view-btn">
+                                    Launch Tool ➔
+                                </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -637,7 +727,7 @@
         });
 
         /* ============================
-           TRANSICIÓN ENTRANTE DEL LOGO (FLUIDA)
+           TRANSICIÓN ENTRANTE DEL LOGO
         ============================ */
         window.addEventListener('DOMContentLoaded', () => {
             const data = sessionStorage.getItem('logoTransition');
@@ -647,13 +737,11 @@
             const realLogo = document.getElementById('logo');
             if (!realLogo) return;
 
-            // Medir la posición final real calculando el scroll actual
             const target = realLogo.getBoundingClientRect();
 
             const clone = realLogo.cloneNode(true);
             clone.id = 'transition-logo';
 
-            // Colocar el clon justo donde se quedó en la página anterior (Viewport coordinado)
             clone.style.position = 'fixed';
             clone.style.top = (logoData.top - window.scrollY) + 'px';
             clone.style.left = logoData.left + 'px';
@@ -662,14 +750,12 @@
 
             realLogo.style.opacity = '0';
 
-            // Desplazar hacia la posición final en la barra de herramientas
             requestAnimationFrame(() => {
                 clone.style.top = target.top + 'px';
                 clone.style.left = target.left + 'px';
                 clone.style.width = target.width + 'px';
             });
 
-            // Limpieza exacta a los 600ms (tiempo de la transición CSS)
             setTimeout(() => {
                 clone.remove();
                 realLogo.style.opacity = '1';
@@ -677,15 +763,14 @@
             }, 600);
         });
 
-        /* ===== EFECTO DE APARICIÓN DE CARDS (INTERSECTION OBSERVER) ===== */
+        /* ===== EFECTO DE APARICIÓN ESCALONADA (INTERSECTION OBSERVER) ===== */
         const cards = document.querySelectorAll('.camera-card');
         const cardObserver = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
-                    // Agrega un pequeño retraso (stagger) para que aparezcan una tras otra
                     setTimeout(() => {
                         entry.target.classList.add('show');
-                    }, index * 100);
+                    }, index * 120);
                     cardObserver.unobserve(entry.target);
                 }
             });
@@ -693,7 +778,18 @@
 
         cards.forEach(card => cardObserver.observe(card));
 
-        /* ========== GLOBAL LOADER MODULE (SALIDA) ========== */
+        /* Mouse move spotlight effect on cards */
+        cards.forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        /* ========== GLOBAL LOADER MODULE ========== */
         const globalLoader = document.getElementById('global-loader');
 
         function showGlobalLoader() {

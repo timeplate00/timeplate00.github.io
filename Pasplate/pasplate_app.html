@@ -409,6 +409,8 @@
             height: 3000px;
             padding: 40px;
             box-sizing: border-box;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
         }
 
         .box,
@@ -416,6 +418,11 @@
             animation: boxEntrance .3s cubic-bezier(.34, 1.56, .64, 1) forwards;
             will-change: transform, top, left;
             transition: box-shadow .25s ease, background-color .3s ease;
+        }
+
+        .box.snapping {
+            transition: left 0.1s ease-out, top 0.1s ease-out, box-shadow .25s ease, background-color .3s ease;
+            box-shadow: 0 0 15px rgba(166, 255, 0, .6) !important;
         }
 
         @keyframes boxEntrance {
@@ -950,6 +957,162 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, .2);
         }
 
+        /* ESTILOS DE LA PANTALLA DE CÓDIGO DE ACCESO */
+        #access-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10, 34, 57, 0.85);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        #access-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .access-card {
+            background: #080e1f;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 40px;
+            width: 400px;
+            max-width: 85vw;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            color: #fff;
+            animation: accessPopIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            box-sizing: border-box;
+        }
+
+        @keyframes accessPopIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .access-card.shake {
+            animation: accessShake 0.4s ease-in-out;
+            border-color: #ff3b30;
+            box-shadow: 0 0 30px rgba(255, 59, 48, 0.5);
+        }
+
+        @keyframes accessShake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-12px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(12px);
+            }
+        }
+
+        .access-card.success {
+            animation: accessSuccess 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            border-color: #a6ff00;
+            box-shadow: 0 0 35px rgba(166, 255, 0, 0.6);
+        }
+
+        @keyframes accessSuccess {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+        }
+
+        .access-card h2 {
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            font-family: 'Montserrat', sans-serif;
+            color: #fff;
+        }
+
+        .access-card p {
+            margin: 0 0 25px 0;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .access-card input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 4px;
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+            outline: none;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .access-card input:focus {
+            border-color: #a6ff00;
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 15px rgba(166, 255, 0, 0.3);
+        }
+
+        .access-card button {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            background: #a6ff00;
+            color: #000;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(166, 255, 0, 0.3);
+        }
+
+        .access-card button:hover {
+            background: #b8ff33;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(166, 255, 0, 0.5);
+        }
+
+        .access-card button:active {
+            transform: translateY(0);
+        }
+
         @media (max-width: 600px) {
             #header {
                 padding: 10px 16px;
@@ -992,11 +1155,25 @@
             .line-box {
                 width: 220px;
             }
+
+            .access-card {
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
 
 <body>
+    <!-- PANTALLA DE CÓDIGO DE ACCESO -->
+    <div id="access-overlay">
+        <div class="access-card" id="access-card">
+            <h2>Restricted Access</h2>
+            <p>Please enter Access code:</p>
+            <input type="password" id="access-input" placeholder="••••••" maxlength="10" autocomplete="off">
+            <button id="access-submit-btn">Unlock</button>
+        </div>
+    </div>
+
     <div id="main-container">
         <div id="header">
             <div id="branding">
@@ -1048,6 +1225,57 @@
 
     <script>
         (function () {
+            // Lógica de Validación y Cambio de Día
+            const SECRET_CODE = "070907";
+            const accessOverlay = document.getElementById("access-overlay");
+            const accessCard = document.getElementById("access-card");
+            const accessInput = document.getElementById("access-input");
+            const accessSubmitBtn = document.getElementById("access-submit-btn");
+
+            function getTodayDateString() {
+                const today = new Date();
+                return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+            }
+
+            function checkDailyAccess() {
+                const lastAccessDate = localStorage.getItem("lastAccessDate");
+                const todayStr = getTodayDateString();
+
+                if (lastAccessDate === todayStr) {
+                    accessOverlay.classList.add("hidden");
+                } else {
+                    accessOverlay.classList.remove("hidden");
+                    setTimeout(() => accessInput.focus(), 100);
+                }
+            }
+
+            function validateAccessCode() {
+                const enteredCode = accessInput.value.trim();
+
+                if (enteredCode === SECRET_CODE) {
+                    accessCard.classList.remove("shake");
+                    accessCard.classList.add("success");
+
+                    setTimeout(() => {
+                        localStorage.setItem("lastAccessDate", getTodayDateString());
+                        accessOverlay.classList.add("hidden");
+                        accessCard.classList.remove("success");
+                        accessInput.value = "";
+                    }, 450);
+                } else {
+                    accessCard.classList.remove("shake");
+                    void accessCard.offsetWidth; // Forzar reflow para reiniciar animación
+                    accessCard.classList.add("shake");
+                    accessInput.value = "";
+                    accessInput.focus();
+                }
+            }
+
+            accessSubmitBtn.addEventListener("click", validateAccessCode);
+            accessInput.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") validateAccessCode();
+            });
+
             // Bloqueo de Clic Derecho e Inspección de Interfaz Superficial
             document.addEventListener("contextmenu", function (event) {
                 event.preventDefault();
@@ -1255,8 +1483,8 @@
                 li.addEventListener("click", event => {
                     event.stopPropagation();
                     const bgValue = li.dataset.bg;
-                    document.body.style.background = bgValue;
-                    document.body.style.backgroundAttachment = "fixed";
+                    workspace.style.backgroundColor = bgValue.includes("gradient") ? "transparent" : bgValue;
+                    workspace.style.backgroundImage = `radial-gradient(rgba(255, 255, 255, 0.15) 1.5px, transparent 1.5px)${bgValue.includes("gradient") ? `, ${bgValue}` : ""}`;
                     localStorage.setItem("selectedBackground", bgValue);
                     settingsMenu.style.display = "none";
                 });
@@ -1344,7 +1572,6 @@
                 confirmNoBtn.textContent = "Cancelar";
             }
 
-            // Flujo de doble confirmación para borrar Boards
             function deleteBoardWorkflow(id, tabElement) {
                 setupModalBackdrop();
                 resetModalButtons();
@@ -1357,7 +1584,6 @@
                 customConfirmModal.classList.add("active");
 
                 currentConfirmCallback = () => {
-                    // Segundo mensaje de confirmación
                     customConfirmModal.classList.add("pulse-danger");
                     document.getElementById("confirm-title").textContent = "¿Estás absolutamente seguro?";
                     document.getElementById("confirm-msg").textContent = "Confirma una vez más. Esta acción borrará irreversiblemente los datos de este Board.";
@@ -1430,7 +1656,6 @@
                 };
             }
 
-            // FLUJO EXPORT: Estilo Mini Menú "Export?"
             function triggerExportWorkflow() {
                 setupModalBackdrop();
                 resetModalButtons();
@@ -1451,16 +1676,14 @@
                 };
             }
 
-            // FLUJO IMPORT: Estilo Mini Menú "Import?" con 3 Botones
             function triggerImportWorkflow() {
                 setupModalBackdrop();
                 customConfirmModal.classList.remove("pulse-danger");
-                importedDataTemp = null; // Limpiar buffer previo
+                importedDataTemp = null;
 
                 document.getElementById("confirm-title").textContent = "Import?";
                 document.getElementById("confirm-msg").textContent = "Carga un archivo de configuración para sobreescribir este tablero.";
 
-                // Re-inyectar dinámicamente estructura de 3 botones solicitada
                 confirmButtonsWrapper.innerHTML = '';
 
                 const addFileBtn = document.createElement("button");
@@ -1472,7 +1695,7 @@
                 importBtn.id = "import-execute";
                 importBtn.className = "confirm-btn-yes";
                 importBtn.textContent = "Import";
-                importBtn.disabled = true; // Deshabilitado hasta que haya un archivo cargado
+                importBtn.disabled = true;
                 importBtn.style.opacity = "0.5";
                 importBtn.style.cursor = "not-allowed";
 
@@ -1488,12 +1711,10 @@
                 backdropLayer.classList.add("active");
                 customConfirmModal.classList.add("active");
 
-                // Evento para simular click en input de archivo
                 addFileBtn.addEventListener("click", () => {
                     fileImportInput.click();
                 });
 
-                // Listener para el procesado del archivo JSON
                 fileImportInput.onchange = event => {
                     const file = event.target.files[0];
                     if (!file) return;
@@ -1520,7 +1741,6 @@
                     reader.readAsText(file);
                 };
 
-                // Procesamiento definitivo de la importación
                 importBtn.addEventListener("click", () => {
                     if (importedDataTemp) {
                         executeImportJSON(importedDataTemp);
@@ -1548,11 +1768,10 @@
                 customConfirmModal.classList.remove("active");
                 customConfirmModal.classList.remove("pulse-danger");
                 currentConfirmCallback = null;
-                fileImportInput.value = ""; // Limpiar input file
-                resetModalButtons(); // Devolver modal a estado por defecto
+                fileImportInput.value = "";
+                resetModalButtons();
             }
 
-            // Acciones de Core: Serializar e Inyectar JSON
             function executeExportJSON() {
                 const currentBoxes = JSON.parse(localStorage.getItem(`boxes_b${activeBoardId}`) || '[]');
                 const currentLineBoxes = JSON.parse(localStorage.getItem(`lineBoxes_b${activeBoardId}`) || '[]');
@@ -1587,7 +1806,6 @@
                     localStorage.setItem(`lineBoxes_b${activeBoardId}`, '[]');
                 }
 
-                // Recargar el workspace en tiempo real sin recargar página completa
                 workspace.innerHTML = "";
                 loadBoxes();
                 loadLineBoxes();
@@ -1765,6 +1983,71 @@
                 attachDragBehavior(box);
             }
 
+            // Sistema de Acoplamiento (Snap/Pegado como Bloques)
+            function getSnapCoordinates(element, candidateX, candidateY) {
+                if (!element.classList.contains("box")) return { x: candidateX, y: candidateY, snapped: false };
+
+                const SNAP_THRESHOLD = 15; // Distancia en px para activar el pegado
+                const GAP = 0; // Espacio entre bloques pegados
+                const otherBoxes = Array.from(workspace.querySelectorAll('.box')).filter(b => b !== element);
+
+                let snappedX = candidateX;
+                let snappedY = candidateY;
+                let isSnapped = false;
+
+                const curW = element.offsetWidth || 300;
+                const curH = element.offsetHeight || 120;
+
+                for (let other of otherBoxes) {
+                    const oL = other.offsetLeft;
+                    const oT = other.offsetTop;
+                    const oW = other.offsetWidth;
+                    const oH = other.offsetHeight;
+
+                    const oR = oL + oW;
+                    const oB = oT + oH;
+
+                    // Verificar superposición vertical / cercanía para acoplamiento horizontal
+                    const vertOverlap = (candidateY < oB + SNAP_THRESHOLD) && (candidateY + curH > oT - SNAP_THRESHOLD);
+                    // Verificar superposición horizontal / cercanía para acoplamiento vertical
+                    const horizOverlap = (candidateX < oR + SNAP_THRESHOLD) && (candidateX + curW > oL - SNAP_THRESHOLD);
+
+                    if (vertOverlap) {
+                        if (Math.abs(candidateX - (oR + GAP)) < SNAP_THRESHOLD) {
+                            snappedX = oR + GAP;
+                            isSnapped = true;
+                        } else if (Math.abs((candidateX + curW) - (oL - GAP)) < SNAP_THRESHOLD) {
+                            snappedX = oL - curW - GAP;
+                            isSnapped = true;
+                        } else if (Math.abs(candidateX - oL) < SNAP_THRESHOLD) {
+                            snappedX = oL;
+                            isSnapped = true;
+                        } else if (Math.abs((candidateX + curW) - oR) < SNAP_THRESHOLD) {
+                            snappedX = oR - curW;
+                            isSnapped = true;
+                        }
+                    }
+
+                    if (horizOverlap) {
+                        if (Math.abs(candidateY - (oB + GAP)) < SNAP_THRESHOLD) {
+                            snappedY = oB + GAP;
+                            isSnapped = true;
+                        } else if (Math.abs((candidateY + curH) - (oT - GAP)) < SNAP_THRESHOLD) {
+                            snappedY = oT - curH - GAP;
+                            isSnapped = true;
+                        } else if (Math.abs(candidateY - oT) < SNAP_THRESHOLD) {
+                            snappedY = oT;
+                            isSnapped = true;
+                        } else if (Math.abs((candidateY + curH) - oB) < SNAP_THRESHOLD) {
+                            snappedY = oB - curH;
+                            isSnapped = true;
+                        }
+                    }
+                }
+
+                return { x: snappedX, y: snappedY, snapped: isSnapped };
+            }
+
             function attachDragBehavior(element) {
                 let startX, startY;
                 const dragHandler = (clientX, clientY, target) => {
@@ -1776,8 +2059,17 @@
                         let nx = moveX - startX, ny = moveY - startY;
                         if (nx < 10) nx = 10; if (ny < 10) ny = 10;
                         if (nx > 2650) nx = 2650; if (ny > 2850) ny = 2850;
-                        element.style.left = `${nx}px`;
-                        element.style.top = `${ny}px`;
+
+                        // Aplicar lógica de pegado entre bloques (Snap)
+                        const snap = getSnapCoordinates(element, nx, ny);
+                        element.style.left = `${snap.x}px`;
+                        element.style.top = `${snap.y}px`;
+
+                        if (snap.snapped) {
+                            element.classList.add("snapping");
+                        } else {
+                            element.classList.remove("snapping");
+                        }
                     };
                     const onMouseMove = event => onMove(event.clientX, event.clientY);
                     const onTouchMove = event => {
@@ -1785,6 +2077,7 @@
                     };
 
                     const onRelease = () => {
+                        element.classList.remove("snapping");
                         document.removeEventListener("mousemove", onMouseMove);
                         document.removeEventListener("touchmove", onTouchMove);
                         if (element.classList.contains("box")) { saveBoxes(); } else { saveLineBoxes(); }
@@ -1820,7 +2113,6 @@
                 });
             }
 
-            // Posicionamiento dinámico Viewport-Aware para corregir bug en partes inferiores
             function openColorPickerLayout(triggerBtn) {
                 if (!colorPickerBackdrop) {
                     colorPickerBackdrop = document.createElement("div");
@@ -1829,25 +2121,21 @@
                     colorPickerBackdrop.addEventListener("click", closeColorPickerLayout);
                 }
 
-                // Obtener posición exacta del botón en la pantalla visible (viewport)
                 const rect = triggerBtn.getBoundingClientRect();
-                const pickerWidth = 238;  // Ancho aproximado con padding/border
-                const pickerHeight = 220; // Alto aproximado con padding/border
+                const pickerWidth = 238;
+                const pickerHeight = 220;
 
                 let left = rect.left;
                 let top = rect.bottom + 8;
 
-                // Auto-flip hacia arriba si sobrepasa el límite inferior de la pantalla
                 if (top + pickerHeight > window.innerHeight) {
                     top = rect.top - pickerHeight - 8;
                 }
 
-                // Ajustar horizontalmente si sobrepasa el borde derecho
                 if (left + pickerWidth > window.innerWidth) {
                     left = window.innerWidth - pickerWidth - 10;
                 }
 
-                // Ajustar por si se sale del borde izquierdo
                 if (left < 10) left = 10;
 
                 colorPicker.style.left = `${left}px`;
@@ -1907,10 +2195,12 @@
 
             // Inicialización de la Aplicación
             document.addEventListener("DOMContentLoaded", () => {
+                checkDailyAccess();
+
                 const savedBg = localStorage.getItem("selectedBackground");
                 if (savedBg) {
-                    document.body.style.background = savedBg;
-                    document.body.style.backgroundAttachment = "fixed";
+                    workspace.style.backgroundColor = savedBg.includes("gradient") ? "transparent" : savedBg;
+                    workspace.style.backgroundImage = `radial-gradient(rgba(255, 255, 255, 0.15) 1.5px, transparent 1.5px)${savedBg.includes("gradient") ? `, ${savedBg}` : ""}`;
                 }
                 migrateLegacyData();
 

@@ -14,7 +14,7 @@
         body {
             margin: 0;
             font-family: 'Poppins', Arial, sans-serif;
-            background-color: #0a2239;
+            background-color: #061325;
             background-attachment: fixed;
             min-height: 100vh;
             overflow: hidden;
@@ -62,6 +62,7 @@
             flex-grow: 1;
             overflow: auto;
             position: relative;
+            background-color: #061325;
         }
 
         #header {
@@ -203,7 +204,8 @@
         #boards-bar {
             display: flex;
             align-items: center;
-            background: rgba(20, 35, 55, .4);
+            background: rgba(12, 23, 38, 0.7);
+            backdrop-filter: blur(10px);
             padding: 6px 16px;
             border-bottom: 1px solid rgba(255, 255, 255, .08);
             gap: 8px;
@@ -403,14 +405,26 @@
             transform: rotate(45deg);
         }
 
+        /* WORKSPACE CON DOT MATRIX EXTENDIDO HACIA ABAJO */
         #workspace {
             position: relative;
             width: 3000px;
-            height: 3000px;
+            height: 4500px;
             padding: 40px;
             box-sizing: border-box;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1.5px, transparent 1.5px);
-            background-size: 24px 24px;
+            background-color: #09182b;
+            background-image:
+                radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(166, 255, 0, 0.05) 0%, transparent 45%);
+            background-size: 28px 28px, 100% 4500px, 100% 4500px;
+            background-position: 0 0, 0 0, 0 0;
+            background-repeat: repeat, no-repeat, no-repeat;
+            margin: 15px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: background 0.4s ease, border-color 0.4s ease;
         }
 
         .box,
@@ -957,7 +971,7 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, .2);
         }
 
-        /* ESTILOS DE LA PANTALLA DE CÓDIGO DE ACCESO */
+        /* PANTALLA DE CÓDIGO DE ACCESO */
         #access-overlay {
             position: fixed;
             top: 0;
@@ -1159,6 +1173,11 @@
             .access-card {
                 padding: 30px 20px;
             }
+
+            #workspace {
+                margin: 5px;
+                border-radius: 10px;
+            }
         }
     </style>
 </head>
@@ -1225,16 +1244,31 @@
 
     <script>
         (function () {
-            // Lógica de Validación y Cambio de Día
+            // Lógica de Validación y Cambio de Día con Auto-Bloqueo a Medianoche
             const SECRET_CODE = "070907";
             const accessOverlay = document.getElementById("access-overlay");
             const accessCard = document.getElementById("access-card");
             const accessInput = document.getElementById("access-input");
             const accessSubmitBtn = document.getElementById("access-submit-btn");
+            let dayChangeTimer = null;
 
             function getTodayDateString() {
                 const today = new Date();
                 return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+            }
+
+            function scheduleMidnightCheck() {
+                if (dayChangeTimer) clearTimeout(dayChangeTimer);
+
+                const now = new Date();
+                const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+                const msUntilMidnight = tomorrow.getTime() - now.getTime();
+
+                dayChangeTimer = setTimeout(() => {
+                    accessOverlay.classList.remove("hidden");
+                    setTimeout(() => accessInput.focus(), 100);
+                    scheduleMidnightCheck();
+                }, msUntilMidnight);
             }
 
             function checkDailyAccess() {
@@ -1247,6 +1281,8 @@
                     accessOverlay.classList.remove("hidden");
                     setTimeout(() => accessInput.focus(), 100);
                 }
+
+                scheduleMidnightCheck();
             }
 
             function validateAccessCode() {
@@ -1264,7 +1300,7 @@
                     }, 450);
                 } else {
                     accessCard.classList.remove("shake");
-                    void accessCard.offsetWidth; // Forzar reflow para reiniciar animación
+                    void accessCard.offsetWidth;
                     accessCard.classList.add("shake");
                     accessInput.value = "";
                     accessInput.focus();
@@ -1313,7 +1349,7 @@
             let isMuted = false;
             let activeBoardId = 1;
             let boardsList = [1];
-            let importedDataTemp = null; // Buffer para guardar el JSON cargado antes de presionar Import
+            let importedDataTemp = null;
 
             // Crear input oculto dinámico para cargar el JSON de importación
             const fileImportInput = document.createElement("input");
@@ -1322,7 +1358,6 @@
             fileImportInput.style.display = "none";
             document.body.appendChild(fileImportInput);
 
-            // Cierre del picker si el usuario hace scroll para no desalinearlo
             contentArea.addEventListener("scroll", () => {
                 if (colorPicker.classList.contains("active")) {
                     closeColorPickerLayout();
@@ -1370,7 +1405,7 @@
                 </li>
                 <li id="background-settings">+ Background</li>
                 <ul id="background-options" style="display:none; margin-left:15px;">
-                    <li data-bg="#0a2239">- Blue</li><li data-bg="#121212">- Gray</li><li data-bg="#0f3d3e">- Green</li><li data-bg="linear-gradient(135deg, #1a1f36, #2d4263)">- Elegant</li>
+                    <li data-bg="#09182b">- Dark Navy</li><li data-bg="#121212">- Deep Charcoal</li><li data-bg="#072223">- Emerald Night</li><li data-bg="linear-gradient(135deg, #09182b, #1e293b)">- Midnight Gradient</li>
                 </ul>
             </ul>`;
             settingsMenu.style.display = "none";
@@ -1483,12 +1518,28 @@
                 li.addEventListener("click", event => {
                     event.stopPropagation();
                     const bgValue = li.dataset.bg;
-                    workspace.style.backgroundColor = bgValue.includes("gradient") ? "transparent" : bgValue;
-                    workspace.style.backgroundImage = `radial-gradient(rgba(255, 255, 255, 0.15) 1.5px, transparent 1.5px)${bgValue.includes("gradient") ? `, ${bgValue}` : ""}`;
+                    applyWorkspaceBackground(bgValue);
                     localStorage.setItem("selectedBackground", bgValue);
                     settingsMenu.style.display = "none";
                 });
             });
+
+            function applyWorkspaceBackground(bgValue) {
+                if (bgValue.includes("gradient")) {
+                    workspace.style.backgroundColor = "transparent";
+                    workspace.style.backgroundImage = `
+                        radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px),
+                        ${bgValue}
+                    `;
+                } else {
+                    workspace.style.backgroundColor = bgValue;
+                    workspace.style.backgroundImage = `
+                        radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px),
+                        radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 85% 85%, rgba(166, 255, 0, 0.05) 0%, transparent 45%)
+                    `;
+                }
+            }
 
             // Gestión de Espacios de Trabajo (Boards) y Persistencia
             function migrateLegacyData() {
@@ -1559,7 +1610,7 @@
                 }
             });
 
-            // Sistema Único de Modales de Confirmación / Flujos Avanzados
+            // Modales de Confirmación
             let currentConfirmCallback = null;
             let backdropLayer = null;
 
@@ -1576,18 +1627,18 @@
                 setupModalBackdrop();
                 resetModalButtons();
                 customConfirmModal.classList.remove("pulse-danger");
-                document.getElementById("confirm-title").textContent = `¿Eliminar Board ${id}?`;
-                document.getElementById("confirm-msg").textContent = "Todos los recuadros guardados en este espacio desaparecerán para siempre.";
+                document.getElementById("confirm-title").textContent = `Delete Board ${id}?`;
+                document.getElementById("confirm-msg").textContent = "All the boxes saved in this space will disappear forever.";
                 confirmYesBtn.classList.add("danger");
-                confirmYesBtn.textContent = "Eliminar";
+                confirmYesBtn.textContent = "Delete";
                 backdropLayer.classList.add("active");
                 customConfirmModal.classList.add("active");
 
                 currentConfirmCallback = () => {
                     customConfirmModal.classList.add("pulse-danger");
-                    document.getElementById("confirm-title").textContent = "¿Estás absolutamente seguro?";
-                    document.getElementById("confirm-msg").textContent = "Confirma una vez más. Esta acción borrará irreversiblemente los datos de este Board.";
-                    confirmYesBtn.textContent = "Sí, borrar todo";
+                    document.getElementById("confirm-title").textContent = "Are you sure?";
+                    document.getElementById("confirm-msg").textContent = "Confirm once more. This action will irreversibly delete the data from this Board.";
+                    confirmYesBtn.textContent = "Yes, delete";
 
                     currentConfirmCallback = () => {
                         const width = tabElement.offsetWidth;
@@ -1618,10 +1669,10 @@
                 setupModalBackdrop();
                 resetModalButtons();
                 customConfirmModal.classList.add("pulse-danger");
-                document.getElementById("confirm-title").textContent = `¿Eliminar este ${type}?`;
-                document.getElementById("confirm-msg").textContent = "Esta acción quitará el recuadro de tu espacio de trabajo de forma inmediata.";
+                document.getElementById("confirm-title").textContent = `¿Delete ${type}?`;
+                document.getElementById("confirm-msg").textContent = "This action will immediately remove the box from your workspace.";
                 confirmYesBtn.classList.add("danger");
-                confirmYesBtn.textContent = "Eliminar";
+                confirmYesBtn.textContent = "Delete";
                 backdropLayer.classList.add("active");
                 customConfirmModal.classList.add("active");
 
@@ -1844,7 +1895,7 @@
                 saveLineBoxes();
             }
 
-            // Construcción y Comportamiento Dinámico de Cajas (Boxes / LineBoxes)
+            // Construcción y Comportamiento Dinámico de Cajas
             addBoxBtn.addEventListener("click", () => {
                 const sTop = contentArea.scrollTop, sLeft = contentArea.scrollLeft;
                 createBox({ text: "", left: `${sLeft + 50}px`, top: `${sTop + 150}px`, locked: "false" });
@@ -1906,7 +1957,7 @@
                 const deleteBtn = document.createElement("button");
                 deleteBtn.classList.add("delete-btn");
                 deleteBtn.textContent = "-";
-                deleteBtn.addEventListener("click", () => { deleteBoxWorkflow(box, "recuadro", saveBoxes); });
+                deleteBtn.addEventListener("click", () => { deleteBoxWorkflow(box, "box", saveBoxes); });
 
                 buttonsDiv.appendChild(copyBtn);
                 buttonsDiv.appendChild(lockBtn);
@@ -1983,12 +2034,12 @@
                 attachDragBehavior(box);
             }
 
-            // Sistema de Acoplamiento (Snap/Pegado como Bloques)
+            // Sistema de Acoplamiento (Snap/Pegado)
             function getSnapCoordinates(element, candidateX, candidateY) {
                 if (!element.classList.contains("box")) return { x: candidateX, y: candidateY, snapped: false };
 
-                const SNAP_THRESHOLD = 15; // Distancia en px para activar el pegado
-                const GAP = 0; // Espacio entre bloques pegados
+                const SNAP_THRESHOLD = 15;
+                const GAP = 0;
                 const otherBoxes = Array.from(workspace.querySelectorAll('.box')).filter(b => b !== element);
 
                 let snappedX = candidateX;
@@ -2007,9 +2058,7 @@
                     const oR = oL + oW;
                     const oB = oT + oH;
 
-                    // Verificar superposición vertical / cercanía para acoplamiento horizontal
                     const vertOverlap = (candidateY < oB + SNAP_THRESHOLD) && (candidateY + curH > oT - SNAP_THRESHOLD);
-                    // Verificar superposición horizontal / cercanía para acoplamiento vertical
                     const horizOverlap = (candidateX < oR + SNAP_THRESHOLD) && (candidateX + curW > oL - SNAP_THRESHOLD);
 
                     if (vertOverlap) {
@@ -2058,9 +2107,8 @@
                     const onMove = (moveX, moveY) => {
                         let nx = moveX - startX, ny = moveY - startY;
                         if (nx < 10) nx = 10; if (ny < 10) ny = 10;
-                        if (nx > 2650) nx = 2650; if (ny > 2850) ny = 2850;
+                        if (nx > 2650) nx = 2650; if (ny > 4350) ny = 4350;
 
-                        // Aplicar lógica de pegado entre bloques (Snap)
                         const snap = getSnapCoordinates(element, nx, ny);
                         element.style.left = `${snap.x}px`;
                         element.style.top = `${snap.y}px`;
@@ -2095,7 +2143,7 @@
                 }, { passive: true });
             }
 
-            // Sistema Global de Paletas de Colores (Presets / Custom)
+            // Sistema Global de Paletas de Colores
             let colorPickerBackdrop = null;
             const customPresets = ["#ffffff", "#f7fafc", "#edf2f7", "#e2e8f0", "#cbd5e0", "#feb2b2", "#fbd38d", "#faf089", "#9ae6b4", "#9decf9", "#fc8181", "#f6ad55", "#f6e05e", "#68d391", "#4fd1c5", "#f56565", "#ed8936", "#ecc94b", "#48bb78", "#38b2ac", "#e53e3e", "#dd6b20", "#d69e2e", "#38a169", "#319795"];
 
@@ -2161,7 +2209,7 @@
                 saveLineBoxes();
             }
 
-            // Funciones de Guardado y Carga Explícitas
+            // Persistencia
             function saveBoxes() {
                 const boxes = Array.from(workspace.querySelectorAll('.box')).map(box => ({
                     text: box.querySelector('textarea').value,
@@ -2199,8 +2247,7 @@
 
                 const savedBg = localStorage.getItem("selectedBackground");
                 if (savedBg) {
-                    workspace.style.backgroundColor = savedBg.includes("gradient") ? "transparent" : savedBg;
-                    workspace.style.backgroundImage = `radial-gradient(rgba(255, 255, 255, 0.15) 1.5px, transparent 1.5px)${savedBg.includes("gradient") ? `, ${savedBg}` : ""}`;
+                    applyWorkspaceBackground(savedBg);
                 }
                 migrateLegacyData();
 

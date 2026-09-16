@@ -24,7 +24,6 @@
             background-color: #f2f2f2;
             color: #1c1c1e;
             overflow-x: hidden;
-            /* Evita la selección accidental de textos debido a los bloqueos */
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -203,6 +202,7 @@
         }
 
         .table-wrapper {
+            overflow-x: hidden;
             overflow-y: visible;
             flex-grow: 1;
             padding: 6px 12px 12px 12px;
@@ -212,6 +212,7 @@
             width: 100%;
             border-collapse: separate;
             border-spacing: 0 6px;
+            table-layout: fixed;
         }
 
         .load-table th {
@@ -222,9 +223,27 @@
             font-weight: 600;
             color: #86868b;
             position: sticky;
-            top: 68px;
+            top: 0;
             background-color: #ffffff;
             z-index: 1;
+        }
+
+        .load-table th:nth-child(1),
+        .load-table td:nth-child(1) {
+            width: 55%;
+            max-width: 0;
+            overflow: hidden;
+        }
+
+        .load-table th:nth-child(2),
+        .load-table td:nth-child(2) {
+            width: 28%;
+        }
+
+        .load-table th:nth-child(3),
+        .load-table td:nth-child(3) {
+            width: 17%;
+            text-align: right;
         }
 
         .load-table tr {
@@ -241,16 +260,12 @@
             transform: translateY(0);
         }
 
-        .load-table tbody tr.row-exit {
-            opacity: 0;
-            transform: scale(0.97);
-        }
-
         .load-table td {
-            padding: 10px 8px;
+            padding: 8px 6px;
             background-color: #f5f5f7;
             font-size: 14px;
             transition: background-color 0.4s ease;
+            vertical-align: middle;
         }
 
         .load-table td:first-child {
@@ -288,12 +303,40 @@
             font-size: 11px;
         }
 
+        .task-text-wrapper {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            display: block;
+            padding-bottom: 4px;
+        }
+
         .load-number {
             cursor: pointer;
             color: #0071e3;
             font-weight: 500;
             letter-spacing: -0.2px;
-            position: relative;
+            display: inline-block;
+        }
+
+        .task-text-wrapper::-webkit-scrollbar {
+            height: 5px;
+        }
+
+        .task-text-wrapper::-webkit-scrollbar-track {
+            background: #e5e5ea;
+            border-radius: 4px;
+        }
+
+        .task-text-wrapper::-webkit-scrollbar-thumb {
+            background: #0071e3;
+            border-radius: 4px;
+        }
+
+        .task-text-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #005bb5;
         }
 
         .load-number:hover {
@@ -307,7 +350,7 @@
         .timer-display {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .timer-btn {
@@ -315,9 +358,9 @@
             border: 1px solid #d2d2d7;
             cursor: pointer;
             color: #515154;
-            padding: 4px 8px;
+            padding: 4px 6px;
             border-radius: 8px;
-            font-size: 13px;
+            font-size: 12px;
             transition: background 0.15s ease, border-color 0.15s ease;
         }
 
@@ -331,14 +374,14 @@
             border: none;
             cursor: pointer;
             color: #ff3b30;
-            padding: 6px 10px;
+            padding: 6px 8px;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
         .delete-btn:hover {
@@ -348,7 +391,7 @@
         .delete-btn.confirm-delete {
             background-color: #ff3b30;
             color: #ffffff;
-            padding: 6px 12px;
+            padding: 6px 10px;
             box-shadow: 0 2px 8px rgba(255, 59, 48, 0.3);
         }
 
@@ -549,7 +592,7 @@
 
         .countdown {
             font-family: "SF Mono", SFMono-Regular, Consolas, monospace;
-            font-size: 14px;
+            font-size: 13px;
             color: #1c1c1e;
             font-weight: 500;
         }
@@ -605,14 +648,196 @@
             }
 
             100% {
-                background-color: #f5f5f7;
+                background-color: transparent;
                 color: #0071e3;
+            }
+        }
+
+        /* CANVAS DE DESINTEGRACIÓN */
+        .disintegrate-canvas {
+            position: absolute;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* ========================================================
+           PANTALLA DE CÓDIGO DE ACCESO — MISMO DISEÑO QUE PASPLATE
+        ======================================================== */
+        #access-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10, 34, 57, 0.85);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        #access-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .access-card {
+            background: #080e1f;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 40px;
+            width: 400px;
+            max-width: 85vw;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            color: #fff;
+            animation: accessPopIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            box-sizing: border-box;
+        }
+
+        @keyframes accessPopIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .access-card.shake {
+            animation: accessShake 0.4s ease-in-out;
+            border-color: #ff3b30;
+            box-shadow: 0 0 30px rgba(255, 59, 48, 0.5);
+        }
+
+        @keyframes accessShake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-12px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(12px);
+            }
+        }
+
+        .access-card.success {
+            animation: accessSuccess 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            border-color: #a6ff00;
+            box-shadow: 0 0 35px rgba(166, 255, 0, 0.6);
+        }
+
+        @keyframes accessSuccess {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+        }
+
+        .access-card h2 {
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            font-family: 'Montserrat', sans-serif;
+            color: #fff;
+        }
+
+        .access-card p {
+            margin: 0 0 25px 0;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .access-card input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 4px;
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+            outline: none;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .access-card input:focus {
+            border-color: #a6ff00;
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 15px rgba(166, 255, 0, 0.3);
+        }
+
+        .access-card button {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            background: #a6ff00;
+            color: #000;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(166, 255, 0, 0.3);
+        }
+
+        .access-card button:hover {
+            background: #b8ff33;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(166, 255, 0, 0.5);
+        }
+
+        .access-card button:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            .access-card {
+                padding: 30px 20px;
             }
         }
     </style>
 </head>
 
 <body>
+
+    <!-- PANTALLA DE CÓDIGO DE ACCESO -->
+    <div id="access-overlay">
+        <div class="access-card" id="access-card">
+            <h2>Restricted Access</h2>
+            <p>Please enter Access code:</p>
+            <input type="password" id="access-input" placeholder="••••••" maxlength="10" autocomplete="off">
+            <button id="access-submit-btn">Unlock</button>
+        </div>
+    </div>
+
     <div id="main-container">
         <div id="header">
             <div id="branding">
@@ -662,7 +887,7 @@
                     <table class="load-table">
                         <thead>
                             <tr>
-                                <th>Load</th>
+                                <th>Task</th>
                                 <th>Timer</th>
                                 <th>Delete</th>
                             </tr>
@@ -687,7 +912,7 @@
                     <table class="load-table">
                         <thead>
                             <tr>
-                                <th>Load</th>
+                                <th>Task</th>
                                 <th>Timer</th>
                                 <th>Delete</th>
                             </tr>
@@ -704,8 +929,8 @@
             <span class="close-modal">&times;</span>
             <h3>Set Timer</h3>
             <div class="form-group">
-                <label for="loadNumber">Load Number:</label>
-                <input type="text" id="loadNumber" placeholder="Enter load number" required>
+                <label for="loadNumber">Task Description:</label>
+                <input type="text" id="loadNumber" placeholder="Enter task" required>
             </div>
             <div class="form-group">
                 <label for="timerDate">Date:</label>
@@ -748,21 +973,85 @@
         </div>
     </div>
 
-    <script>
-        // Protección 1: Bloqueo de Clic Derecho y Combinaciones para abrir Inspector
-        document.addEventListener('contextmenu', event => event.preventDefault());
-        document.onkeydown = function (e) {
-            if (e.keyCode == 123 ||
-                (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0))) ||
-                (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
-                return false;
-            }
-        };
 
-        // Protección 2: Anti-Debugger (Inutiliza la consola si de algún modo la abren)
-        setInterval(function () {
-            (function () { return false; constructor('debugger')(); })();
-        }, 150);
+    <script>
+        (function () {
+            // Lógica de Validación y Cambio de Día con Auto-Bloqueo a Medianoche
+            // MISMO CÓDIGO DE ACCESO QUE PASPLATE
+            const SECRET_CODE = "070907";
+            const accessOverlay = document.getElementById("access-overlay");
+            const accessCard = document.getElementById("access-card");
+            const accessInput = document.getElementById("access-input");
+            const accessSubmitBtn = document.getElementById("access-submit-btn");
+            let dayChangeTimer = null;
+
+            function getTodayDateString() {
+                const today = new Date();
+                return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+            }
+
+            function scheduleMidnightCheck() {
+                if (dayChangeTimer) clearTimeout(dayChangeTimer);
+
+                const now = new Date();
+                const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+                const msUntilMidnight = tomorrow.getTime() - now.getTime();
+
+                dayChangeTimer = setTimeout(() => {
+                    // Al sonar las 00:00:00, muestra la pantalla de bloqueo sin refresh
+                    accessOverlay.classList.remove("hidden");
+                    setTimeout(() => accessInput.focus(), 100);
+
+                    // Reprograma el timer para la siguiente medianoche
+                    scheduleMidnightCheck();
+                }, msUntilMidnight);
+            }
+
+            function checkDailyAccess() {
+                const lastAccessDate = localStorage.getItem("lastAccessDate");
+                const todayStr = getTodayDateString();
+
+                if (lastAccessDate === todayStr) {
+                    accessOverlay.classList.add("hidden");
+                } else {
+                    accessOverlay.classList.remove("hidden");
+                    setTimeout(() => accessInput.focus(), 100);
+                }
+
+                // Inicia la cuenta regresiva constante hasta la siguiente medianoche
+                scheduleMidnightCheck();
+            }
+
+            function validateAccessCode() {
+                const enteredCode = accessInput.value.trim();
+
+                if (enteredCode === SECRET_CODE) {
+                    accessCard.classList.remove("shake");
+                    accessCard.classList.add("success");
+
+                    setTimeout(() => {
+                        localStorage.setItem("lastAccessDate", getTodayDateString());
+                        accessOverlay.classList.add("hidden");
+                        accessCard.classList.remove("success");
+                        accessInput.value = "";
+                    }, 450);
+                } else {
+                    accessCard.classList.remove("shake");
+                    void accessCard.offsetWidth;
+                    accessCard.classList.add("shake");
+                    accessInput.value = "";
+                    accessInput.focus();
+                }
+            }
+
+            accessSubmitBtn.addEventListener("click", validateAccessCode);
+
+            accessInput.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") validateAccessCode();
+            });
+
+            checkDailyAccess();
+        })();
     </script>
 
     <script>
@@ -775,6 +1064,91 @@
             setInterval(checkTimers, 1000);
             setupOcrFeature();
         });
+
+        /* ========================================================
+           Efecto de Desintegración en Píxeles (Pixel Disintegration)
+        ======================================================== */
+        function disintegrateRow(row, callback) {
+            const rect = row.getBoundingClientRect();
+            const canvas = document.createElement('canvas');
+            canvas.className = 'disintegrate-canvas';
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            canvas.style.left = `${rect.left + window.scrollX}px`;
+            canvas.style.top = `${rect.top + window.scrollY}px`;
+            document.body.appendChild(canvas);
+
+            const ctx = canvas.getContext('2d');
+
+            // Dibujar un simulado elegante del fondo y elementos
+            ctx.fillStyle = '#f5f5f7';
+            ctx.roundRect(0, 0, rect.width, rect.height, 10);
+            ctx.fill();
+
+            ctx.fillStyle = '#0071e3';
+            ctx.font = '500 14px -apple-system, BlinkMacSystemFont, Arial';
+            ctx.fillText(row.querySelector('.load-number')?.textContent || 'Task', 12, rect.height / 2 + 4);
+
+            const imgData = ctx.getImageData(0, 0, rect.width, rect.height);
+            const data = imgData.data;
+
+            ctx.clearRect(0, 0, rect.width, rect.height);
+
+            const particles = [];
+            const pixelSize = 3;
+
+            for (let x = 0; x < rect.width; x += pixelSize) {
+                for (let y = 0; y < rect.height; y += pixelSize) {
+                    const index = (y * rect.width + x) * 4;
+                    const alpha = data[index + 3];
+
+                    if (alpha > 0) {
+                        particles.push({
+                            x: x,
+                            y: y,
+                            vx: (Math.random() - 0.5) * 6,
+                            vy: (Math.random() - 1.5) * 5,
+                            size: pixelSize + Math.random() * 2,
+                            alpha: 1,
+                            color: `rgba(${data[index]}, ${data[index + 1]}, ${data[index + 2]}, `
+                        });
+                    }
+                }
+            }
+
+            row.style.visibility = 'hidden';
+
+            let frameCount = 0;
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = false;
+
+                particles.forEach(p => {
+                    if (p.alpha > 0) {
+                        alive = true;
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.vy += 0.15; // Gravedad suave
+                        p.alpha -= 0.035; // Desvanecimiento
+
+                        if (p.alpha > 0) {
+                            ctx.fillStyle = p.color + Math.max(0, p.alpha) + ')';
+                            ctx.fillRect(p.x, p.y, p.size, p.size);
+                        }
+                    }
+                });
+
+                frameCount++;
+                if (alive && frameCount < 45) {
+                    requestAnimationFrame(animate);
+                } else {
+                    canvas.remove();
+                    if (callback) callback();
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
 
         function setupSection(section) {
             const header = section.querySelector('.header');
@@ -836,7 +1210,12 @@
             if (isBlinking) row.classList.add('blinking');
             if (!skipAnimation) row.classList.add('row-enter');
 
-            const loadCell = document.createElement('td');
+            const firstCell = document.createElement('td');
+
+            const textWrapper = document.createElement('div');
+            textWrapper.className = 'task-text-wrapper';
+
+            const loadCell = document.createElement('span');
             loadCell.className = 'load-number';
             loadCell.textContent = loadNumber;
 
@@ -847,6 +1226,9 @@
                     loadCell.classList.add('copied-flash');
                 });
             });
+
+            textWrapper.appendChild(loadCell);
+            firstCell.appendChild(textWrapper);
 
             const timerCell = document.createElement('td');
             const timerContainer = document.createElement('div');
@@ -893,8 +1275,7 @@
                     }, 3000);
                 } else {
                     clearTimeout(timeoutId);
-                    row.classList.add('row-exit');
-                    row.addEventListener('transitionend', () => {
+                    disintegrateRow(row, () => {
                         row.remove();
                         saveSectionData(tableBody.closest('.section'));
                     });
@@ -910,7 +1291,7 @@
             });
 
             deleteCell.appendChild(deleteBtn);
-            row.appendChild(loadCell);
+            row.appendChild(firstCell);
             row.appendChild(timerCell);
             row.appendChild(deleteCell);
             tableBody.appendChild(row);
@@ -971,8 +1352,7 @@
                     }, 3000);
                 } else {
                     clearTimeout(timeoutId);
-                    row.classList.add('row-exit');
-                    row.addEventListener('transitionend', () => {
+                    disintegrateRow(row, () => {
                         row.remove();
                         saveSectionData(tableBody.closest('.section'));
                     });
@@ -1184,7 +1564,7 @@
 
             const rows = [];
             section.querySelectorAll('tbody tr').forEach(row => {
-                if (row.classList.contains('row-exit')) return;
+                if (row.style.visibility === 'hidden') return;
 
                 if (row.dataset.isSeparator === "true") {
                     rows.push({ isSeparator: true });
@@ -1218,7 +1598,7 @@
                     headerColor: "#ffe6e6",
                     rows: [
                         {
-                            loadNumber: "30000180999",
+                            loadNumber: "1111111111111111111111111111111111111111111111111111111111111111111111111111",
                             timerEnd: futureTime.getTime().toString(),
                             isBlinking: false,
                             isSeparator: false

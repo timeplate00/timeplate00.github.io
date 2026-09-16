@@ -546,10 +546,222 @@
             font-size: 11px;
             color: #aaa;
         }
+
+        /* ESTILOS DE LA PANTALLA DE CÓDIGO DE ACCESO */
+        #access-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10, 34, 57, 0.85);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        #access-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .access-card {
+            background: #080e1f;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 40px;
+            width: 400px;
+            max-width: 85vw;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            color: #fff;
+            animation: accessPopIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            box-sizing: border-box;
+        }
+
+        @keyframes accessPopIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .access-card.shake {
+            animation: accessShake 0.4s ease-in-out;
+            border-color: #ff3b30;
+            box-shadow: 0 0 30px rgba(255, 59, 48, 0.5);
+        }
+
+        @keyframes accessShake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-12px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(12px);
+            }
+        }
+
+        .access-card.success {
+            animation: accessSuccess 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            border-color: #a6ff00;
+            box-shadow: 0 0 35px rgba(166, 255, 0, 0.6);
+        }
+
+        @keyframes accessSuccess {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+        }
+
+        .access-card h2 {
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            font-family: 'Montserrat', sans-serif;
+            color: #fff;
+        }
+
+        .access-card p {
+            margin: 0 0 25px 0;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .access-card input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 4px;
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+            outline: none;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .access-card input:focus {
+            border-color: #a6ff00;
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 15px rgba(166, 255, 0, 0.3);
+        }
+
+        .access-card button {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            background: #a6ff00;
+            color: #000;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(166, 255, 0, 0.3);
+        }
+
+        .access-card button:hover {
+            background: #b8ff33;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(166, 255, 0, 0.5);
+        }
+
+        .access-card button:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            #header {
+                padding: 10px 16px;
+            }
+
+            #branding h1 {
+                font-size: 20px;
+            }
+
+            #logo {
+                width: 48px;
+            }
+
+            #sidebar {
+                width: 60px;
+                padding: 15px 0;
+                gap: 15px;
+            }
+
+            #sidebar.collapsed {
+                width: 0;
+            }
+
+            #add-box-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+
+            #add-line-box-btn {
+                width: 34px;
+                height: 34px;
+                font-size: 16px;
+            }
+
+            .box {
+                width: 280px;
+            }
+
+            .line-box {
+                width: 220px;
+            }
+
+            .access-card {
+                padding: 30px 20px;
+            }
+        }
     </style>
 </head>
 
 <body>
+    <div id="access-overlay">
+        <div class="access-card" id="access-card">
+            <h2>Restricted Access</h2>
+            <p>Please enter Access code:</p>
+            <input type="password" id="access-input" placeholder="••••••" maxlength="10" autocomplete="off">
+            <button id="access-submit-btn">Unlock</button>
+        </div>
+    </div>
     <div id="main-container">
         <div id="header">
             <div class="header-inner">
@@ -623,7 +835,98 @@
 
     <script>
         // ==========================================================================
-        // SCRIPT ULTRAESTRICTO DE ANTI-INSPECCIÓN (Fase 1 de Seguridad)
+        const SECRET_CODE = "070907";
+
+        const accessOverlay = document.getElementById("access-overlay");
+        const accessCard = document.getElementById("access-card");
+        const accessInput = document.getElementById("access-input");
+        const accessSubmitBtn = document.getElementById("access-submit-btn");
+
+        function getTodayDateString() {
+            const now = new Date();
+            return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+        }
+
+        function showAccessOverlay() {
+            if (!accessOverlay) return;
+
+            accessOverlay.classList.remove("hidden");
+
+            // Give the browser a moment to render the overlay before focusing.
+            setTimeout(() => {
+                if (accessInput) {
+                    accessInput.value = "";
+                    accessInput.focus();
+                }
+            }, 50);
+        }
+
+        function hideAccessOverlay() {
+            if (!accessOverlay) return;
+            accessOverlay.classList.add("hidden");
+        }
+
+        function checkDailyAccess() {
+            const lastAccessDate = localStorage.getItem("lastAccessDate");
+            const today = getTodayDateString();
+
+            if (lastAccessDate === today) {
+                hideAccessOverlay();
+                return true;
+            }
+
+            showAccessOverlay();
+            return false;
+        }
+
+        function validateAccessCode() {
+            const enteredCode = accessInput.value.trim();
+
+            if (enteredCode === SECRET_CODE) {
+                accessCard.classList.add("success");
+
+                // Mark this exact calendar day as unlocked.
+                localStorage.setItem("lastAccessDate", getTodayDateString());
+
+                setTimeout(() => {
+                    accessCard.classList.remove("success");
+                    hideAccessOverlay();
+                }, 450);
+            } else {
+                accessCard.classList.remove("shake");
+                void accessCard.offsetWidth;
+                accessCard.classList.add("shake");
+
+                accessInput.value = "";
+                accessInput.focus();
+            }
+        }
+
+        accessSubmitBtn.addEventListener("click", validateAccessCode);
+
+        accessInput.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                validateAccessCode();
+            }
+        });
+
+        // Check immediately when the page loads.
+        checkDailyAccess();
+
+        // Check periodically so that an already-open page automatically
+        // requests the code when the calendar day changes, without refresh.
+        let accessDay = getTodayDateString();
+
+        setInterval(() => {
+            const currentDay = getTodayDateString();
+
+            if (currentDay !== accessDay) {
+                accessDay = currentDay;
+                checkDailyAccess();
+            }
+        }, 1000);
+
         // ==========================================================================
         (function () {
             // 1. Bloqueo de click derecho y selección de elementos
@@ -651,6 +954,24 @@
             setInterval(() => { console.clear(); }, 1);
         })();
 
+        // ==========================================================================
+        // RENOVACIÓN DE CÓDIGO API Y PROGRAMACIÓN DE VERIFICACIÓN A MEDIANOCHE
+        // ==========================================================================
+        async function fetchApiCode() {
+            try {
+                const response = await fetch('/api/get-code');
+                if (!response.ok) throw new Error('Error al obtener el código de la API');
+                const data = await response.json();
+                if (data && data.code) {
+                    localStorage.setItem('apiCode', data.code);
+                    console.log('Código API actualizado exitosamente');
+                }
+            } catch (error) {
+                console.error('Error solicitando el código API:', error);
+            }
+        }
+        // Ejecutar verificación API y programar reinicio a medianoche al cargar
+        fetchApiCode();
         // Lógica interna de la App
         const video = document.getElementById('camera-video'), cameraText = document.getElementById('camera-text'), startBtn = document.getElementById('start-camera'), canvasElement = document.getElementById('output-canvas'), canvasCtx = canvasElement.getContext('2d'), fingerCountElement = document.getElementById('finger-count'), copySound = document.getElementById('sound'), settingsBtn = document.getElementById('settings-btn');
         let streamActivo = null, cameraInstance = null, hands = null, keyData = {}, isMuted = false, defaultSound = '3.mp3', lastCopiedKey = null, lastCopyTime = 0;

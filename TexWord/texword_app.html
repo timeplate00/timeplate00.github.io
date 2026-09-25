@@ -1142,7 +1142,7 @@
                  */
                 const tokens = text
                     .replace(/\r/g, '')
-                    .split(/(\s+|[.,!?;:()[\]{}'"“”‘’\-–—/\\|+*=<>@#$%^&~`]+)/)
+                    .split(/(\s+|[.,!?;:()[\]{}'"“”‘’–—/\\|+*=<>@#$%^&~`]+)/)
                     .filter(token => token.length > 0);
 
                 let wordCount = 0;

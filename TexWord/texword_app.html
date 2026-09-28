@@ -415,9 +415,9 @@
         }
 
         .interact-panel {
-            background: #fff;
+            background: linear-gradient(145deg, #f59a3a 0%, #f28c28 55%, #914804 100%);
             border-radius: 24px;
-            box-shadow: 0 8px 28px rgba(0, 0, 0, .07);
+            box-shadow: 0 20px 55px rgba(130, 75, 20, .20), inset 0 1px 0 rgba(255, 255, 255, .3);
             padding: 24px
         }
 
@@ -435,7 +435,7 @@
         }
 
         .interact-info {
-            color: var(--muted);
+            color: var(--panel);
             font-size: 13px;
             margin-top: 4px
         }
@@ -464,7 +464,7 @@
             gap: 9px 7px;
             padding: 20px;
             border-radius: 17px;
-            background: #f7f7f8;
+            background: #f6f6f833;
             min-height: 150px;
             user-select: none
         }
@@ -483,7 +483,7 @@
 
         .text-box:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 12px rgba(0, 0, 0, .09)
+            box-shadow: 0 5px 12px rgba(189, 16, 16, 0.09)
         }
 
         .text-box.copied {
@@ -796,8 +796,8 @@
         <!-- Initial workspace -->
         <main class="workspace" id="workspace">
             <section class="orange-box" id="orangeBox">
-                <h2>Orange box</h2>
-
+                <!--<h2>Orange box</h2>-->
+                <h2>Version 1.0</h2>
                 <!-- Small Parch text button. Replace the icon placeholder with your own image/icon later. -->
                 <button class="parch-button" id="parchSmallBtn" title="Parch text">
                     <i class="fas fa-wand-magic-sparkles"></i>
@@ -808,7 +808,7 @@
                         <i class="fas fa-image"></i>
                     </span>
                     <span>
-                        Parch text
+                        System Set and Ready +
                         <small>Extract text from an image</small>
                     </span>
                 </button>

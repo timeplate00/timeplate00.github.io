@@ -796,7 +796,6 @@
         <!-- Initial workspace -->
         <main class="workspace" id="workspace">
             <section class="orange-box" id="orangeBox">
-                <!--<h2>Orange box</h2>-->
                 <h2>Version 1.0</h2>
                 <!-- Small Parch text button. Replace the icon placeholder with your own image/icon later. -->
                 <button class="parch-button" id="parchSmallBtn" title="Parch text">
@@ -1136,14 +1135,14 @@
                 wordFlow.innerHTML = '';
 
                 /*
-                 * Words become clickable text boxes.
-                 * Punctuation/connectors remain outside the boxes.
-                 * This tokenizer keeps whitespace and punctuation visible.
+                 * REGEX ACTUALIZADA:
+                 * Captura patrones telefónicos/numéricos integrados como (123)5556666, (123) 555-6666 o +1(123)456-7890
+                 * sin separar los paréntesis ni los guiones como puntuación externa.
                  */
                 const tokens = text
                     .replace(/\r/g, '')
-                    .split(/(\s+|[.,!?;:()[\]{}'"“”‘’–—/\\|+*=<>@#$%^&~`]+)/)
-                    .filter(token => token.length > 0);
+                    .split(/(\s+|(?:\+?\d{1,3})?\(?\d{2,5}\)?[\d\s-]{3,15}|[.,!?;:()[\]{}'"“”‘’–—/\\|+*=<>@#$%^&~`]+)/g)
+                    .filter(token => token && token.length > 0);
 
                 let wordCount = 0;
 
@@ -1156,8 +1155,11 @@
                         return;
                     }
 
-                    // A "word" contains letters/numbers. Punctuation/connectors stay plain.
-                    if (/[A-Za-zÀ-ÖØ-öø-ÿ0-9]/.test(token) && !/^[.,!?;:()[\]{}'"“”‘’\-–—/\\|+*=<>@#$%^&~`]+$/.test(token)) {
+                    // Verifica si es un número telefónico/con paréntesis O una palabra alfanumérica regular
+                    const isPhonePattern = /\(\d+\)/.test(token) && /\d/.test(token);
+                    const isRegularWord = /[A-Za-zÀ-ÖØ-öø-ÿ0-9]/.test(token) && !/^[.,!?;:()[\]{}'"“”‘’\-–—/\\|+*=<>@#$%^&~`]+$/.test(token);
+
+                    if (isPhonePattern || isRegularWord) {
                         const box = document.createElement('button');
                         box.className = 'text-box';
                         box.type = 'button';
@@ -1172,7 +1174,7 @@
                                 box.classList.add('copied');
                                 showToast('Copied: ' + token);
                             } catch {
-                                // Fallback for browsers that block clipboard access.
+                                // Fallback para navegadores con restricciones de portapapeles.
                                 const area = document.createElement('textarea');
                                 area.value = token;
                                 document.body.appendChild(area);

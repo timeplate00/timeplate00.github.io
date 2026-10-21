@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timeplate - Keyboard</title>
+  <link rel="icon" type="image/png" href="/logo_v5.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-color: #121214;
+      --card-bg: #1e1e24;
+      --header-bg: #18181c;
+      --accent-green: #00ff88;
+      --accent-green-hover: #00cc6a;
+      --text-main: #ffffff;
+      --text-muted: #a0a0b0;
+      --border-color: #2e2e38;
+      --danger-color: #ff4d4d;
+    }
+
+    body.dark-mode {
+      --bg-color: #121212;
+      --card-bg: #1e1e20;
+      --header-bg: #1e1e1ecc;
+      --accent-green: #00ff88;
+      --accent-green-hover: #00cc6a;
+      --text-main: #f5f5f7;
+      --text-muted: #98989f;
+      --border-color: #38383a;
+    }
+
+    body:not(.dark-mode) {
+      --bg-color: #e9e8e8;
+      --card-bg: #ffffff;
+      --header-bg: #bebebecc;
+      --accent-green: #00b060;
+      --accent-green-hover: #00904d;
+      --text-main: #1c1c1e;
+      --text-muted: #86868b;
+      --border-color: #d2d2d7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--header-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 12px 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      transition: background 0.3s ease;
+    }
+
+    #branding {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--text-main);
+      font-family: "SF Pro Display", sans-serif;
+      letter-spacing: normal;
+      text-transform: none;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: auto;
+    }
+
+    .theme-toggle-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--text-main);
+      padding: 8px 12px;
+      border-radius: 10px;
+      transition: background 0.2s ease, border-color 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .theme-toggle-btn:hover {
+      background-color: var(--border-color);
+    }
+
+    header .icon-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+
+    header .icon-img {
+      width: 65px;
+      height: auto;
+      object-fit: contain;
+      border-radius: 4px;
+      display: block;
+      transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    header .icon-img:hover {
+      transform: scale(1.08) rotate(2deg);
+    }
+
+    /* Layout principal */
+    main {
+      flex: 1;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .columns-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+    }
+
+    /* Keybox */
+    .keybox-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .keybox {
+      width: 100%;
+      background-color: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      padding: 15px 20px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      user-select: none;
+    }
+
+    .keybox:hover {
+      border-color: var(--text-muted);
+      transform: translateY(-2px);
+    }
+
+    .keybox-label {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+
+    /* Animación e Iluminación de foco verde al activar */
+    .keybox.active {
+      border-color: var(--accent-green);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+      transform: scale(1.03);
+    }
+
+    .keybox.active .keybox-label {
+      color: var(--accent-green);
+      text-shadow: 0 0 8px rgba(0, 255, 136, 0.8);
+    }
+
+    /* Círculo indicador de tecla asignada */
+    .key-badge {
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 32px;
+      height: 32px;
+      background-color: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: var(--text-muted);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+      z-index: 2;
+      text-transform: uppercase;
+      transition: all 0.3s;
+    }
+
+    .keybox.active+.key-badge,
+    .keybox.active .key-badge {
+      border-color: var(--accent-green);
+      color: var(--accent-green);
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    }
+
+    /* Botón "+" para agregar Keybox */
+    .add-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background-color: var(--card-bg);
+      border: 2px dashed var(--accent-green);
+      color: var(--accent-green);
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 15px;
+    }
+
+    .add-btn:hover {
+      background-color: var(--accent-green);
+      color: #000;
+      border-style: solid;
+      transform: scale(1.1);
+      box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
+    }
+
+    /* Modal / Menú de Configuración */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      transform: translateY(20px);
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      position: relative;
+      color: var(--text-main);
+    }
+
+    .modal-overlay.active .modal {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--text-main);
+      text-transform: uppercase;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .close-btn:hover {
+      color: var(--text-main);
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-green);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .form-control {
+      background-color: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 10px 12px;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent-green);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 24px;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn-save {
+      background-color: var(--accent-green);
+      color: #000;
+    }
+
+    .btn-save:hover {
+      background-color: var(--accent-green-hover);
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+    }
+
+    .btn-delete {
+      background-color: transparent;
+      color: var(--danger-color);
+      border: 1px solid var(--danger-color);
+    }
+
+    .btn-delete:hover {
+      background-color: var(--danger-color);
+      color: #fff;
+    }
+
+    /* Notificación Toast */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--accent-green);
+      color: #000;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 2000;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* ========================================================
+       PANTALLA DE CÓDIGO DE ACCESO (Basado en Reminder)
+    ======================================================== */
+    #access-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(10, 34, 57, 0.85);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    #access-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .access-card {
+      background: #080e1f;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 40px;
+      width: 400px;
+      max-width: 85vw;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+      text-align: center;
+      color: #fff;
+      animation: accessPopIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      box-sizing: border-box;
+    }
+
+    @keyframes accessPopIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8) translateY(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .access-card.shake {
+      animation: accessShake 0.4s ease-in-out;
+      border-color: #ff3b30;
+      box-shadow: 0 0 30px rgba(255, 59, 48, 0.5);
+    }
+
+    @keyframes accessShake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      20%,
+      60% {
+        transform: translateX(-12px);
+      }
+
+      40%,
+      80% {
+        transform: translateX(12px);
+      }
+    }
+
+    .access-card.success {
+      animation: accessSuccess 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      border-color: #a6ff00;
+      box-shadow: 0 0 35px rgba(166, 255, 0, 0.6);
+    }
+
+    @keyframes accessSuccess {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(0.9);
+        opacity: 0;
+      }
+    }
+
+    .access-card h2 {
+      margin: 0 0 10px 0;
+      font-size: 22px;
+      color: #fff;
+    }
+
+    .access-card p {
+      margin: 0 0 25px 0;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .access-card input {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-size: 18px;
+      text-align: center;
+      letter-spacing: 4px;
+      outline: none;
+      transition: all 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    .access-card input:focus {
+      border-color: #a6ff00;
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 15px rgba(166, 255, 0, 0.3);
+    }
+
+    .access-card button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: #a6ff00;
+      color: #000;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 15px rgba(166, 255, 0, 0.3);
+    }
+
+    .access-card button:hover {
+      background: #b8ff33;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(166, 255, 0, 0.5);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- PANTALLA DE CÓDIGO DE ACCESO -->
+  <div id="access-overlay">
+    <div class="access-card" id="access-card">
+      <h2>Restricted Access</h2>
+      <p>Please enter Access code:</p>
+      <input type="password" id="access-input" placeholder="••••••" maxlength="10" autocomplete="off">
+      <button id="access-submit-btn">Unlock</button>
+    </div>
+  </div>
+
+  <header>
+    <div id="branding">
+      <a href="../tools.html" class="icon-link">
+        <img src="/logo_v4.png" alt="Logo" class="icon-img">
+      </a>
+      <h1>Keyboard</h1>
+    </div>
+    <div class="header-actions">
+      <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Day/Night Mode">
+        <i class="fas fa-moon" id="themeIcon"></i>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <div class="columns-container">
+      <div class="column" data-col="0"></div>
+      <div class="column" data-col="1"></div>
+      <div class="column" data-col="2"></div>
+    </div>
+  </main>
+
+  <!-- Modal de Configuración -->
+  <div class="modal-overlay" id="configModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title" id="modalTitle">SET UP KEY</span>
+        <button class="close-btn" onclick="closeModal()">✕</button>
+      </div>
+      <form id="keyForm" onsubmit="saveKeyConfig(event)">
+        <div class="form-group">
+          <label for="keyLabel">LABEL / NAME:</label>
+          <input type="text" id="keyLabel" class="form-control" placeholder="Write a name..." required>
+        </div>
+        <div class="form-group">
+          <label for="keyContent">CONTENT:</label>
+          <textarea id="keyContent" class="form-control" placeholder="Write the content..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="keySymbol">KEY / SYMBOL:</label>
+          <input type="text" id="keySymbol" class="form-control" placeholder="Select a key, Ex: A" required
+            style="text-transform: uppercase;">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-delete" onclick="deleteCurrentKey()">Delete</button>
+          <button type="submit" class="btn btn-save">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Texto copiado al portapapeles</div>
+
+  <script>
+    // Lógica de Validación y Código de Acceso (Basado en Reminder)[cite: 2]
+    (function () {
+      const SECRET_CODE = "070907";
+      const accessOverlay = document.getElementById("access-overlay");
+      const accessCard = document.getElementById("access-card");
+      const accessInput = document.getElementById("access-input");
+      const accessSubmitBtn = document.getElementById("access-submit-btn");
+      let dayChangeTimer = null;
+
+      function getTodayDateString() {
+        const today = new Date();
+        return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+      }
+
+      function scheduleMidnightCheck() {
+        if (dayChangeTimer) clearTimeout(dayChangeTimer);
+
+        const now = new Date();
+        const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+        const msUntilMidnight = tomorrow.getTime() - now.getTime();
+
+        dayChangeTimer = setTimeout(() => {
+          accessOverlay.classList.remove("hidden");
+          setTimeout(() => accessInput.focus(), 100);
+          scheduleMidnightCheck();
+        }, msUntilMidnight);
+      }
+
+      function checkDailyAccess() {
+        const lastAccessDate = localStorage.getItem("lastAccessDate");
+        const todayStr = getTodayDateString();
+
+        if (lastAccessDate === todayStr) {
+          accessOverlay.classList.add("hidden");
+        } else {
+          accessOverlay.classList.remove("hidden");
+          setTimeout(() => accessInput.focus(), 100);
+        }
+
+        scheduleMidnightCheck();
+      }
+
+      function validateAccessCode() {
+        const enteredCode = accessInput.value.trim();
+
+        if (enteredCode === SECRET_CODE) {
+          accessCard.classList.remove("shake");
+          accessCard.classList.add("success");
+
+          setTimeout(() => {
+            localStorage.setItem("lastAccessDate", getTodayDateString());
+            accessOverlay.classList.add("hidden");
+            accessCard.classList.remove("success");
+            accessInput.value = "";
+          }, 450);
+        } else {
+          accessCard.classList.remove("shake");
+          void accessCard.offsetWidth;
+          accessCard.classList.add("shake");
+          accessInput.value = "";
+          accessInput.focus();
+        }
+      }
+
+      accessSubmitBtn.addEventListener("click", validateAccessCode);
+
+      accessInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") validateAccessCode();
+      });
+
+      checkDailyAccess();
+    })();
+  </script>
+
+  <script>
+    // Configuración inicial por defecto si no existe en localStorage
+    const defaultData = [
+      [
+        { id: '1', label: 'Hello', content: 'Hello World!', key: '1' }
+      ]
+      // [
+      //   { id: '2', label: 'Hello', content: 'Hello World!', key: 'A' }
+      //  ],
+      //  [
+      //   { id: '3', label: 'Hello', content: 'Hello World!', key: '+' }
+      //  ]
+    ];
+
+    let appData = JSON.parse(localStorage.getItem('keyboard_timeplate_data')) || defaultData;
+    let activeEditingKey = null;
+
+    // Audio Context para generar el sonido de selección
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playBeepSound() {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.08);
+
+      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.08);
+    }
+
+    function saveToLocalStorage() {
+      localStorage.setItem('keyboard_timeplate_data', JSON.stringify(appData));
+    }
+
+    // Gestión del Modo Día / Noche (Theme Toggle)
+    function initializeTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      const themeIcon = document.getElementById('themeIcon');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        if (themeIcon) {
+          themeIcon.classList.remove('fa-moon');
+          themeIcon.classList.add('fa-sun');
+        }
+      }
+    }
+
+    function setupThemeToggle() {
+      const toggleBtn = document.getElementById('themeToggleBtn');
+      const themeIcon = document.getElementById('themeIcon');
+
+      toggleBtn.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+
+        if (isDark) {
+          localStorage.setItem('theme', 'dark');
+          themeIcon.classList.remove('fa-moon');
+          themeIcon.classList.add('fa-sun');
+        } else {
+          localStorage.setItem('theme', 'light');
+          themeIcon.classList.remove('fa-sun');
+          themeIcon.classList.add('fa-moon');
+        }
+      });
+    }
+
+    function render() {
+      const columns = document.querySelectorAll('.column');
+
+      columns.forEach((colEl, colIndex) => {
+        colEl.innerHTML = '';
+        const keys = appData[colIndex] || [];
+
+        keys.forEach((keyData, keyIndex) => {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'keybox-wrapper';
+
+          const keybox = document.createElement('div');
+          keybox.className = 'keybox';
+          keybox.dataset.id = keyData.id;
+
+          const label = document.createElement('div');
+          label.className = 'keybox-label';
+          label.textContent = keyData.label || 'Hello';
+          keybox.appendChild(label);
+
+          const badge = document.createElement('div');
+          badge.className = 'key-badge';
+          badge.textContent = (keyData.key || '').toUpperCase();
+
+          keybox.addEventListener('click', () => {
+            openModal(colIndex, keyIndex);
+          });
+
+          wrapper.appendChild(keybox);
+          wrapper.appendChild(badge);
+          colEl.appendChild(wrapper);
+        });
+
+        if (keys.length < 20) {
+          const addBtn = document.createElement('button');
+          addBtn.className = 'add-btn';
+          addBtn.textContent = '+';
+          addBtn.title = 'Add a new Keybox';
+          addBtn.onclick = () => addKeybox(colIndex);
+          colEl.appendChild(addBtn);
+        }
+      });
+    }
+
+    function addKeybox(colIndex) {
+      if (appData[colIndex].length >= 20) return;
+
+      const newKey = {
+        id: Date.now().toString(),
+        label: '',
+        content: '',
+        key: ''
+      };
+
+      appData[colIndex].push(newKey);
+      saveToLocalStorage();
+      render();
+      openModal(colIndex, appData[colIndex].length - 1);
+    }
+
+    function triggerKeyAction(keyData, element) {
+      if (keyData.content) {
+        navigator.clipboard.writeText(keyData.content);
+        showToast(`Copiado: "${keyData.label}"`);
+      }
+
+      playBeepSound();
+
+      if (element) {
+        element.classList.add('active');
+        setTimeout(() => {
+          element.classList.remove('active');
+        }, 400);
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+
+    function openModal(colIndex, keyIndex) {
+      activeEditingKey = { colIndex, keyIndex };
+      const item = appData[colIndex][keyIndex];
+
+      document.getElementById('modalTitle').textContent = `SET UP KEY #${keyIndex + 1}`;
+      document.getElementById('keyLabel').value = item.label || '';
+      document.getElementById('keyContent').value = item.content || '';
+      document.getElementById('keySymbol').value = item.key || '';
+
+      document.getElementById('configModal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('configModal').classList.remove('active');
+      activeEditingKey = null;
+    }
+
+    function saveKeyConfig(e) {
+      e.preventDefault();
+      if (!activeEditingKey) return;
+
+      const { colIndex, keyIndex } = activeEditingKey;
+      const label = document.getElementById('keyLabel').value.trim();
+      const content = document.getElementById('keyContent').value;
+      const key = document.getElementById('keySymbol').value.trim().toUpperCase();
+
+      appData[colIndex][keyIndex] = {
+        ...appData[colIndex][keyIndex],
+        label,
+        content,
+        key
+      };
+
+      saveToLocalStorage();
+      render();
+      closeModal();
+    }
+
+    function deleteCurrentKey() {
+      if (!activeEditingKey) return;
+      const { colIndex, keyIndex } = activeEditingKey;
+
+      appData[colIndex].splice(keyIndex, 1);
+      saveToLocalStorage();
+      render();
+      closeModal();
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+        return;
+      }
+
+      const pressedKey = e.key.toUpperCase();
+
+      for (let c = 0; c < appData.length; c++) {
+        for (let k = 0; k < appData[c].length; k++) {
+          const item = appData[c][k];
+          if (item.key && item.key.toUpperCase() === pressedKey) {
+            const keyElement = document.querySelector(`.keybox[data-id="${item.id}"]`);
+            triggerKeyAction(item, keyElement);
+            break;
+          }
+        }
+      }
+    });
+
+    // Inicializar app
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeTheme();
+      setupThemeToggle();
+      render();
+    });
+  </script>
+</body>
+
+</html>

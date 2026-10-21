@@ -388,99 +388,346 @@
             font-weight: 400;
         }
 
-        .about-subtext {
-            margin: 15px auto 0;
-            font-size: .98rem;
-            color: var(--accent-soft);
-            font-weight: 600;
-        }
-
-        .about-cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 22px;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .about-card {
-            min-height: 300px;
-            border-radius: var(--radius-xl);
-            border: 1px solid rgba(255, 255, 255, .13);
-            background: linear-gradient(145deg, rgba(255, 255, 255, .09), rgba(14, 27, 3, .25));
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 22px;
-            transition: transform .5s cubic-bezier(.165, .84, .44, 1), border-color .4s, box-shadow .4s;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, .16);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .about-card::after {
-            content: "";
-            position: absolute;
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            background: rgba(161, 211, 74, .09);
-            filter: blur(25px);
-            right: -70px;
-            top: -70px;
-            transition: .5s;
-        }
-
-        .about-card:hover {
-            transform: translateY(-12px);
-            border-color: rgba(161, 211, 74, .55);
-            box-shadow: var(--shadow);
-        }
-
-        .about-card:hover::after {
-            transform: scale(1.5);
-            opacity: .8;
-        }
-
-        .card-header-tag {
-            width: 100%;
+        /* Nuevo Recuadro Profesional para la Descripción de Herramientas */
+        .tool-desc-card {
+            max-width: 650px;
+            margin: 22px auto 0;
+            padding: 16px 24px;
+            background: rgba(14, 27, 3, 0.35);
+            border: 1px solid rgba(161, 211, 74, 0.25);
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 18px;
-            font-size: .73rem;
-            font-weight: 800;
-            letter-spacing: .08em;
-            color: rgba(255, 255, 255, .5);
+            gap: 14px;
+            transition: all 0.3s ease;
         }
 
-        .card-header-tag span:last-child {
-            color: var(--accent);
+        .tool-desc-card:hover {
+            border-color: rgba(161, 211, 74, 0.45);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
         }
 
-        .card-image-wrapper {
-            width: 100%;
-            height: 205px;
+        .tool-desc-icon {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(161, 211, 74, 0.15);
+            border: 1px solid rgba(161, 211, 74, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 18px;
-            background: rgba(0, 0, 0, .13);
-            border: 1px solid rgba(255, 255, 255, .08);
-            padding: 16px;
-            overflow: hidden;
-            position: relative;
+            color: var(--accent);
         }
 
-        .card-img {
+        .tool-desc-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .about-subtext {
+            margin: 0;
+            font-size: .96rem;
+            color: var(--accent-soft);
+            font-weight: 500;
+            line-height: 1.5;
+            text-align: left;
+            transition: opacity .25s ease, transform .25s ease;
+        }
+
+        .about-subtext.changing {
+            opacity: 0;
+            transform: translateY(6px);
+        }
+
+        /* ===== INTERACTIVE TOOL GALLERY ===== */
+        .tools-gallery {
+            --gallery-width: min(900px, 100%);
+            width: var(--gallery-width);
+            margin: 44px auto 0;
+            position: relative;
+            padding: 8px 0 18px;
+        }
+
+        .tools-stage {
+            height: 310px;
+            width: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            isolation: isolate;
+        }
+
+        .tool-item {
+            --stack-x: 0px;
+            --stack-y: 0px;
+            --spread-x: 0px;
+            --spread-y: 0px;
+            --tilt: 0deg;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: clamp(150px, 21vw, 220px);
+            height: 210px;
+            padding: 0;
+            border: 0;
+            outline: none;
+            background: transparent;
+            cursor: pointer;
+            transform: translate(calc(-50% + var(--stack-x)), calc(-50% + var(--stack-y))) rotate(var(--tilt));
+            transform-origin: center;
+            transition: transform .65s cubic-bezier(.2, .8, .2, 1), filter .45s ease, opacity .45s ease;
+            filter: drop-shadow(0 12px 14px rgba(0, 0, 0, .18));
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .tool-item:nth-child(1) {
+            --stack-x: -88px;
+            --stack-y: 27px;
+            --spread-x: -360px;
+            --spread-y: 0px;
+            --tilt: -7deg;
+            z-index: 5;
+        }
+
+        .tool-item:nth-child(2) {
+            --stack-x: -44px;
+            --stack-y: 0px;
+            --spread-x: -180px;
+            --spread-y: -8px;
+            --tilt: -3deg;
+            z-index: 4;
+        }
+
+        .tool-item:nth-child(3) {
+            --stack-x: 0px;
+            --stack-y: -24px;
+            --spread-x: 0px;
+            --spread-y: -18px;
+            --tilt: 0deg;
+            z-index: 3;
+        }
+
+        .tool-item:nth-child(4) {
+            --stack-x: 44px;
+            --stack-y: 0px;
+            --spread-x: 180px;
+            --spread-y: -8px;
+            --tilt: 3deg;
+            z-index: 2;
+        }
+
+        .tool-item:nth-child(5) {
+            --stack-x: 88px;
+            --stack-y: 27px;
+            --spread-x: 360px;
+            --spread-y: 0px;
+            --tilt: 7deg;
+            z-index: 1;
+        }
+
+        .tool-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, .72);
+            font-size: .82rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            font-weight: 700;
+            border: 0;
+            background: transparent;
+            user-select: none;
+            transition: color .35s ease, filter .35s ease, transform .35s ease;
+        }
+
+        /* IMAGE SLOT: Tamaño unificado más grande (estándar Reminder_logo.png escalado) */
+        .tool-image {
+            display: block;
+            width: 175px;
+            height: 175px;
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
-            filter: drop-shadow(0 7px 13px rgba(0, 0, 0, .25));
-            transition: transform .5s ease;
+            position: absolute;
+            inset: 0;
+            margin: auto;
+            z-index: 1;
+            pointer-events: none;
+            transition: transform .35s ease, filter .35s ease;
         }
 
-        .about-card:hover .card-img {
-            transform: scale(1.06);
+        .tool-placeholder>span {
+            position: relative;
+            z-index: 0;
+            opacity: .8;
+            border-bottom: 1px solid rgba(255, 255, 255, .28);
+            padding: 0 0 8px;
+        }
+
+        /* Once an image loads, hide the generic placeholder label. */
+        .tool-placeholder:has(.tool-image:not([style*="display: none"])) .tool-image[src]:not([src=""]) {
+            z-index: 2;
+        }
+
+        .tools-gallery:hover .tool-item,
+        .tools-gallery:focus-within .tool-item {
+            transform: translate(calc(-50% + var(--spread-x)), calc(-50% + var(--spread-y))) rotate(0deg) scale(.98);
+        }
+
+        .tools-gallery:hover .tool-item:hover,
+        .tools-gallery:focus-within .tool-item:focus-visible {
+            transform: translate(calc(-50% + var(--spread-x)), calc(-50% + var(--spread-y) - 8px)) rotate(0deg) scale(1.06);
+            z-index: 20;
+        }
+
+        .tool-item.is-selected {
+            z-index: 15;
+            filter: drop-shadow(0 0 13px rgba(199, 230, 138, .9)) drop-shadow(0 0 28px rgba(161, 211, 74, .55));
+        }
+
+        .tools-gallery.has-selection:not(:hover) .tool-item {
+            transform: translate(calc(-50% + var(--stack-x)), calc(-50% + var(--stack-y))) rotate(var(--tilt));
+        }
+
+        .tools-gallery.has-selection:not(:hover) .tool-item.is-selected {
+            transform: translate(calc(-50% + var(--stack-x)), calc(-50% + var(--stack-y) - 8px)) rotate(0deg) scale(1.04);
+            z-index: 15;
+        }
+
+        .tool-item:focus-visible .tool-placeholder {
+            outline: 2px solid var(--accent-soft);
+            outline-offset: 5px;
+        }
+
+        .tools-hint {
+            color: rgba(255, 255, 255, .58);
+            text-align: center;
+            font-size: .8rem;
+            letter-spacing: .04em;
+            margin-top: 2px;
+        }
+
+        @media (max-width: 1000px) {
+            .tool-item {
+                width: 155px;
+                height: 185px;
+            }
+
+            .tool-item:nth-child(1) {
+                --spread-x: -290px;
+            }
+
+            .tool-item:nth-child(2) {
+                --spread-x: -145px;
+            }
+
+            .tool-item:nth-child(4) {
+                --spread-x: 145px;
+            }
+
+            .tool-item:nth-child(5) {
+                --spread-x: 290px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .tools-gallery {
+                margin-top: 26px;
+            }
+
+            .tools-stage {
+                height: 260px;
+            }
+
+            .tool-item {
+                width: 128px;
+                height: 160px;
+            }
+
+            .tool-item:nth-child(1) {
+                --stack-x: -48px;
+                --stack-y: 25px;
+                --spread-x: -208px;
+            }
+
+            .tool-item:nth-child(2) {
+                --stack-x: -24px;
+                --stack-y: 5px;
+                --spread-x: -104px;
+            }
+
+            .tool-item:nth-child(3) {
+                --stack-x: 0px;
+                --stack-y: -12px;
+                --spread-x: 0px;
+            }
+
+            .tool-item:nth-child(4) {
+                --stack-x: 24px;
+                --stack-y: 5px;
+                --spread-x: 104px;
+            }
+
+            .tool-item:nth-child(5) {
+                --stack-x: 48px;
+                --stack-y: 25px;
+                --spread-x: 208px;
+            }
+
+            .tools-gallery:hover .tool-item,
+            .tools-gallery:focus-within .tool-item {
+                transform: translate(calc(-50% + var(--spread-x)), calc(-50% + var(--spread-y))) rotate(0deg) scale(.9);
+            }
+
+            .tools-gallery:hover .tool-item:hover,
+            .tools-gallery:focus-within .tool-item:focus-visible {
+                transform: translate(calc(-50% + var(--spread-x)), calc(-50% + var(--spread-y) - 6px)) rotate(0deg) scale(1);
+            }
+
+            .tool-placeholder {
+                font-size: .68rem;
+            }
+
+            .tools-hint {
+                max-width: 280px;
+                margin: 0 auto;
+                line-height: 1.5;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .tools-stage {
+                height: 230px;
+            }
+
+            .tool-item {
+                width: 104px;
+                height: 140px;
+            }
+
+            .tool-item:nth-child(1) {
+                --spread-x: -164px;
+            }
+
+            .tool-item:nth-child(2) {
+                --spread-x: -82px;
+            }
+
+            .tool-item:nth-child(4) {
+                --spread-x: 82px;
+            }
+
+            .tool-item:nth-child(5) {
+                --spread-x: 164px;
+            }
         }
 
         /* ===== CONTACT ===== */
@@ -880,27 +1127,69 @@
                     Timeplate is your digital space to work comfortably, stay productive,
                     and enjoy a modern, fresh experience.
                 </p>
-                <p class="about-subtext">To simplify workflows, we offer three tools ready to use.</p>
+                <!-- Recuadro profesional integrado para la descripción dinámica -->
+                <div class="tool-desc-card">
+                    <div class="tool-desc-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                        </svg>
+                    </div>
+                    <p class="about-subtext" id="tool-description" aria-live="polite">To simplify workflows, we offer
+                        several tools ready to use.</p>
+                </div>
             </div>
 
-            <div class="about-cards">
-                <div class="about-card reveal">
-                    <div class="card-header-tag"><span>PASPLATE</span></div>
-                    <div class="card-image-wrapper"><img src="Pasplate_logo.png" alt="Preview de Pasplate"
-                            class="card-img"></div>
+            <div class="tools-gallery reveal" id="tools-gallery" aria-label="Explore Timeplate tools">
+                <div class="tools-stage">
+                    <!-- TOOL 1 IMAGE -->
+                    <button class="tool-item" type="button" data-tool="0" aria-label="Select Tool 1"
+                        aria-pressed="false">
+                        <span class="tool-placeholder">
+                            <img class="tool-image" src="Pasplate_logo.png" alt="Tool 1"
+                                onerror="this.style.display='none'">
+                            <span>Tool 1</span>
+                        </span>
+                    </button>
+                    <!-- TOOL 2 IMAGE -->
+                    <button class="tool-item" type="button" data-tool="1" aria-label="Select Tool 2"
+                        aria-pressed="false">
+                        <span class="tool-placeholder">
+                            <img class="tool-image" src="Camplate_logo.png" alt="Tool 2"
+                                onerror="this.style.display='none'">
+                            <span>Tool 2</span>
+                        </span>
+                    </button>
+                    <!-- TOOL 3 IMAGE (Estándar de referencia: Reminder_logo.png) -->
+                    <button class="tool-item" type="button" data-tool="2" aria-label="Select Tool 3"
+                        aria-pressed="false">
+                        <span class="tool-placeholder">
+                            <img class="tool-image" src="Reminder_logo.png" alt="Tool 3"
+                                onerror="this.style.display='none'">
+                            <span>Tool 3</span>
+                        </span>
+                    </button>
+                    <!-- TOOL 4 IMAGE -->
+                    <button class="tool-item" type="button" data-tool="3" aria-label="Select Tool 4"
+                        aria-pressed="false">
+                        <span class="tool-placeholder">
+                            <img class="tool-image" src="textword_logo.png" alt="Tool 4"
+                                onerror="this.style.display='none'">
+                            <span>Tool 4</span>
+                        </span>
+                    </button>
+                    <!-- TOOL 5 IMAGE -->
+                    <button class="tool-item" type="button" data-tool="4" aria-label="Select Tool 5"
+                        aria-pressed="false">
+                        <span class="tool-placeholder">
+                            <img class="tool-image" src="Keyboard_logo.png" alt="Tool 5"
+                                onerror="this.style.display='none'">
+                            <span>Tool 5</span>
+                        </span>
+                    </button>
                 </div>
-                <div class="about-card reveal">
-                    <div class="card-header-tag"><span>CAMPLATE</span></div>
-                    <div class="card-image-wrapper"><img src="Camplate_logo.png" alt="Preview de Hand Over"
-                            class="card-img">
-                    </div>
-                </div>
-                <div class="about-card reveal">
-                    <div class="card-header-tag"><span>REMINDER</span></div>
-                    <div class="card-image-wrapper"><img src="Reminder_logo.png" alt="Preview de Reminder"
-                            class="card-img">
-                    </div>
-                </div>
+                <p class="tools-hint">Hover over the gallery to explore the tools, then select one to see its
+                    description.</p>
             </div>
         </div>
         <div class="section-divider"></div>
@@ -983,6 +1272,34 @@
             });
         }, { threshold: .15 });
         document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // Interactive tool gallery: update the description and keep the chosen tool highlighted.
+        const toolsGallery = document.getElementById('tools-gallery');
+        const toolDescription = document.getElementById('tool-description');
+        const toolItems = [...document.querySelectorAll('.tool-item')];
+        const toolDescriptions = [
+            'Tool 1 — Choose template in just one click to speed up your routine tasks',
+            'Tool 2 — Camplate: Use gesture control to select your templates with hand movements!',
+            'Tool 3 — Reminder: Save notes, essential logs, and everything you do not want to forget',
+            'Tool 4 — TexWord: Scan a text and extracts information',
+            'Tool 5 — Keyboard: Templates selected with a single key!'
+        ];
+
+        toolItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                toolItems.forEach((tool) => {
+                    const selected = tool === item;
+                    tool.classList.toggle('is-selected', selected);
+                    tool.setAttribute('aria-pressed', String(selected));
+                });
+                toolsGallery.classList.add('has-selection');
+                toolDescription.classList.add('changing');
+                window.setTimeout(() => {
+                    toolDescription.textContent = toolDescriptions[index];
+                    toolDescription.classList.remove('changing');
+                }, 180);
+            });
+        });
 
         const startBtn = document.getElementById('startBtn');
         const logo = document.getElementById('hero-logo');

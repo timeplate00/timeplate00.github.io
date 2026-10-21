@@ -59,20 +59,23 @@
         #content-area {
             display: flex;
             flex-direction: column;
-            flex-grow: 1;
+            flex: 1 1 0;
+            min-width: 0;
+            min-height: 0;
             overflow: auto;
             position: relative;
             background-color: #061325;
+            overscroll-behavior: contain;
         }
 
         #header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(88, 89, 92, .65);
+            background: rgba(1, 1, 20, 0.65);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            padding: 12px 24px;
+            padding: 40px 21px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, .2);
             position: sticky;
             top: 0;
@@ -219,7 +222,7 @@
         }
 
         #add-board-btn {
-            background: #fff;
+            background: #5e5b5b;
             color: #000;
             border: none;
             width: 32px;
@@ -237,7 +240,7 @@
         }
 
         #add-board-btn:hover:not(:disabled) {
-            background: #e5e5e5;
+            background: #54e093;
             transform: scale(1.05);
         }
 
@@ -408,8 +411,12 @@
         /* WORKSPACE CON DOT MATRIX EXTENDIDO HACIA ABAJO */
         #workspace {
             position: relative;
+            /* El tamaño se ajusta por JS para igualar el recorrido útil de ambos ejes. */
             width: 3000px;
             height: 4500px;
+            min-width: 3000px;
+            min-height: 4500px;
+            flex: 0 0 auto;
             padding: 40px;
             box-sizing: border-box;
             background-color: #09182b;
@@ -417,7 +424,8 @@
                 radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px),
                 radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.08) 0%, transparent 40%),
                 radial-gradient(circle at 85% 85%, rgba(166, 255, 0, 0.05) 0%, transparent 45%);
-            background-size: 28px 28px, 100% 4500px, 100% 4500px;
+            /* La cuadrícula se repite; los matices decorativos cubren el workspace completo. */
+            background-size: 28px 28px, 100% 100%, 100% 100%;
             background-position: 0 0, 0 0, 0 0;
             background-repeat: repeat, no-repeat, no-repeat;
             margin: 15px;
@@ -461,7 +469,7 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, .35);
             position: absolute;
             cursor: grab;
-            background-color: #a1a1a1;
+            background-color: #a1a1a1e3;
             border: 1px solid rgba(255, 255, 255, .1);
         }
 
@@ -486,7 +494,7 @@
             position: absolute;
             cursor: grab;
             background-color: #fff;
-            border: 1px solid #000;
+            border: 1px solid #00000000;
         }
 
         .box textarea,
@@ -1329,6 +1337,50 @@
             const workspace = document.getElementById("workspace");
             const contentArea = document.getElementById("content-area");
             const sidebar = document.getElementById("sidebar");
+
+            // Mantiene el mismo recorrido de desplazamiento en ambos ejes sin alterar
+            // las coordenadas guardadas de las boxes ni sus funciones.
+            function balanceWorkspaceScroll() {
+                if (!workspace || !contentArea) return;
+
+                const viewportWidth = Math.max(1, contentArea.clientWidth - 30);
+                const viewportHeight = Math.max(1, contentArea.clientHeight - 30);
+                const minWidth = 3000;
+                const minHeight = 4500;
+
+                // Usa el mayor recorrido existente como referencia para ambos ejes.
+                const horizontalOverflow = Math.max(0, minWidth - viewportWidth);
+                const verticalOverflow = Math.max(0, minHeight - viewportHeight);
+                const sharedOverflow = Math.max(horizontalOverflow, verticalOverflow);
+
+                let targetWidth = Math.max(minWidth, viewportWidth + sharedOverflow);
+                let targetHeight = Math.max(minHeight, viewportHeight + sharedOverflow);
+
+                // Si una caja ocupa más espacio que el lienzo base, extiende el fondo
+                // para que la cuadrícula nunca parezca terminar antes que el área de trabajo.
+                workspace.querySelectorAll(".box, .line-box").forEach(box => {
+                    const left = parseFloat(box.style.left) || 0;
+                    const top = parseFloat(box.style.top) || 0;
+                    targetWidth = Math.max(targetWidth, left + box.offsetWidth + 80);
+                    targetHeight = Math.max(targetHeight, top + box.offsetHeight + 80);
+                });
+
+                workspace.style.width = `${Math.ceil(targetWidth)}px`;
+                workspace.style.height = `${Math.ceil(targetHeight)}px`;
+            }
+
+            let workspaceResizeFrame = null;
+            function scheduleWorkspaceBalance() {
+                if (workspaceResizeFrame !== null) cancelAnimationFrame(workspaceResizeFrame);
+                workspaceResizeFrame = requestAnimationFrame(() => {
+                    workspaceResizeFrame = null;
+                    balanceWorkspaceScroll();
+                });
+            }
+
+            window.addEventListener("resize", scheduleWorkspaceBalance);
+            const workspaceResizeObserver = new ResizeObserver(scheduleWorkspaceBalance);
+            workspaceResizeObserver.observe(contentArea);
             const toggleSidebarBtn = document.getElementById("toggle-sidebar-btn");
             const addBoxBtn = document.getElementById("add-box-btn");
             const addLineBoxBtn = document.getElementById("add-line-box-btn");
@@ -1594,6 +1646,7 @@
                 workspace.innerHTML = "";
                 loadBoxes();
                 loadLineBoxes();
+                scheduleWorkspaceBalance();
                 renderBoardsTabs();
                 initColorPresetsGrid();
                 contentArea.scrollTop = 0;
@@ -1860,6 +1913,7 @@
                 workspace.innerHTML = "";
                 loadBoxes();
                 loadLineBoxes();
+                scheduleWorkspaceBalance();
             }
 
             function executeLayoutOrganization(action) {
@@ -1893,6 +1947,7 @@
                 });
                 saveBoxes();
                 saveLineBoxes();
+                scheduleWorkspaceBalance();
             }
 
             // Construcción y Comportamiento Dinámico de Cajas
@@ -1965,6 +2020,7 @@
                 box.appendChild(textarea);
                 box.appendChild(buttonsDiv);
                 workspace.appendChild(box);
+                scheduleWorkspaceBalance();
 
                 if (box.dataset.locked === "true") { box.classList.add("locked"); lockBtn.classList.add("active"); }
                 textarea.style.height = `${textarea.scrollHeight}px`;
@@ -2112,6 +2168,7 @@
                         const snap = getSnapCoordinates(element, nx, ny);
                         element.style.left = `${snap.x}px`;
                         element.style.top = `${snap.y}px`;
+                        scheduleWorkspaceBalance();
 
                         if (snap.snapped) {
                             element.classList.add("snapping");
@@ -2265,6 +2322,7 @@
                 loadBoxes();
                 loadLineBoxes();
                 initColorPresetsGrid();
+                scheduleWorkspaceBalance();
             });
         })();
     </script>

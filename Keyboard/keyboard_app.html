@@ -646,7 +646,7 @@
   <div class="toast" id="toast">Texto copiado al portapapeles</div>
 
   <script>
-    // Lógica de Validación y Código de Acceso (Basado en Reminder)[cite: 2]
+    // Lógica de Validación y Código de Acceso (Basado en Reminder)
     (function () {
       const SECRET_CODE = "070907";
       const accessOverlay = document.getElementById("access-overlay");
@@ -725,13 +725,9 @@
     const defaultData = [
       [
         { id: '1', label: 'Hello', content: 'Hello World!', key: '1' }
-      ]
-      // [
-      //   { id: '2', label: 'Hello', content: 'Hello World!', key: 'A' }
-      //  ],
-      //  [
-      //   { id: '3', label: 'Hello', content: 'Hello World!', key: '+' }
-      //  ]
+      ],
+      [],
+      []
     ];
 
     let appData = JSON.parse(localStorage.getItem('keyboard_timeplate_data')) || defaultData;
@@ -843,6 +839,11 @@
     }
 
     function addKeybox(colIndex) {
+      // Asegurarnos de que el arreglo de la columna exista en appData
+      if (!appData[colIndex]) {
+        appData[colIndex] = [];
+      }
+
       if (appData[colIndex].length >= 20) return;
 
       const newKey = {
@@ -939,9 +940,10 @@
       const pressedKey = e.key.toUpperCase();
 
       for (let c = 0; c < appData.length; c++) {
+        if (!appData[c]) continue;
         for (let k = 0; k < appData[c].length; k++) {
           const item = appData[c][k];
-          if (item.key && item.key.toUpperCase() === pressedKey) {
+          if (item && item.key && item.key.toUpperCase() === pressedKey) {
             const keyElement = document.querySelector(`.keybox[data-id="${item.id}"]`);
             triggerKeyAction(item, keyElement);
             break;

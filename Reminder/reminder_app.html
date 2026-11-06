@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timeplate - Tool 3</title>
+    <title>Timeplate - Reminder</title>
     <link rel="icon" type="image/png" href="/logo_v5.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
@@ -18,34 +18,38 @@
         }
 
         :root {
-            --bg-main: #e9e8e8;
+            --bg-main: #74717165;
             --bg-header: #bebebecc;
             --text-main: #1c1c1e;
             --section-bg: #ffffff;
             --section-header-bg: #f7f7f7;
-            --border-color: #d2d2d7;
-            --table-row-bg: #f5f5f7;
-            --text-muted: #86868b;
-            --btn-hover: #e8e8ed;
+            --border-color: #d2d2d7d2;
+            --table-row-bg: #d3d3d6;
+            --text-muted: #afafb8;
+            --btn-hover: #fbfbfd;
+
+            /*New color*/
+            --accent-glow: lab(6.36% 7.91 -21.08);
         }
 
         body.dark-mode {
-            --bg-main: #121212;
-            --bg-header: #1e1e1ecc;
+            --bg-main: #6379328c;
+            --bg-header: #050505;
             --text-main: #f5f5f7;
-            --section-bg: #1e1e20;
+            --section-bg: #050505;
             --section-header-bg: #2c2c2e;
-            --border-color: #38383a;
-            --table-row-bg: #2c2c2e;
-            --text-muted: #98989f;
-            --btn-hover: #3a3a3c;
+            --border-color: #d2d2df23;
+            --table-row-bg: #2e2d2c;
+            --text-muted: #afafb8;
+            --btn-hover: #fbfbfd;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: var(--bg-main);
+            /*background-color: var(--bg-main);*/
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 100%);
             color: var(--text-main);
             overflow-x: hidden;
             -webkit-user-select: none;
@@ -216,8 +220,8 @@
         }
 
         .section-title:focus {
-            border-color: #0071e3;
-            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+            border-color: #1565b6;
+            box-shadow: 0 0 0 3px rgba(36, 60, 83, 0.877);
             outline: none;
         }
 
@@ -372,7 +376,7 @@
 
         .load-number {
             cursor: pointer;
-            color: #0071e3;
+            color: #0e60b3;
             font-weight: 500;
             letter-spacing: -0.2px;
             display: inline-block;
@@ -427,7 +431,7 @@
             background: transparent;
             border: none;
             cursor: pointer;
-            color: #ff3b30;
+            color: #ff3a3094;
             padding: 6px 8px;
             border-radius: 8px;
             font-size: 13px;
@@ -629,7 +633,7 @@
         }
 
         .countdown.due {
-            color: #ff3b30;
+            color: #f11105;
             font-weight: 600;
         }
 
@@ -646,7 +650,7 @@
             }
 
             50% {
-                background-color: rgba(255, 59, 48, 0.2);
+                background-color: rgba(255, 58, 48, 0.555);
             }
 
             100% {
@@ -660,17 +664,17 @@
 
         @keyframes flashCopy {
             0% {
-                background-color: rgba(52, 199, 89, 0.35);
-                color: #1c7430;
+                background-color: rgba(36, 99, 180, 0.35);
+                color: #1574cc;
             }
 
             50% {
-                background-color: rgba(52, 199, 89, 0.15);
+                background-color: rgba(229, 238, 231, 0.911);
             }
 
             100% {
                 background-color: transparent;
-                color: #0071e3;
+                color: #020202;
             }
         }
 
@@ -865,7 +869,7 @@
                         <button class="color-picker-btn" title="Change Color"><i class="fas fa-palette"></i></button>
                         <button class="add-row-btn" title="Add Task"><i class="fas fa-plus"></i></button>
                         <button class="separator-btn" title="Add Separator"><i class="fas fa-star"></i></button>
-                        <button class="camera-btn" title="Camera Tool"><i class="fas fa-camera"></i></button>
+                        <button class="camera-btn" title="Scan"><i class="fas fa-camera"></i></button>
                         <input type="color" class="color-picker" style="display: none;">
                     </div>
                 </div>
@@ -890,7 +894,7 @@
                         <button class="color-picker-btn" title="Change Color"><i class="fas fa-palette"></i></button>
                         <button class="add-row-btn" title="Add Task"><i class="fas fa-plus"></i></button>
                         <button class="separator-btn" title="Add Separator"><i class="fas fa-star"></i></button>
-                        <button class="camera-btn" title="Camera Tool"><i class="fas fa-camera"></i></button>
+                        <button class="camera-btn" title="Scan"><i class="fas fa-camera"></i></button>
                         <input type="color" class="color-picker" style="display: none;">
                     </div>
                 </div>
@@ -915,7 +919,7 @@
                         <button class="color-picker-btn" title="Change Color"><i class="fas fa-palette"></i></button>
                         <button class="add-row-btn" title="Add Task"><i class="fas fa-plus"></i></button>
                         <button class="separator-btn" title="Add Separator"><i class="fas fa-star"></i></button>
-                        <button class="camera-btn" title="Camera Tool"><i class="fas fa-camera"></i></button>
+                        <button class="camera-btn" title="Scan"><i class="fas fa-camera"></i></button>
                         <input type="color" class="color-picker" style="display: none;">
                     </div>
                 </div>

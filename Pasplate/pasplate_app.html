@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timeplate - Tool 1</title>
+    <title>Timeplate - Pasplate</title>
     <link rel="icon" type="image/png" href="/logo_v5.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@600&display=swap" rel="stylesheet">
@@ -1211,14 +1211,14 @@
                 <h1>Pasplate</h1>
             </div>
             <div class="header-actions">
-                <button id="settings-btn">⚙️</button>
+                <button id="settings-btn">⌬</button>
             </div>
         </div>
         <div id="app-body">
             <div id="sidebar">
                 <span class="sidebar-section-title">Add</span>
-                <button id="add-box-btn" title="Agregar Recuadro">+</button>
-                <button id="add-line-box-btn" title="Agregar LineBox">+</button>
+                <button id="add-box-btn" title="Add Box">+</button>
+                <button id="add-line-box-btn" title="Add LineBox">+</button>
             </div>
             <div id="content-area">
                 <div id="boards-bar">
@@ -1230,22 +1230,22 @@
         </div>
         <div id="color-picker" class="color-picker">
             <div class="color-picker-header">
-                <h3>Colores</h3>
+                <h3>Colors</h3>
                 <button id="close-color-picker">×</button>
             </div>
             <div class="color-presets-grid" id="color-presets-grid"></div>
             <div class="color-controls">
-                <span>Personalizado:</span>
+                <span>Custom:</span>
                 <input type="color" id="custom-color" value="#ffffff">
                 <div class="color-preview" id="color-preview"></div>
             </div>
         </div>
         <div id="custom-confirm" class="confirm-modal">
-            <h3 id="confirm-title">¿Eliminar?</h3>
-            <p id="confirm-msg">Esta acción no se puede deshacer.</p>
+            <h3 id="confirm-title">Delete?</h3>
+            <p id="confirm-msg">This action can't be undone.</p>
             <div class="confirm-buttons" id="confirm-buttons-wrapper">
-                <button id="confirm-yes" class="confirm-btn-yes">Sí</button>
-                <button id="confirm-no" class="confirm-btn-no">Cancelar</button>
+                <button id="confirm-yes" class="confirm-btn-yes">Yes</button>
+                <button id="confirm-no" class="confirm-btn-no">Cancel</button>
             </div>
         </div>
     </div>
@@ -1448,16 +1448,16 @@
             settingsMenu.innerHTML = `<ul>
                 <li id="toggle-mute">🔊 Mute</li>
                 <li id="volume-control">🔈 Volume <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1"></li>
-                <li id="sound-control">🎵 Sound <input type="file" id="sound-upload" accept="audio/*"> <button id="remove-sound" style="background: #f77067; color: white; border: none; padding: 5px; border-radius: 5px; cursor: pointer; font-size: 12px; margin-top: 5px;">Delete sound</button></li>
-                <li id="organized-control"><span id="organized-trigger" style="cursor:pointer; display:block; width:100%;">+ Boxes Organized</span>
-                    <ul id="organized-options" style="display:none;"><li data-action="template">- Template boxes</li><li data-action="color">- Color boxes</li><li data-action="empty">- Empty boxes</li></ul>
+                <li id="sound-control">♫ Sound <input type="file" id="sound-upload" accept="audio/*"> <button id="remove-sound" style="background: #f77067; color: white; border: none; padding: 5px; border-radius: 5px; cursor: pointer; font-size: 12px; margin-top: 5px;">🗑 Delete sound</button></li>
+                <li id="organized-control"><span id="organized-trigger" style="cursor:pointer; display:block; width:100%;">✦ Boxes Organized</span>
+                    <ul id="organized-options" style="display:none;"><li data-action="template">⬩ Template boxes</li><li data-action="color">⬩ Color boxes</li><li data-action="empty">⬩ Empty boxes</li></ul>
                 </li>
-                <li id="ie-control"><span id="ie-trigger" style="cursor:pointer; display:block; width:100%;">+ Import & Export box</span>
-                    <ul id="ie-options" style="display:none;"><li data-action="export">- Export</li><li data-action="import">- Import</li></ul>
+                <li id="ie-control"><span id="ie-trigger" style="cursor:pointer; display:block; width:100%;">✦ Import & Export box</span>
+                    <ul id="ie-options" style="display:none;"><li data-action="export">⬩ Export</li><li data-action="import">⬩ Import</li></ul>
                 </li>
-                <li id="background-settings">+ Background</li>
+                <li id="background-settings">✦ Background</li>
                 <ul id="background-options" style="display:none; margin-left:15px;">
-                    <li data-bg="#09182b">- Dark Navy</li><li data-bg="#121212">- Deep Charcoal</li><li data-bg="#072223">- Emerald Night</li><li data-bg="linear-gradient(135deg, #09182b, #1e293b)">- Midnight Gradient</li>
+                    <li data-bg="#09182b">⬩ Dark Navy</li><li data-bg="#121212">⬩ Deep Charcoal</li><li data-bg="#072223">⬩ Emerald Night</li><li data-bg="linear-gradient(135deg, #09182b, #1e293b)">⬩ Midnight Gradient</li>
                 </ul>
             </ul>`;
             settingsMenu.style.display = "none";
@@ -1507,7 +1507,7 @@
                 const file = event.target.files[0];
                 if (!file) return;
                 if (file.size > 4194304) {
-                    alert("El archivo supera el tamaño permitido de 4MB");
+                    alert("The file exceeds the allowed size of 4MB");
                     soundUploadInput.value = "";
                     return;
                 }
@@ -1673,7 +1673,7 @@
                 confirmButtonsWrapper.appendChild(confirmNoBtn);
                 confirmYesBtn.className = "confirm-btn-yes";
                 confirmNoBtn.className = "confirm-btn-no";
-                confirmNoBtn.textContent = "Cancelar";
+                confirmNoBtn.textContent = "Cancel";
             }
 
             function deleteBoardWorkflow(id, tabElement) {
@@ -1765,8 +1765,8 @@
                 resetModalButtons();
                 customConfirmModal.classList.remove("pulse-danger");
 
-                document.getElementById("confirm-title").textContent = "Export?";
-                document.getElementById("confirm-msg").textContent = "Se descargará la configuración del tablero actual como un archivo JSON.";
+                document.getElementById("confirm-title").textContent = "Export";
+                document.getElementById("confirm-msg").textContent = "The current dashboard settings will be downloaded as a JSON file.";
 
                 confirmYesBtn.textContent = "Export";
                 confirmNoBtn.textContent = "Cancel";
@@ -1785,8 +1785,8 @@
                 customConfirmModal.classList.remove("pulse-danger");
                 importedDataTemp = null;
 
-                document.getElementById("confirm-title").textContent = "Import?";
-                document.getElementById("confirm-msg").textContent = "Carga un archivo de configuración para sobreescribir este tablero.";
+                document.getElementById("confirm-title").textContent = "Import";
+                document.getElementById("confirm-msg").textContent = "Load a configuration file to overwrite this dashboard.";
 
                 confirmButtonsWrapper.innerHTML = '';
 
@@ -1970,7 +1970,7 @@
                 box.style.top = data.top;
 
                 const textarea = document.createElement("textarea");
-                textarea.placeholder = "Texto...";
+                textarea.placeholder = "Text...";
                 textarea.value = data.text;
                 box.dataset.locked = data.locked || "false";
 
@@ -1985,7 +1985,7 @@
 
                 const copyBtn = document.createElement("button");
                 copyBtn.classList.add("copy-btn");
-                copyBtn.textContent = "+";
+                copyBtn.textContent = "➕";
                 copyBtn.addEventListener("click", () => {
                     navigator.clipboard.writeText(textarea.value);
                     if (!isMuted) {
@@ -1999,7 +1999,7 @@
 
                 const lockBtn = document.createElement("button");
                 lockBtn.classList.add("lock-btn");
-                lockBtn.textContent = "🔒";
+                lockBtn.textContent = "🔒︎";
                 lockBtn.addEventListener("click", event => {
                     event.stopPropagation();
                     const state = box.dataset.locked === "true";
@@ -2011,7 +2011,7 @@
 
                 const deleteBtn = document.createElement("button");
                 deleteBtn.classList.add("delete-btn");
-                deleteBtn.textContent = "-";
+                deleteBtn.textContent = "×";
                 deleteBtn.addEventListener("click", () => { deleteBoxWorkflow(box, "box", saveBoxes); });
 
                 buttonsDiv.appendChild(copyBtn);
@@ -2037,7 +2037,7 @@
                 if (data.locked === "true") box.classList.add("locked");
 
                 const textarea = document.createElement("textarea");
-                textarea.placeholder = "Texto...";
+                textarea.placeholder = "Text...";
                 textarea.value = data.text || "";
                 textarea.setAttribute("value", data.text || "");
 
@@ -2053,7 +2053,7 @@
 
                 const colorBtn = document.createElement("button");
                 colorBtn.classList.add("color-btn");
-                colorBtn.textContent = "🎨";
+                colorBtn.textContent = "⭐️";
                 colorBtn.addEventListener("click", event => {
                     event.stopPropagation();
                     activeLineBox = box;
@@ -2062,7 +2062,7 @@
 
                 const lockBtn = document.createElement("button");
                 lockBtn.classList.add("lock-btn");
-                lockBtn.textContent = "🔒";
+                lockBtn.textContent = "🔒︎";
                 if (data.locked === "true") lockBtn.classList.add("active");
                 lockBtn.addEventListener("click", event => {
                     event.stopPropagation();
@@ -2075,7 +2075,7 @@
 
                 const deleteBtn = document.createElement("button");
                 deleteBtn.classList.add("delete-btn");
-                deleteBtn.textContent = "X";
+                deleteBtn.textContent = "×";
                 deleteBtn.addEventListener("click", event => {
                     event.stopPropagation();
                     deleteBoxWorkflow(box, "LineBox", saveLineBoxes);

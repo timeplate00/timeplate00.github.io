@@ -415,7 +415,6 @@
         /* WORKSPACE CON DOT MATRIX EXTENDIDO HACIA ABAJO */
         #workspace {
             position: relative;
-            /* El tamaño se ajusta por JS para igualar el recorrido útil de ambos ejes. */
             width: 3000px;
             height: 4500px;
             min-width: 3000px;
@@ -428,7 +427,6 @@
                 radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px),
                 radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.08) 0%, transparent 40%),
                 radial-gradient(circle at 85% 85%, rgba(166, 255, 0, 0.05) 0%, transparent 45%);
-            /* La cuadrícula se repite; los matices decorativos cubren el workspace completo. */
             background-size: 28px 28px, 100% 100%, 100% 100%;
             background-position: 0 0, 0 0, 0 0;
             background-repeat: repeat, no-repeat, no-repeat;
@@ -436,7 +434,7 @@
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.07);
             box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: background 0.4s ease, border-color 0.4s ease;
+            transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
         }
 
         .box,
@@ -642,7 +640,9 @@
             border: 1px solid rgba(255, 255, 255, .08);
             animation: menuFadeIn .2s cubic-bezier(0.4, 0, .2, 1) forwards;
             transform-origin: top left;
-            width: 220px;
+            width: 238px;
+            max-height: calc(100vh - 90px);
+            overflow-y: auto;
         }
 
         @keyframes menuFadeIn {
@@ -729,7 +729,7 @@
             cursor: pointer !important;
             border-radius: 6px !important;
             background: transparent !important;
-            transition: background .2s ease !important;
+            transition: background .2s ease, color .2s ease, border-color .2s ease !important;
             color: rgba(255, 255, 255, .85);
         }
 
@@ -738,6 +738,139 @@
         #ie-options li:hover {
             background: #2d4263 !important;
             color: #fff !important;
+        }
+
+        #background-options li.active-bg {
+            background: rgba(166, 255, 0, .14) !important;
+            color: #a6ff00 !important;
+            font-weight: 600;
+        }
+
+        /* Estilo distintivo para la 5a opción: Customized */
+        #background-options li.custom-bg-option {
+            margin-top: 6px;
+            padding: 9px 11px !important;
+            display: flex !important;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            border: 1px dashed rgba(166, 255, 0, .55);
+            background: linear-gradient(120deg, rgba(166, 255, 0, .12), rgba(56, 189, 248, .12)) !important;
+            border-radius: 8px !important;
+            font-style: italic;
+            font-weight: 700;
+            letter-spacing: .3px;
+        }
+
+        #background-options li.custom-bg-option .custom-bg-label {
+            background: linear-gradient(90deg, #a6ff00, #38bdf8, #f472b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        #background-options li.custom-bg-option .custom-bg-tag {
+            font-style: normal;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: .7px;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 999px;
+            background: rgba(166, 255, 0, .18);
+            color: #a6ff00;
+            border: 1px solid rgba(166, 255, 0, .35);
+            flex-shrink: 0;
+        }
+
+        #background-options li.custom-bg-option:hover,
+        #background-options li.custom-bg-option.active-bg {
+            border-style: solid !important;
+            border-color: #a6ff00 !important;
+            background: linear-gradient(120deg, rgba(166, 255, 0, .2), rgba(56, 189, 248, .18)) !important;
+        }
+
+        /* Panel completo de selección de color personalizado para el fondo */
+        .custom-bg-picker-panel {
+            margin-top: 8px;
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(15, 26, 48, .92);
+            border: 1px solid rgba(166, 255, 0, .28);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-sizing: border-box;
+        }
+
+        .custom-bg-picker-top {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #custom-bg-color-input {
+            width: 42px;
+            height: 36px;
+            padding: 0;
+            border: 1px solid rgba(255, 255, 255, .25);
+            border-radius: 8px;
+            background: transparent;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        #custom-bg-hex-input {
+            flex: 1;
+            min-width: 0;
+            padding: 7px 9px;
+            border-radius: 7px;
+            border: 1px solid rgba(255, 255, 255, .18);
+            background: rgba(255, 255, 255, .07);
+            color: #fff;
+            font-family: 'Inter', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            outline: none;
+        }
+
+        #custom-bg-hex-input:focus {
+            border-color: #a6ff00;
+        }
+
+        .custom-bg-swatches {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+        }
+
+        .custom-bg-swatch {
+            height: 22px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, .22);
+            cursor: pointer;
+            padding: 0;
+            transition: transform .15s ease, border-color .15s ease;
+        }
+
+        .custom-bg-swatch:hover {
+            transform: scale(1.08);
+            border-color: #a6ff00;
+        }
+
+        .custom-bg-preview-bar {
+            height: 22px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, .18);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, .85);
         }
 
         .color-picker {
@@ -1342,8 +1475,6 @@
             const contentArea = document.getElementById("content-area");
             const sidebar = document.getElementById("sidebar");
 
-            // Mantiene el mismo recorrido de desplazamiento en ambos ejes sin alterar
-            // las coordenadas guardadas de las boxes ni sus funciones.
             function balanceWorkspaceScroll() {
                 if (!workspace || !contentArea) return;
 
@@ -1352,7 +1483,6 @@
                 const minWidth = 3000;
                 const minHeight = 4500;
 
-                // Usa el mayor recorrido existente como referencia para ambos ejes.
                 const horizontalOverflow = Math.max(0, minWidth - viewportWidth);
                 const verticalOverflow = Math.max(0, minHeight - viewportHeight);
                 const sharedOverflow = Math.max(horizontalOverflow, verticalOverflow);
@@ -1360,8 +1490,6 @@
                 let targetWidth = Math.max(minWidth, viewportWidth + sharedOverflow);
                 let targetHeight = Math.max(minHeight, viewportHeight + sharedOverflow);
 
-                // Si una caja ocupa más espacio que el lienzo base, extiende el fondo
-                // para que la cuadrícula nunca parezca terminar antes que el área de trabajo.
                 workspace.querySelectorAll(".box, .line-box").forEach(box => {
                     const left = parseFloat(box.style.left) || 0;
                     const top = parseFloat(box.style.top) || 0;
@@ -1407,7 +1535,6 @@
             let boardsList = [1];
             let importedDataTemp = null;
 
-            // Crear input oculto dinámico para cargar el JSON de importación
             const fileImportInput = document.createElement("input");
             fileImportInput.type = "file";
             fileImportInput.accept = ".json";
@@ -1448,6 +1575,9 @@
             const settingsBtn = document.getElementById("settings-btn");
             const settingsMenu = document.createElement("div");
 
+            const savedCustomBgColor = localStorage.getItem("customBackgroundColor") || "#1e1b4b";
+            const customSwatches = ["#1e1b4b", "#1f2937", "#064e3b", "#450a0a", "#3b0764", "#172554"];
+
             settingsMenu.id = "settings-menu";
             settingsMenu.innerHTML = `<ul>
                 <li id="toggle-mute">🔊 Mute</li>
@@ -1461,7 +1591,27 @@
                 </li>
                 <li id="background-settings">✦ Background</li>
                 <ul id="background-options" style="display:none; margin-left:15px;">
-                    <li data-bg="#09182b">⬩ Dark Navy</li><li data-bg="#121212">⬩ Deep Charcoal</li><li data-bg="#072223">⬩ Emerald Night</li><li data-bg="linear-gradient(135deg, #09182b, #1e293b)">⬩ Midnight Gradient</li>
+                    <li data-bg="#09182b">⬩ Dark Navy</li>
+                    <li data-bg="#121212">⬩ Deep Charcoal</li>
+                    <li data-bg="#072223">⬩ Emerald Night</li>
+                    <li data-bg="linear-gradient(135deg, #09182b, #1e293b)">⬩ Midnight Gradient</li>
+                    <li id="custom-bg-option" class="custom-bg-option" data-bg-mode="custom">
+                        <span class="custom-bg-label">✦ Customized</span>
+                        <span class="custom-bg-tag">Color</span>
+                    </li>
+                    <div id="custom-bg-picker-panel" class="custom-bg-picker-panel" style="display:none;">
+                        <div class="custom-bg-picker-top">
+                            <input type="color" id="custom-bg-color-input" value="${savedCustomBgColor}" aria-label="Choose custom background color">
+                            <input type="text" id="custom-bg-hex-input" value="${savedCustomBgColor.toUpperCase()}" maxlength="7" aria-label="Hex color code">
+                        </div>
+                        <div class="custom-bg-swatches" id="custom-bg-swatches">
+                            ${customSwatches.map(hex => `<button type="button" class="custom-bg-swatch" data-hex="${hex}" style="background:${hex};" title="${hex}"></button>`).join("")}
+                        </div>
+                        <div class="custom-bg-preview-bar" id="custom-bg-preview-bar" style="background:${savedCustomBgColor};">
+                            <span>Live Tone</span>
+                            <span id="custom-bg-hex-readout">${savedCustomBgColor.toUpperCase()}</span>
+                        </div>
+                    </div>
                 </ul>
             </ul>`;
             settingsMenu.style.display = "none";
@@ -1472,7 +1622,7 @@
                 settingsMenu.style.display = settingsMenu.style.display === "block" ? "none" : "block";
                 const rect = settingsBtn.getBoundingClientRect();
                 settingsMenu.style.top = rect.bottom + "px";
-                settingsMenu.style.left = (rect.left - 160) + "px";
+                settingsMenu.style.left = Math.max(10, rect.left - 180) + "px";
             });
 
             document.addEventListener("click", () => { settingsMenu.style.display = "none"; });
@@ -1543,7 +1693,6 @@
                 });
             });
 
-            // Controladores del submenú Import & Export
             const ieTrigger = document.getElementById("ie-trigger");
             const ieOptions = document.getElementById("ie-options");
             ieTrigger.addEventListener("click", event => {
@@ -1565,18 +1714,134 @@
 
             const bgSettingsTrigger = document.getElementById("background-settings");
             const bgOptionsList = document.getElementById("background-options");
+            const customBgOption = document.getElementById("custom-bg-option");
+            const customBgPickerPanel = document.getElementById("custom-bg-picker-panel");
+            const customBgColorInput = document.getElementById("custom-bg-color-input");
+            const customBgHexInput = document.getElementById("custom-bg-hex-input");
+            const customBgPreviewBar = document.getElementById("custom-bg-preview-bar");
+            const customBgHexReadout = document.getElementById("custom-bg-hex-readout");
+            const presetBgItems = Array.from(bgOptionsList.querySelectorAll("li[data-bg]"));
+
+            function normalizeHexColor(value) {
+                if (typeof value !== "string") return null;
+                let cleaned = value.trim();
+                if (!cleaned.startsWith("#")) cleaned = "#" + cleaned;
+                if (/^#[0-9A-Fa-f]{3}$/.test(cleaned)) {
+                    cleaned = "#" + cleaned[1] + cleaned[1] + cleaned[2] + cleaned[2] + cleaned[3] + cleaned[3];
+                }
+                return /^#[0-9A-Fa-f]{6}$/.test(cleaned) ? cleaned.toLowerCase() : null;
+            }
+
+            // Detecta si un color sólido es claro usando luminancia relativa perceptual (WCAG)
+            function isLightBackgroundColor(bgValue) {
+                const hex = normalizeHexColor(bgValue);
+                if (!hex) return false;
+                const r = parseInt(hex.slice(1, 3), 16) / 255;
+                const g = parseInt(hex.slice(3, 5), 16) / 255;
+                const b = parseInt(hex.slice(5, 7), 16) / 255;
+
+                const toLinear = c => (c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+                const luminance = 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
+                return luminance > 0.45;
+            }
+
+            function syncCustomBgUI(hexColor, showPanel) {
+                const normalized = normalizeHexColor(hexColor) || "#1e1b4b";
+                const upper = normalized.toUpperCase();
+                customBgColorInput.value = normalized;
+                if (document.activeElement !== customBgHexInput) {
+                    customBgHexInput.value = upper;
+                }
+                customBgPreviewBar.style.background = normalized;
+                customBgHexReadout.textContent = upper;
+                if (typeof showPanel === "boolean") {
+                    customBgPickerPanel.style.display = showPanel ? "flex" : "none";
+                }
+            }
+
+            function highlightSelectedBackground(mode, value) {
+                presetBgItems.forEach(item => {
+                    item.classList.toggle("active-bg", mode === "preset" && item.dataset.bg === value);
+                });
+                customBgOption.classList.toggle("active-bg", mode === "custom");
+            }
+
             bgSettingsTrigger.addEventListener("click", event => {
                 event.stopPropagation();
                 bgOptionsList.style.display = bgOptionsList.style.display === "block" ? "none" : "block";
             });
 
-            bgOptionsList.querySelectorAll("li").forEach(li => {
+            presetBgItems.forEach(li => {
                 li.addEventListener("click", event => {
                     event.stopPropagation();
                     const bgValue = li.dataset.bg;
                     applyWorkspaceBackground(bgValue);
                     localStorage.setItem("selectedBackground", bgValue);
-                    settingsMenu.style.display = "none";
+                    localStorage.setItem("backgroundMode", "preset");
+                    highlightSelectedBackground("preset", bgValue);
+                    syncCustomBgUI(customBgColorInput.value, false);
+                });
+            });
+
+            customBgOption.addEventListener("click", event => {
+                event.stopPropagation();
+                const willOpen = customBgPickerPanel.style.display !== "flex";
+                syncCustomBgUI(customBgColorInput.value, willOpen);
+                if (willOpen) {
+                    const activeHex = normalizeHexColor(customBgColorInput.value) || "#1e1b4b";
+                    applyWorkspaceBackground(activeHex);
+                    localStorage.setItem("selectedBackground", activeHex);
+                    localStorage.setItem("customBackgroundColor", activeHex);
+                    localStorage.setItem("backgroundMode", "custom");
+                    highlightSelectedBackground("custom", activeHex);
+                }
+            });
+
+            customBgPickerPanel.addEventListener("click", event => {
+                event.stopPropagation();
+            });
+
+            function applyCustomColorSelection(rawColor) {
+                const normalized = normalizeHexColor(rawColor);
+                if (!normalized) return;
+                syncCustomBgUI(normalized, true);
+                applyWorkspaceBackground(normalized);
+                localStorage.setItem("selectedBackground", normalized);
+                localStorage.setItem("customBackgroundColor", normalized);
+                localStorage.setItem("backgroundMode", "custom");
+                highlightSelectedBackground("custom", normalized);
+            }
+
+            customBgColorInput.addEventListener("input", event => {
+                event.stopPropagation();
+                applyCustomColorSelection(event.target.value);
+            });
+
+            customBgHexInput.addEventListener("input", event => {
+                event.stopPropagation();
+                const val = event.target.value.trim();
+                const normalized = normalizeHexColor(val);
+                if (normalized) {
+                    customBgColorInput.value = normalized;
+                    customBgPreviewBar.style.background = normalized;
+                    customBgHexReadout.textContent = normalized.toUpperCase();
+                    applyWorkspaceBackground(normalized);
+                    localStorage.setItem("selectedBackground", normalized);
+                    localStorage.setItem("customBackgroundColor", normalized);
+                    localStorage.setItem("backgroundMode", "custom");
+                    highlightSelectedBackground("custom", normalized);
+                }
+            });
+
+            customBgHexInput.addEventListener("blur", () => {
+                const normalized = normalizeHexColor(customBgHexInput.value) || normalizeHexColor(customBgColorInput.value) || "#1e1b4b";
+                syncCustomBgUI(normalized);
+            });
+
+            customBgPickerPanel.querySelectorAll(".custom-bg-swatch").forEach(swatch => {
+                swatch.addEventListener("click", event => {
+                    event.stopPropagation();
+                    applyCustomColorSelection(swatch.dataset.hex);
                 });
             });
 
@@ -1587,13 +1852,21 @@
                         radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px),
                         ${bgValue}
                     `;
+                    workspace.style.borderColor = "rgba(255, 255, 255, 0.07)";
+                    workspace.style.boxShadow = "inset 0 0 40px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.3)";
                 } else {
+                    const isLight = isLightBackgroundColor(bgValue);
+                    const dotColor = isLight ? "rgba(15, 23, 42, 0.22)" : "rgba(255, 255, 255, 0.12)";
                     workspace.style.backgroundColor = bgValue;
                     workspace.style.backgroundImage = `
-                        radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px),
+                        radial-gradient(${dotColor} 1.5px, transparent 1.5px),
                         radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.08) 0%, transparent 40%),
                         radial-gradient(circle at 85% 85%, rgba(166, 255, 0, 0.05) 0%, transparent 45%)
                     `;
+                    workspace.style.borderColor = isLight ? "rgba(15, 23, 42, 0.16)" : "rgba(255, 255, 255, 0.07)";
+                    workspace.style.boxShadow = isLight
+                        ? "inset 0 0 30px rgba(15, 23, 42, 0.12), 0 10px 30px rgba(0, 0, 0, 0.2)"
+                        : "inset 0 0 40px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.3)";
                 }
             }
 
@@ -2307,9 +2580,24 @@
                 checkDailyAccess();
 
                 const savedBg = localStorage.getItem("selectedBackground");
+                const savedBgMode = localStorage.getItem("backgroundMode");
+                const savedCustomHex = normalizeHexColor(localStorage.getItem("customBackgroundColor")) || "#1e1b4b";
+
                 if (savedBg) {
                     applyWorkspaceBackground(savedBg);
+                    if (savedBgMode === "custom" || (!savedBg.includes("gradient") && !presetBgItems.some(i => i.dataset.bg === savedBg))) {
+                        const initialHex = normalizeHexColor(savedBg) || savedCustomHex;
+                        syncCustomBgUI(initialHex, false);
+                        highlightSelectedBackground("custom", initialHex);
+                    } else {
+                        syncCustomBgUI(savedCustomHex, false);
+                        highlightSelectedBackground("preset", savedBg);
+                    }
+                } else {
+                    syncCustomBgUI(savedCustomHex, false);
+                    highlightSelectedBackground("preset", "#09182b");
                 }
+
                 migrateLegacyData();
 
                 const savedBoards = localStorage.getItem("boardsList");

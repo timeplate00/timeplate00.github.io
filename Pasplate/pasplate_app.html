@@ -11,10 +11,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --accent-glow: lab(44.84% -48.58 15.47);
+        }
+
         body {
             margin: 0;
             font-family: 'Poppins', Arial, sans-serif;
-            background-color: #061325;
+            background: radial-gradient(circle, var(--accent-glow) 100%, transparent 100%);
             background-attachment: fixed;
             min-height: 100vh;
             overflow: hidden;
